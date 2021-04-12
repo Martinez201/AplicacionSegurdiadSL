@@ -14,4 +14,36 @@
         android:name="com.example.proyectoampliacion.Fragmentos.MenuPrincipalFragment"
         android:label="Menú Principal"
         tools:layout="@layout/fragment_menu_principal" />
+    <fragment
+        android:id="@+id/altasFragment"
+        android:name="com.example.proyectoampliacion.Fragmentos.Mantenimiento.AltasFragment"
+        android:label="fragment_altas"
+        tools:layout="@layout/fragment_altas" >
+        <argument
+            android:name="tipo_formulario"
+            app:argType="integer" />
+    </fragment>
+    <fragment
+        android:id="@+id/bajasFragment"
+        android:name="com.example.proyectoampliacion.Fragmentos.Mantenimiento.BajasFragment"
+        android:label="fragment_bajas"
+        tools:layout="@layout/fragment_bajas" >
+        <argument
+            android:name="tipo_formulario"
+            app:argType="integer" />
+    </fragment>
+    <fragment
+        android:id="@+id/listarFragment"
+        android:name="com.example.proyectoampliacion.Fragmentos.Mantenimiento.ListarFragment"
+        android:label="fragment_listar"
+        tools:layout="@layout/fragment_listar" >
+        <argument android:name="tipo_formulario" />
+    </fragment>
+    <fragment
+        android:id="@+id/modificarFragment"
+        android:name="com.example.proyectoampliacion.Fragmentos.Mantenimiento.ModificarFragment"
+        android:label="fragment_modificar"
+        tools:layout="@layout/fragment_modificar" >
+        <argument android:name="tipo_formulario" />
+    </fragment>
 </navigation>
