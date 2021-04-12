@@ -46,4 +46,13 @@
         tools:layout="@layout/fragment_modificar" >
         <argument android:name="tipo_formulario" />
     </fragment>
+    <fragment
+        android:id="@+id/menuOpcionesCategoriaFragment"
+        android:name="com.example.proyectoampliacion.Fragmentos.MenuOpcionesCategoriaFragment"
+        android:label="fragment_menu_opciones_categoria"
+        tools:layout="@layout/fragment_menu_opciones_categoria" >
+        <argument
+            android:name="tipo_menu"
+            app:argType="integer" />
+    </fragment>
 </navigation>
