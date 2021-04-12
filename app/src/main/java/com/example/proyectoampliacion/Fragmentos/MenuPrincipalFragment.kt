@@ -9,6 +9,7 @@ import android.widget.GridLayout
 import android.widget.GridView
 import android.widget.Toast
 import androidx.cardview.widget.CardView
+import androidx.navigation.Navigation
 import com.example.proyectoampliacion.R
 import kotlinx.android.synthetic.main.fragment_menu_principal.*
 
@@ -36,12 +37,55 @@ class MenuPrincipalFragment : Fragment() {
 
     fun setSingleEvent(referencia: GridLayout, view: View){
 
+        val bundle = Bundle();
 
         for (i in 0..referencia.childCount - 1){
             var cardView: CardView = referencia.getChildAt(i) as CardView;
             cardView.setOnClickListener { it
 
-                Toast.makeText(it.context,"HOLA ==> "+i, Toast.LENGTH_SHORT).show();
+               when(i){
+
+                   0->{
+                       bundle.putInt("tipo",0);
+                       Navigation.findNavController(view).navigate(R.id.menuOpcionesCategoriaFragment,bundle);
+
+                   }
+                   1->{
+                       bundle.putInt("tipo",1);
+                       Navigation.findNavController(view).navigate(R.id.menuOpcionesCategoriaFragment,bundle);
+
+                   }
+                   2->{
+                       bundle.putInt("tipo",2);
+                       Navigation.findNavController(view).navigate(R.id.menuOpcionesCategoriaFragment,bundle);
+
+                   }
+                   3->{
+                       bundle.putInt("tipo",3);
+                       Navigation.findNavController(view).navigate(R.id.menuOpcionesCategoriaFragment,bundle);
+
+                   }
+                   4->{
+                       bundle.putInt("tipo",4);
+                       Navigation.findNavController(view).navigate(R.id.menuOpcionesCategoriaFragment,bundle);
+
+                   }
+                   5->{
+                       bundle.putInt("tipo",5);
+                       Navigation.findNavController(view).navigate(R.id.menuOpcionesCategoriaFragment,bundle);
+
+                   }
+                   6->{
+                       bundle.putInt("tipo",6);
+                       Navigation.findNavController(view).navigate(R.id.menuOpcionesCategoriaFragment,bundle);
+
+                   }
+                   7->{
+                       bundle.putInt("tipo",7);
+                       Navigation.findNavController(view).navigate(R.id.menuOpcionesCategoriaFragment,bundle);
+
+                   }
+               }
 
             }
         }
