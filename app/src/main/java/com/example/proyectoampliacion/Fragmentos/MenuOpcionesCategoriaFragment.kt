@@ -7,9 +7,11 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.GridLayout
 import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
 import androidx.cardview.widget.CardView
 import androidx.navigation.Navigation
 import com.example.proyectoampliacion.R
+import kotlinx.android.synthetic.main.fragment_menu_principal.*
 
 class MenuOpcionesCategoriaFragment : Fragment() {
 
@@ -31,8 +33,45 @@ class MenuOpcionesCategoriaFragment : Fragment() {
         var menu = view.findViewById<GridLayout>(R.id.menuSubGrid);
 
         arguments?.let {
+            val tipoMenu = it?.getInt("tipo")
 
-            setSingleEvent(menu,view,it?.getInt("tipo"))
+            when(tipoMenu){
+
+                0->{
+                    titulo.text = "Menú Albaranes"
+                    (activity as AppCompatActivity?)!!.supportActionBar!!.title = "Menú Albaranes"
+                }
+                1->{
+                    titulo.text = "Menú Almacén"
+                    (activity as AppCompatActivity?)!!.supportActionBar!!.title = "Menú Almacén"
+                }
+                2->{
+                    titulo.text = "Menú Clientes"
+                    (activity as AppCompatActivity?)!!.supportActionBar!!.title = "Menú Clientes"
+                }
+                3->{
+                    titulo.text = "Menú Delegación"
+                    (activity as AppCompatActivity?)!!.supportActionBar!!.title = "Menú Delegación"
+                }
+                4->{
+                    titulo.text = "Menú Empleados"
+                    (activity as AppCompatActivity?)!!.supportActionBar!!.title = "Menú Empleados"
+                }
+                5->{
+                    titulo.text = "Menú Facturas"
+                    (activity as AppCompatActivity?)!!.supportActionBar!!.title = "Menú Facturas"
+                }
+                6->{
+                    titulo.text = "Menú Partes"
+                    (activity as AppCompatActivity?)!!.supportActionBar!!.title = "Menú Partes"
+                }
+                7->{
+                    titulo.text = "Menú Presupuestos"
+                    (activity as AppCompatActivity?)!!.supportActionBar!!.title = "Menú Presupuestos"
+                }
+            }
+
+            setSingleEvent(menu,view,tipoMenu)
         }
 
 
