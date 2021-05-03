@@ -4,6 +4,7 @@ import android.app.ActionBar
 import android.graphics.Color
 import android.graphics.drawable.GradientDrawable
 import android.os.Bundle
+import android.text.InputType
 import android.text.style.BackgroundColorSpan
 import android.view.Gravity
 import androidx.fragment.app.Fragment
@@ -11,6 +12,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.*
+import androidx.constraintlayout.helper.widget.Layer
 import androidx.core.view.isVisible
 import com.example.proyectoampliacion.R
 import kotlinx.android.synthetic.main.fragment_altas.*
@@ -48,6 +50,7 @@ class AltasFragment : Fragment() {
                 }
                 2->{
                     tvTitulo.setText("Altas Clientes")
+                    construirFormClientes();
                 }
                 3->{
                     tvTitulo.setText("Altas Delegación")
@@ -68,7 +71,7 @@ class AltasFragment : Fragment() {
 
         }
 
-        construirFormClientes();
+
 
     }
 
@@ -81,10 +84,10 @@ class AltasFragment : Fragment() {
         val txtDni:EditText = EditText(this.context);
         val txtEmail:EditText = EditText(this.context);
         val txtTelefono:EditText = EditText(this.context);
-        val txtNacimiento:DatePicker = DatePicker(this.context);
+        val txtNacimiento:EditText = EditText(this.context);
         val txtDireccion:EditText = EditText(this.context);
         val txtProvincia:EditText = EditText(this.context);
-        val txtEstado:CheckBox= CheckBox(this.context);
+        val cbEstado:CheckBox= CheckBox(this.context);
         val btnCancelar:Button = Button(this.context);
         val btnGuardar:Button = Button(this.context);
         val btnLimpiar:Button = Button(this.context);
@@ -114,7 +117,7 @@ class AltasFragment : Fragment() {
         val contenedorBotones:LinearLayout = LinearLayout(this.context);
         contenedorBotones.orientation = LinearLayout.HORIZONTAL;
 
-
+        cbEstado.text = "Alta";
 
         contenedorNombre.setLayoutParams(ActionBar.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,ViewGroup.LayoutParams.MATCH_PARENT));
         contenedorNombre.orientation = LinearLayout.HORIZONTAL;
@@ -134,8 +137,8 @@ class AltasFragment : Fragment() {
         contenedorTelefono.orientation = LinearLayout.HORIZONTAL;
         contenedorcPostal.setLayoutParams(ActionBar.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,ViewGroup.LayoutParams.MATCH_PARENT));
         contenedorcPostal.orientation = LinearLayout.HORIZONTAL;
-
-
+        contenedorEstado.setLayoutParams(ActionBar.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,ViewGroup.LayoutParams.MATCH_PARENT));
+        contenedorEstado.orientation = LinearLayout.HORIZONTAL;
 
         txtNombre.hint = "Introduzca Nombre";
         txtApellidos.hint = "Introduzca Apellidos";
@@ -146,26 +149,52 @@ class AltasFragment : Fragment() {
         txtEmail.hint = "Introduzca  Email"
         txtTelefono.hint = "Introduzca Teléfono";
         txtDni.hint = "Introduzca D.N.I";
+        txtNacimiento.hint = "Introduza Fecha de Nacimiento";
 
-        txtNombre.width= 800;
+
+        txtNombre.width = 800;
+        txtNombre.maxLines = 1;
         txtNombre.setLayoutParams(ActionBar.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT,ViewGroup.LayoutParams.WRAP_CONTENT));
         txtApellidos.width= 800;
+        txtApellidos.maxLines = 1
         txtApellidos.setLayoutParams(ActionBar.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT,ViewGroup.LayoutParams.WRAP_CONTENT));
         txtCiudad.width= 800;
+        txtCiudad.maxLines = 1
         txtCiudad.setLayoutParams(ActionBar.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT,ViewGroup.LayoutParams.WRAP_CONTENT));
         txtDireccion.width= 800;
+        txtDireccion.maxLines = 1
         txtDireccion.setLayoutParams(ActionBar.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT,ViewGroup.LayoutParams.WRAP_CONTENT));
         txtEmail.width= 800;
+        txtEmail.maxLines = 1
         txtEmail.setLayoutParams(ActionBar.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT,ViewGroup.LayoutParams.WRAP_CONTENT));
         txtProvincia.width= 800;
         txtProvincia.setLayoutParams(ActionBar.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT,ViewGroup.LayoutParams.WRAP_CONTENT));
         txtcPostal.width= 800;
+        txtcPostal.maxLines = 1
+        txtcPostal.inputType = InputType.TYPE_CLASS_NUMBER;
         txtcPostal.setLayoutParams(ActionBar.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT,ViewGroup.LayoutParams.WRAP_CONTENT));
         txtTelefono.width= 800
+        txtTelefono.maxLines = 1
+        txtTelefono.inputType = InputType.TYPE_CLASS_PHONE
         txtTelefono.setLayoutParams(ActionBar.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT,ViewGroup.LayoutParams.WRAP_CONTENT));
         txtDni.width= 800;
         txtDni.setLayoutParams(ActionBar.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT,ViewGroup.LayoutParams.WRAP_CONTENT));
+        txtNacimiento.width= 800;
+        txtNacimiento.maxLines = 1
+        txtNacimiento.setLayoutParams(ActionBar.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT,ViewGroup.LayoutParams.WRAP_CONTENT));
+        txtNacimiento.inputType = InputType.TYPE_CLASS_DATETIME;
 
+        btnCancelar.text = "Cancelar"
+        btnGuardar.text = "Guardar"
+        btnLimpiar.text = "Limpiar"
+
+        contenedorBotones.gravity = Gravity.CENTER
+        contenedorBotones.addView(btnGuardar);
+        contenedorBotones.addView(btnCancelar);
+        contenedorBotones.addView(btnLimpiar)
+
+        contenedorEstado.gravity= Gravity.CENTER;
+        contenedorEstado.addView(cbEstado);
         contenedorNombre.gravity= Gravity.CENTER;
         contenedorNombre.addView(txtNombre);
         contenedorApellidos.gravity= Gravity.CENTER;
@@ -184,6 +213,8 @@ class AltasFragment : Fragment() {
         contenedorcPostal.addView(txtcPostal);
         contenedorTelefono.gravity= Gravity.CENTER;
         contenedorTelefono.addView(txtTelefono);
+        contenedorNacimiento.gravity= Gravity.CENTER;
+        contenedorNacimiento.addView(txtNacimiento);
 
         contenedor.addView(contenedorNombre);
         contenedor.addView(contenedorApellidos);
@@ -194,5 +225,9 @@ class AltasFragment : Fragment() {
         contenedor.addView(contenedorTelefono);
         contenedor.addView(contenedorcPostal);
         contenedor.addView(contenedorDni);
+        contenedor.addView(contenedorNacimiento);
+        contenedor.addView(contenedorEstado);
+        contenedor.addView(contenedorBotones);
+
     }
 }
