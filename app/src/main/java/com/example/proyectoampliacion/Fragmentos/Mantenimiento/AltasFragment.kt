@@ -12,6 +12,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.*
+import androidx.appcompat.app.AppCompatActivity
 import androidx.constraintlayout.helper.widget.Layer
 import androidx.core.view.isVisible
 import com.example.proyectoampliacion.R
@@ -44,32 +45,40 @@ class AltasFragment : Fragment() {
 
                 0->{
                     tvTitulo.setText("Altas Albaranes")
+                    (activity as AppCompatActivity?)!!.supportActionBar!!.title = "Altas Albaranes"
                 }
                 1->{
                     tvTitulo.setText("Altas Almacén")
+                    (activity as AppCompatActivity?)!!.supportActionBar!!.title = "Altas Almacén"
                 }
                 2->{
                     tvTitulo.setText("Altas Clientes")
+                    (activity as AppCompatActivity?)!!.supportActionBar!!.title = "Altas Clientes"
                     construirFormClientes();
                 }
                 3->{
                     tvTitulo.setText("Altas Delegación")
+                    (activity as AppCompatActivity?)!!.supportActionBar!!.title = "Altas Delegación"
                     construirFormDelegacion();
                 }
                 4->{
                     tvTitulo.setText("Altas Empleados")
+                    (activity as AppCompatActivity?)!!.supportActionBar!!.title = "Altas Empleados"
                     construirFormEmpleados();
                 }
                 5->{
                     tvTitulo.setText("Altas Facturas")
+                    (activity as AppCompatActivity?)!!.supportActionBar!!.title = "Altas Facturas"
                     cosntruirFormFactura();
                 }
                 6->{
                     tvTitulo.setText("Altas Partes");
+                    (activity as AppCompatActivity?)!!.supportActionBar!!.title = "Altas Partes"
                     construirFormParte();
                 }
                 7->{
                     tvTitulo.setText("Altas Presupuestos");
+                    (activity as AppCompatActivity?)!!.supportActionBar!!.title = "Altas Presupuestos"
                 }
             }
 
