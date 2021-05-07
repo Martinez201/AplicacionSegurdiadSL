@@ -61,6 +61,7 @@ class AltasFragment : Fragment() {
                 }
                 5->{
                     tvTitulo.setText("Altas Facturas")
+                    cosntruirFormFactura();
                 }
                 6->{
                     tvTitulo.setText("Altas Partes")
@@ -134,7 +135,19 @@ class AltasFragment : Fragment() {
         contenedorBotones.addView(btnGuardar);
         contenedorBotones.addView(btnCancelar);
         contenedorBotones.addView(btnLimpiar)
+        contenedorFecha.gravity= Gravity.CENTER;
+        contenedorFecha.addView(txtFecha);
+        contenedorPrecio.gravity= Gravity.CENTER;
+        contenedorPrecio.addView(txtPrecioSinIva);
+        contenedorConcepto.gravity= Gravity.CENTER;
+        contenedorConcepto.addView(txtConcepto);
+        contenedorSpCliente.gravity= Gravity.CENTER;
+        contenedorSpCliente.addView(slCliente);
 
+        contenedor.addView(contenedorSpCliente);
+        contenedor.addView(contenedorFecha);
+        contenedor.addView(contenedorConcepto);
+        contenedor.addView(contenedorBotones);
 
     }
 
