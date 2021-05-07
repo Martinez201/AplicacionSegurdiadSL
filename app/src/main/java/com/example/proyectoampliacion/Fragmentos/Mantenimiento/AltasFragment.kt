@@ -64,10 +64,11 @@ class AltasFragment : Fragment() {
                     cosntruirFormFactura();
                 }
                 6->{
-                    tvTitulo.setText("Altas Partes")
+                    tvTitulo.setText("Altas Partes");
+                    construirFormParte();
                 }
                 7->{
-                    tvTitulo.setText("Altas Presupuestos")
+                    tvTitulo.setText("Altas Presupuestos");
                 }
             }
 
@@ -75,6 +76,95 @@ class AltasFragment : Fragment() {
 
 
 
+    }
+
+    fun construirFormParte(){
+
+        val slCliente:Spinner = Spinner(this.context);
+        val txtFecha:EditText = EditText(this.context);
+        val txtDetalles:EditText = EditText(this.context);
+        val txtObservaciones:EditText = EditText(this.context);
+        val slTipo:Spinner = Spinner(this.context);
+        val slEstado:Spinner = Spinner(this.context);
+        val btnCancelar:Button = Button(this.context);
+        val btnGuardar:Button = Button(this.context);
+        val btnLimpiar:Button = Button(this.context);
+
+        val contenedorSpTipo:LinearLayout = LinearLayout(this.context);
+        contenedorSpTipo.orientation = LinearLayout.HORIZONTAL;
+        val contenedorFecha:LinearLayout = LinearLayout(this.context);
+        contenedorFecha.orientation = LinearLayout.HORIZONTAL;
+        val contenedorSpEstado:LinearLayout = LinearLayout(this.context);
+        contenedorSpEstado.orientation = LinearLayout.HORIZONTAL;
+        val contenedorSpCliente:LinearLayout = LinearLayout(this.context);
+        contenedorSpCliente.orientation = LinearLayout.HORIZONTAL;
+        val contenedorDetalles:LinearLayout = LinearLayout(this.context);
+        contenedorDetalles.orientation = LinearLayout.HORIZONTAL;
+        val contenedorObservaciones:LinearLayout = LinearLayout(this.context);
+        contenedorObservaciones.orientation = LinearLayout.HORIZONTAL;
+        val contenedorBotones:LinearLayout = LinearLayout(this.context);
+        contenedorBotones.orientation = LinearLayout.HORIZONTAL;
+
+
+        contenedorSpCliente.setLayoutParams(ActionBar.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,ViewGroup.LayoutParams.MATCH_PARENT));
+        contenedorSpCliente.orientation = LinearLayout.HORIZONTAL;
+        contenedorSpTipo.setLayoutParams(ActionBar.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,ViewGroup.LayoutParams.MATCH_PARENT));
+        contenedorSpTipo.orientation = LinearLayout.HORIZONTAL;
+        contenedorFecha.setLayoutParams(ActionBar.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,ViewGroup.LayoutParams.MATCH_PARENT));
+        contenedorFecha.orientation = LinearLayout.HORIZONTAL;
+        contenedorDetalles.setLayoutParams(ActionBar.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,ViewGroup.LayoutParams.MATCH_PARENT));
+        contenedorDetalles.orientation = LinearLayout.HORIZONTAL;
+        contenedorObservaciones.setLayoutParams(ActionBar.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,ViewGroup.LayoutParams.MATCH_PARENT));
+        contenedorObservaciones.orientation = LinearLayout.HORIZONTAL;
+        contenedorBotones.setLayoutParams(ActionBar.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,ViewGroup.LayoutParams.MATCH_PARENT));
+        contenedorBotones.orientation = LinearLayout.HORIZONTAL;
+        contenedorSpEstado.setLayoutParams(ActionBar.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,ViewGroup.LayoutParams.MATCH_PARENT));
+        contenedorSpEstado.orientation = LinearLayout.HORIZONTAL;
+
+        txtFecha.hint = "Introduzca Fecha";
+        txtDetalles.hint = "Introduzca los Detalles";
+        txtObservaciones.hint = "Introduzca Observaciones";
+
+        txtFecha.width = 800;
+        txtFecha.maxLines = 1;
+        txtFecha.inputType = InputType.TYPE_CLASS_DATETIME
+        txtFecha.setLayoutParams(ActionBar.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT,ViewGroup.LayoutParams.WRAP_CONTENT));
+        txtDetalles.width = 800;
+        txtDetalles.maxLines = 6;
+        txtDetalles.setLayoutParams(ActionBar.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT,ViewGroup.LayoutParams.WRAP_CONTENT));
+        txtObservaciones.width = 800;
+        txtObservaciones.maxLines = 6;
+        txtObservaciones.setLayoutParams(ActionBar.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT,ViewGroup.LayoutParams.WRAP_CONTENT));
+
+        btnCancelar.text = "Cancelar";
+        btnGuardar.text = "Guardar";
+        btnLimpiar.text = "Limpiar";
+
+
+        contenedorBotones.gravity = Gravity.CENTER;
+        contenedorBotones.addView(btnGuardar);
+        contenedorBotones.addView(btnCancelar);
+        contenedorBotones.addView(btnLimpiar)
+        contenedorFecha.gravity= Gravity.CENTER;
+        contenedorFecha.addView(txtFecha);
+        contenedorSpCliente.gravity= Gravity.CENTER;
+        contenedorSpCliente.addView(slCliente);
+        contenedorSpEstado.gravity= Gravity.CENTER;
+        contenedorSpEstado.addView(slEstado);
+        contenedorSpTipo.gravity= Gravity.CENTER;
+        contenedorSpTipo.addView(slTipo);
+        contenedorDetalles.gravity= Gravity.CENTER;
+        contenedorDetalles.addView(txtDetalles);
+        contenedorObservaciones.gravity= Gravity.CENTER;
+        contenedorObservaciones.addView(txtObservaciones);
+
+        contenedor.addView(contenedorSpCliente);
+        contenedor.addView(contenedorDetalles);
+        contenedor.addView(contenedorSpTipo);
+        contenedor.addView(contenedorObservaciones);
+        contenedor.addView(contenedorFecha);
+        contenedor.addView(contenedorSpEstado);
+        contenedor.addView(contenedorBotones);
     }
 
     fun cosntruirFormFactura(){
