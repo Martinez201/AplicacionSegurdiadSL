@@ -146,6 +146,7 @@ class AltasFragment : Fragment() {
 
         contenedor.addView(contenedorSpCliente);
         contenedor.addView(contenedorFecha);
+        contenedor.addView(contenedorPrecio);
         contenedor.addView(contenedorConcepto);
         contenedor.addView(contenedorBotones);
 
