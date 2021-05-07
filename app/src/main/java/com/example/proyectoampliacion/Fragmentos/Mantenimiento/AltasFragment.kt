@@ -291,7 +291,7 @@ class AltasFragment : Fragment() {
         contenedorSlDelegacion.gravity= Gravity.CENTER;
         contenedorSlDelegacion.addView(slDelegacion);
         contenedorPassword.gravity= Gravity.CENTER;
-        contenedorNombre.addView(txtPassword);
+        contenedorPassword.addView(txtPassword);
         contenedorRol.gravity= Gravity.CENTER;
         contenedorRol.addView(cbAdministrador);
         contenedorRol.addView(cbGestor);
@@ -318,9 +318,8 @@ class AltasFragment : Fragment() {
         contenedorNacimiento.addView(txtNacimiento);
 
 
-        contenedor.addView(txtUsuario);
-        contenedor.addView(txtPassword);
-        contenedor.addView(slDelegacion);
+        contenedor.addView(contenedorUsuario);
+        contenedor.addView(contenedorPassword);
         contenedor.addView(contenedorNombre);
         contenedor.addView(contenedorApellidos);
         contenedor.addView(contenedorDireccion);
@@ -332,6 +331,7 @@ class AltasFragment : Fragment() {
         contenedor.addView(contenedorDni);
         contenedor.addView(contenedorNacimiento);
         contenedor.addView(contenedorRol);
+        contenedor.addView(contenedorSlDelegacion);
         contenedor.addView(contenedorBotones);
     }
 
