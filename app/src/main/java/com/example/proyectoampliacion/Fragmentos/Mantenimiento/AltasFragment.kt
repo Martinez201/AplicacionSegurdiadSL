@@ -54,6 +54,7 @@ class AltasFragment : Fragment() {
                 }
                 3->{
                     tvTitulo.setText("Altas Delegación")
+                    construirFormDelegacion();
                 }
                 4->{
                     tvTitulo.setText("Altas Empleados")
@@ -75,6 +76,124 @@ class AltasFragment : Fragment() {
         }
 
 
+
+    }
+    /// Cambiar el titulo al fragmento dependiendo de donde este
+    fun construirFormDelegacion(){
+
+        val txtIdentificacion:EditText = EditText(this.context);
+        val txtDireccion:EditText = EditText(this.context);
+        val txtProvincia:EditText = EditText(this.context);
+        val txtCiudad:EditText = EditText(this.context);
+        val txtcPostal:EditText = EditText(this.context);
+        val txtEmail:EditText = EditText(this.context);
+        val txtTelefono:EditText = EditText(this.context);
+        val btnCancelar:Button = Button(this.context);
+        val btnGuardar:Button = Button(this.context);
+        val btnLimpiar:Button = Button(this.context);
+
+
+        val contenedorIdentificacion:LinearLayout = LinearLayout(this.context);
+        contenedorIdentificacion.orientation = LinearLayout.HORIZONTAL;
+        val contenedorDireccion:LinearLayout = LinearLayout(this.context);
+        contenedorDireccion.orientation = LinearLayout.HORIZONTAL;
+        val contenedorProvincia:LinearLayout = LinearLayout(this.context);
+        contenedorProvincia.orientation = LinearLayout.HORIZONTAL;
+        val contenedorCiudad:LinearLayout = LinearLayout(this.context);
+        contenedorCiudad.orientation = LinearLayout.HORIZONTAL;
+        val contenedorcPostal:LinearLayout = LinearLayout(this.context);
+        contenedorcPostal.orientation = LinearLayout.HORIZONTAL;
+        val contenedorEmail:LinearLayout = LinearLayout(this.context);
+        contenedorEmail.orientation = LinearLayout.HORIZONTAL;
+        val contenedorTelefono:LinearLayout = LinearLayout(this.context);
+        contenedorTelefono.orientation = LinearLayout.HORIZONTAL;
+        val contenedorBotones:LinearLayout = LinearLayout(this.context);
+        contenedorBotones.orientation = LinearLayout.HORIZONTAL;
+
+        contenedorIdentificacion.setLayoutParams(ActionBar.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,ViewGroup.LayoutParams.MATCH_PARENT));
+        contenedorIdentificacion.orientation = LinearLayout.HORIZONTAL;
+        contenedorDireccion.setLayoutParams(ActionBar.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,ViewGroup.LayoutParams.MATCH_PARENT));
+        contenedorDireccion.orientation = LinearLayout.HORIZONTAL;
+        contenedorProvincia.setLayoutParams(ActionBar.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,ViewGroup.LayoutParams.MATCH_PARENT));
+        contenedorProvincia.orientation = LinearLayout.HORIZONTAL;
+        contenedorCiudad.setLayoutParams(ActionBar.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,ViewGroup.LayoutParams.MATCH_PARENT));
+        contenedorCiudad.orientation = LinearLayout.HORIZONTAL;
+        contenedorcPostal.setLayoutParams(ActionBar.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,ViewGroup.LayoutParams.MATCH_PARENT));
+        contenedorcPostal.orientation = LinearLayout.HORIZONTAL;
+        contenedorBotones.setLayoutParams(ActionBar.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,ViewGroup.LayoutParams.MATCH_PARENT));
+        contenedorBotones.orientation = LinearLayout.HORIZONTAL;
+        contenedorEmail.setLayoutParams(ActionBar.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,ViewGroup.LayoutParams.MATCH_PARENT));
+        contenedorEmail.orientation = LinearLayout.HORIZONTAL;
+        contenedorTelefono.setLayoutParams(ActionBar.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,ViewGroup.LayoutParams.MATCH_PARENT));
+        contenedorTelefono.orientation = LinearLayout.HORIZONTAL;
+
+
+        txtCiudad.hint = "Introduzca Ciudad";
+        txtDireccion.hint = "Introduzca la Dirección";
+        txtEmail.hint = "Introduzca Email";
+        txtProvincia.hint = "Introduzca la Provincia";
+        txtTelefono.hint = "Introduzca el Teléfono";
+        txtcPostal.hint = "Introduzca el Codigo Postal";
+        txtIdentificacion.hint = "Introduzca Identificación";
+
+        txtCiudad.width = 800;
+        txtCiudad.maxLines = 1;
+        txtCiudad.setLayoutParams(ActionBar.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT,ViewGroup.LayoutParams.WRAP_CONTENT));
+        txtDireccion.width = 800;
+        txtDireccion.maxLines = 1;
+        txtDireccion.setLayoutParams(ActionBar.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT,ViewGroup.LayoutParams.WRAP_CONTENT));
+        txtEmail.width = 800;
+        txtEmail.maxLines = 1;
+        txtEmail.setLayoutParams(ActionBar.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT,ViewGroup.LayoutParams.WRAP_CONTENT));
+        txtEmail.inputType = InputType.TYPE_TEXT_VARIATION_EMAIL_ADDRESS
+        txtTelefono.width = 800;
+        txtTelefono.maxLines = 1;
+        txtTelefono.setLayoutParams(ActionBar.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT,ViewGroup.LayoutParams.WRAP_CONTENT));
+        txtTelefono.inputType = InputType.TYPE_CLASS_PHONE
+        txtcPostal.width = 800;
+        txtcPostal.maxLines = 1;
+        txtcPostal.setLayoutParams(ActionBar.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT,ViewGroup.LayoutParams.WRAP_CONTENT));
+        txtcPostal.inputType = InputType.TYPE_TEXT_VARIATION_POSTAL_ADDRESS
+        txtIdentificacion.width = 800;
+        txtIdentificacion.maxLines = 1;
+        txtIdentificacion.setLayoutParams(ActionBar.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT,ViewGroup.LayoutParams.WRAP_CONTENT));
+        txtProvincia.width = 800;
+        txtProvincia.maxLines = 1;
+        txtProvincia.setLayoutParams(ActionBar.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT,ViewGroup.LayoutParams.WRAP_CONTENT));
+
+
+        btnCancelar.text = "Cancelar";
+        btnGuardar.text = "Guardar";
+        btnLimpiar.text = "Limpiar";
+
+        contenedorBotones.gravity = Gravity.CENTER;
+        contenedorBotones.addView(btnGuardar);
+        contenedorBotones.addView(btnCancelar);
+        contenedorBotones.addView(btnLimpiar)
+        contenedorIdentificacion.gravity= Gravity.CENTER;
+        contenedorIdentificacion.addView(txtIdentificacion);
+        contenedorDireccion.gravity= Gravity.CENTER;
+        contenedorDireccion.addView(txtDireccion);
+        contenedorProvincia.gravity= Gravity.CENTER;
+        contenedorProvincia.addView(txtProvincia);
+        contenedorCiudad.gravity= Gravity.CENTER;
+        contenedorCiudad.addView(txtCiudad);
+        contenedorcPostal.gravity= Gravity.CENTER;
+        contenedorcPostal.addView(txtcPostal);
+        contenedorEmail.gravity= Gravity.CENTER;
+        contenedorEmail.addView(txtEmail);
+        contenedorTelefono.gravity= Gravity.CENTER;
+        contenedorTelefono.addView(txtTelefono);
+
+
+        contenedor.addView(contenedorIdentificacion);
+        contenedor.addView(contenedorDireccion);
+        contenedor.addView(contenedorCiudad);
+        contenedor.addView(contenedorProvincia);
+        contenedor.addView(contenedorcPostal);
+        contenedor.addView(contenedorTelefono);
+        contenedor.addView(contenedorEmail);
+        contenedor.addView(contenedorBotones);
 
     }
 
