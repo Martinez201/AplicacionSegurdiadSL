@@ -76,6 +76,68 @@ class AltasFragment : Fragment() {
 
     }
 
+    fun cosntruirFormFactura(){
+
+        val slCliente:Spinner = Spinner(this.context);
+        val txtFecha:EditText = EditText(this.context);
+        val txtPrecioSinIva:EditText = EditText(this.context);
+        val txtConcepto:EditText = EditText(this.context);
+        val btnCancelar:Button = Button(this.context);
+        val btnGuardar:Button = Button(this.context);
+        val btnLimpiar:Button = Button(this.context);
+
+        val contenedorSpCliente:LinearLayout = LinearLayout(this.context);
+        contenedorSpCliente.orientation = LinearLayout.HORIZONTAL;
+        val contenedorFecha:LinearLayout = LinearLayout(this.context);
+        contenedorFecha.orientation = LinearLayout.HORIZONTAL;
+        val contenedorPrecio:LinearLayout = LinearLayout(this.context);
+        contenedorPrecio.orientation = LinearLayout.HORIZONTAL;
+        val contenedorConcepto:LinearLayout = LinearLayout(this.context);
+        contenedorConcepto.orientation = LinearLayout.HORIZONTAL;
+        val contenedorBotones:LinearLayout = LinearLayout(this.context);
+        contenedorBotones.orientation = LinearLayout.HORIZONTAL;
+
+
+
+        contenedorSpCliente.setLayoutParams(ActionBar.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,ViewGroup.LayoutParams.MATCH_PARENT));
+        contenedorSpCliente.orientation = LinearLayout.HORIZONTAL;
+        contenedorFecha.setLayoutParams(ActionBar.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,ViewGroup.LayoutParams.MATCH_PARENT));
+        contenedorFecha.orientation = LinearLayout.HORIZONTAL;
+        contenedorPrecio.setLayoutParams(ActionBar.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,ViewGroup.LayoutParams.MATCH_PARENT));
+        contenedorPrecio.orientation = LinearLayout.HORIZONTAL;
+        contenedorConcepto.setLayoutParams(ActionBar.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,ViewGroup.LayoutParams.MATCH_PARENT));
+        contenedorConcepto.orientation = LinearLayout.HORIZONTAL;
+
+        txtFecha.hint = "Introduzca Fecha"
+        txtPrecioSinIva.hint = "Introduzca Precio sin IVA"
+        txtConcepto.hint = "Introduzca Concepto";
+
+
+        txtFecha.width = 800;
+        txtFecha.maxLines = 1;
+        txtFecha.inputType = InputType.TYPE_CLASS_DATETIME
+        txtFecha.setLayoutParams(ActionBar.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT,ViewGroup.LayoutParams.WRAP_CONTENT));
+        txtPrecioSinIva.width = 800;
+        txtPrecioSinIva.maxLines = 1;
+        txtPrecioSinIva.inputType = InputType.TYPE_CLASS_NUMBER
+        txtPrecioSinIva.setLayoutParams(ActionBar.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT,ViewGroup.LayoutParams.WRAP_CONTENT));
+        txtConcepto.width = 800;
+        txtConcepto.maxLines = 1;
+        txtConcepto.setLayoutParams(ActionBar.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT,ViewGroup.LayoutParams.WRAP_CONTENT));
+
+        btnCancelar.text = "Cancelar"
+        btnGuardar.text = "Guardar"
+        btnLimpiar.text = "Limpiar"
+
+
+        contenedorBotones.gravity = Gravity.CENTER
+        contenedorBotones.addView(btnGuardar);
+        contenedorBotones.addView(btnCancelar);
+        contenedorBotones.addView(btnLimpiar)
+
+
+    }
+
     fun construirFormEmpleados(){
 
         val txtUsuario:EditText = EditText(this.context);
