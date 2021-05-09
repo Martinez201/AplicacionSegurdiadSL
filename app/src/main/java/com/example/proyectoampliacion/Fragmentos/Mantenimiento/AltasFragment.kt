@@ -46,6 +46,7 @@ class AltasFragment : Fragment() {
                 0->{
                     tvTitulo.setText("Altas Albaranes");
                     (activity as AppCompatActivity?)!!.supportActionBar!!.title = "Altas Albaranes";
+                    construirFormAlbarán();
                 }
                 1->{
                     tvTitulo.setText("Altas Almacén");
@@ -87,6 +88,58 @@ class AltasFragment : Fragment() {
 
 
 
+    }
+
+    fun construirFormAlbarán(){
+
+        val txtFecha:EditText = EditText(this.context);
+        val txtProveedor:EditText = EditText(this.context);
+        val btnCancelar:Button = Button(this.context);
+        val btnGuardar:Button = Button(this.context);
+        val btnLimpiar:Button = Button(this.context);
+
+
+        val contenedorFecha:LinearLayout = LinearLayout(this.context);
+        contenedorFecha.orientation = LinearLayout.HORIZONTAL;
+        val contenedorProveedor:LinearLayout = LinearLayout(this.context);
+        contenedorProveedor.orientation = LinearLayout.HORIZONTAL;
+
+
+        contenedorFecha.setLayoutParams(ActionBar.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,ViewGroup.LayoutParams.MATCH_PARENT));
+        contenedorFecha.orientation = LinearLayout.HORIZONTAL;
+        contenedorProveedor.setLayoutParams(ActionBar.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,ViewGroup.LayoutParams.MATCH_PARENT));
+        contenedorProveedor.orientation = LinearLayout.HORIZONTAL;
+        val contenedorBotones:LinearLayout = LinearLayout(this.context);
+        contenedorBotones.orientation = LinearLayout.HORIZONTAL;
+
+        txtFecha.hint = "Introduzca Fecha";
+        txtProveedor.hint = "Introduzca Proveedor";
+
+        txtFecha.width = 800;
+        txtFecha.maxLines = 1;
+        txtFecha.setLayoutParams(ActionBar.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT,ViewGroup.LayoutParams.WRAP_CONTENT));
+        txtProveedor.width = 800;
+        txtProveedor.maxLines = 1;
+        txtProveedor.setLayoutParams(ActionBar.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT,ViewGroup.LayoutParams.WRAP_CONTENT));
+
+        btnCancelar.text = "Cancelar";
+        btnGuardar.text = "Guardar";
+        btnLimpiar.text = "Limpiar";
+
+
+        contenedorBotones.gravity = Gravity.CENTER;
+        contenedorBotones.addView(btnGuardar);
+        contenedorBotones.addView(btnCancelar);
+        contenedorBotones.addView(btnLimpiar)
+        contenedorFecha.gravity= Gravity.CENTER;
+        contenedorFecha.addView(txtFecha);
+        contenedorProveedor.gravity= Gravity.CENTER;
+        contenedorProveedor.addView(txtProveedor);
+
+
+        contenedor.addView(contenedorFecha);
+        contenedor.addView(contenedorProveedor);
+        contenedor.addView(contenedorBotones)
     }
 
     fun construirFormAlmacen(){
