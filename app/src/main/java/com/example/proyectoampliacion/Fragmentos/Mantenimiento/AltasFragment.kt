@@ -1,11 +1,9 @@
 package com.example.proyectoampliacion.Fragmentos.Mantenimiento
 
 import android.app.ActionBar
-import android.graphics.Color
-import android.graphics.drawable.GradientDrawable
 import android.os.Bundle
+import android.service.controls.Control
 import android.text.InputType
-import android.text.style.BackgroundColorSpan
 import android.view.Gravity
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -13,11 +11,9 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
-import androidx.constraintlayout.helper.widget.Layer
 import androidx.core.view.isVisible
 import com.example.proyectoampliacion.R
 import kotlinx.android.synthetic.main.fragment_altas.*
-import java.util.*
 
 
 class AltasFragment : Fragment() {
@@ -46,7 +42,7 @@ class AltasFragment : Fragment() {
                 0->{
                     tvTitulo.setText("Altas Albaranes");
                     (activity as AppCompatActivity?)!!.supportActionBar!!.title = "Altas Albaranes";
-                    construirFormAlbarán();
+                    construirFormAlbarán(view);
                 }
                 1->{
                     tvTitulo.setText("Altas Almacén");
@@ -90,7 +86,33 @@ class AltasFragment : Fragment() {
 
     }
 
-    fun construirFormAlbarán(){
+    class ControlDinamico( cod:Int , nombre:String) {
+        var cod: Int
+        var nombre: String
+
+        init {
+            this.nombre = nombre
+            this.cod = cod
+        }
+    }
+
+    fun enviarDatosServidor(){
+
+        val progreso:ProgressBar = ProgressBar(this.context)
+        progreso.isVisible = false
+
+        val contenedorDialog:LinearLayout = LinearLayout(this.context);
+
+        contenedorDialog.setLayoutParams(ActionBar.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,ViewGroup.LayoutParams.MATCH_PARENT));
+        contenedorDialog.orientation = LinearLayout.HORIZONTAL;
+
+        contenedorDialog.gravity= Gravity.CENTER;
+        contenedor.addView(contenedorDialog);
+
+    }
+
+
+    fun construirFormAlbarán( view: View){
 
         val txtFecha:EditText = EditText(this.context);
         val txtProveedor:EditText = EditText(this.context);
@@ -98,19 +120,23 @@ class AltasFragment : Fragment() {
         val btnGuardar:Button = Button(this.context);
         val btnLimpiar:Button = Button(this.context);
 
+        var controlDin:ControlDinamico = ControlDinamico(1,"Limpiar")
+
+        btnLimpiar.id = controlDin.cod;
+        btnLimpiar.text =  controlDin.nombre;
 
         val contenedorFecha:LinearLayout = LinearLayout(this.context);
         contenedorFecha.orientation = LinearLayout.HORIZONTAL;
         val contenedorProveedor:LinearLayout = LinearLayout(this.context);
         contenedorProveedor.orientation = LinearLayout.HORIZONTAL;
-
+        val contenedorBotones:LinearLayout = LinearLayout(this.context);
+        contenedorBotones.orientation = LinearLayout.HORIZONTAL;
 
         contenedorFecha.setLayoutParams(ActionBar.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,ViewGroup.LayoutParams.MATCH_PARENT));
         contenedorFecha.orientation = LinearLayout.HORIZONTAL;
         contenedorProveedor.setLayoutParams(ActionBar.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,ViewGroup.LayoutParams.MATCH_PARENT));
         contenedorProveedor.orientation = LinearLayout.HORIZONTAL;
-        val contenedorBotones:LinearLayout = LinearLayout(this.context);
-        contenedorBotones.orientation = LinearLayout.HORIZONTAL;
+
 
         txtFecha.hint = "Introduzca Fecha";
         txtProveedor.hint = "Introduzca Proveedor";
@@ -137,9 +163,20 @@ class AltasFragment : Fragment() {
         contenedorProveedor.addView(txtProveedor);
 
 
+
+
+
         contenedor.addView(contenedorFecha);
         contenedor.addView(contenedorProveedor);
         contenedor.addView(contenedorBotones)
+
+        val boton:Button = view?.findViewById(controlDin.cod)
+
+        boton.setOnClickListener {
+
+            Toast.makeText(this.context,"HOLA",Toast.LENGTH_SHORT).show();
+
+        }
     }
 
     fun construirFormAlmacen(){
