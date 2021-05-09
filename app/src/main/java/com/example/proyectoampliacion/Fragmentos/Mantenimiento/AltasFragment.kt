@@ -44,41 +44,42 @@ class AltasFragment : Fragment() {
             when(it.getInt("tipo")){
 
                 0->{
-                    tvTitulo.setText("Altas Albaranes")
-                    (activity as AppCompatActivity?)!!.supportActionBar!!.title = "Altas Albaranes"
+                    tvTitulo.setText("Altas Albaranes");
+                    (activity as AppCompatActivity?)!!.supportActionBar!!.title = "Altas Albaranes";
                 }
                 1->{
-                    tvTitulo.setText("Altas Almacén")
-                    (activity as AppCompatActivity?)!!.supportActionBar!!.title = "Altas Almacén"
+                    tvTitulo.setText("Altas Almacén");
+                    (activity as AppCompatActivity?)!!.supportActionBar!!.title = "Altas Almacén";
+                    construirFormAlmacen();
                 }
                 2->{
-                    tvTitulo.setText("Altas Clientes")
-                    (activity as AppCompatActivity?)!!.supportActionBar!!.title = "Altas Clientes"
+                    tvTitulo.setText("Altas Clientes");
+                    (activity as AppCompatActivity?)!!.supportActionBar!!.title = "Altas Clientes";
                     construirFormClientes();
                 }
                 3->{
-                    tvTitulo.setText("Altas Delegación")
-                    (activity as AppCompatActivity?)!!.supportActionBar!!.title = "Altas Delegación"
+                    tvTitulo.setText("Altas Delegación");
+                    (activity as AppCompatActivity?)!!.supportActionBar!!.title = "Altas Delegación";
                     construirFormDelegacion();
                 }
                 4->{
-                    tvTitulo.setText("Altas Empleados")
-                    (activity as AppCompatActivity?)!!.supportActionBar!!.title = "Altas Empleados"
+                    tvTitulo.setText("Altas Empleados");
+                    (activity as AppCompatActivity?)!!.supportActionBar!!.title = "Altas Empleados";
                     construirFormEmpleados();
                 }
                 5->{
-                    tvTitulo.setText("Altas Facturas")
-                    (activity as AppCompatActivity?)!!.supportActionBar!!.title = "Altas Facturas"
+                    tvTitulo.setText("Altas Facturas");
+                    (activity as AppCompatActivity?)!!.supportActionBar!!.title = "Altas Facturas";
                     cosntruirFormFactura();
                 }
                 6->{
                     tvTitulo.setText("Altas Partes");
-                    (activity as AppCompatActivity?)!!.supportActionBar!!.title = "Altas Partes"
+                    (activity as AppCompatActivity?)!!.supportActionBar!!.title = "Altas Partes";
                     construirFormParte();
                 }
                 7->{
                     tvTitulo.setText("Altas Presupuestos");
-                    (activity as AppCompatActivity?)!!.supportActionBar!!.title = "Altas Presupuestos"
+                    (activity as AppCompatActivity?)!!.supportActionBar!!.title = "Altas Presupuestos";
                 }
             }
 
@@ -87,7 +88,81 @@ class AltasFragment : Fragment() {
 
 
     }
-    /// Cambiar el titulo al fragmento dependiendo de donde este
+
+    fun construirFormAlmacen(){
+
+        val txtNombre:EditText = EditText(this.context);
+        val spTipo:Spinner = Spinner(this.context);
+        val txtPrecio:EditText = EditText(this.context);
+        val txtStock:EditText = EditText(this.context);
+        val btnCancelar:Button = Button(this.context);
+        val btnGuardar:Button = Button(this.context);
+        val btnLimpiar:Button = Button(this.context);
+
+        val contenedorNombre:LinearLayout = LinearLayout(this.context);
+        contenedorNombre.orientation = LinearLayout.HORIZONTAL;
+        val contenedorTipo:LinearLayout = LinearLayout(this.context);
+        contenedorTipo.orientation = LinearLayout.HORIZONTAL;
+        val contenedorPrecio:LinearLayout = LinearLayout(this.context);
+        contenedorPrecio.orientation = LinearLayout.HORIZONTAL;
+        val contenedorStock:LinearLayout = LinearLayout(this.context);
+        contenedorStock.orientation = LinearLayout.HORIZONTAL;
+        val contenedorBotones:LinearLayout = LinearLayout(this.context);
+        contenedorBotones.orientation = LinearLayout.HORIZONTAL;
+
+        contenedorNombre.setLayoutParams(ActionBar.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,ViewGroup.LayoutParams.MATCH_PARENT));
+        contenedorNombre.orientation = LinearLayout.HORIZONTAL;
+        contenedorTipo.setLayoutParams(ActionBar.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,ViewGroup.LayoutParams.MATCH_PARENT));
+        contenedorTipo.orientation = LinearLayout.HORIZONTAL;
+        contenedorPrecio.setLayoutParams(ActionBar.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,ViewGroup.LayoutParams.MATCH_PARENT));
+        contenedorPrecio.orientation = LinearLayout.HORIZONTAL;
+        contenedorStock.setLayoutParams(ActionBar.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,ViewGroup.LayoutParams.MATCH_PARENT));
+        contenedorStock.orientation = LinearLayout.HORIZONTAL;
+        contenedorBotones.setLayoutParams(ActionBar.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,ViewGroup.LayoutParams.MATCH_PARENT));
+        contenedorBotones.orientation = LinearLayout.HORIZONTAL;
+
+        txtNombre.hint = "Introduzca Nombre";
+        txtPrecio.hint = "Introduzca Precio unidad";
+        txtStock.hint = "Introduzca stock";
+
+        txtNombre.width = 800;
+        txtNombre.maxLines = 1;
+        txtNombre.setLayoutParams(ActionBar.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT,ViewGroup.LayoutParams.WRAP_CONTENT));
+        txtPrecio.width = 800;
+        txtPrecio.maxLines = 1;
+        txtPrecio.setLayoutParams(ActionBar.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT,ViewGroup.LayoutParams.WRAP_CONTENT));
+        txtPrecio.inputType = InputType.TYPE_NUMBER_FLAG_DECIMAL;
+        txtStock.width = 800;
+        txtStock.maxLines = 1;
+        txtStock.setLayoutParams(ActionBar.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT,ViewGroup.LayoutParams.WRAP_CONTENT));
+        txtStock.inputType = InputType.TYPE_NUMBER_FLAG_DECIMAL;
+
+
+        btnCancelar.text = "Cancelar";
+        btnGuardar.text = "Guardar";
+        btnLimpiar.text = "Limpiar";
+
+
+        contenedorBotones.gravity = Gravity.CENTER;
+        contenedorBotones.addView(btnGuardar);
+        contenedorBotones.addView(btnCancelar);
+        contenedorBotones.addView(btnLimpiar)
+        contenedorNombre.gravity= Gravity.CENTER;
+        contenedorNombre.addView(txtNombre);
+        contenedorTipo.gravity= Gravity.CENTER;
+        contenedorTipo.addView(spTipo);
+        contenedorPrecio.gravity= Gravity.CENTER;
+        contenedorPrecio.addView(txtPrecio);
+        contenedorStock.gravity= Gravity.CENTER;
+        contenedorStock.addView(txtStock);
+
+        contenedor.addView(contenedorNombre);
+        contenedor.addView(contenedorTipo);
+        contenedor.addView(contenedorPrecio);
+        contenedor.addView(contenedorStock);
+        contenedor.addView(contenedorBotones);
+    }
+
     fun construirFormDelegacion(){
 
         val txtIdentificacion:EditText = EditText(this.context);
