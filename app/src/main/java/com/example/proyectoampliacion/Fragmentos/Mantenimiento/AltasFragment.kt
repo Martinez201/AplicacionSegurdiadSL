@@ -214,7 +214,7 @@ class AltasFragment : Fragment() {
 
         var eventoBotonLimpiar:ControlDinamico = ControlDinamico(1,"Limpiar")
         var eventoBotonCancelar:ControlDinamico = ControlDinamico(2,"Cancelar")
-        var eventoBotonGuardar:ControlDinamico = ControlDinamico(3,"Guardad")
+        var eventoBotonGuardar:ControlDinamico = ControlDinamico(3,"Guardar")
 
         btnLimpiar.id = eventoBotonLimpiar.cod;
         btnLimpiar.text =  eventoBotonLimpiar.nombre;
@@ -300,7 +300,7 @@ class AltasFragment : Fragment() {
 
         var eventoBotonLimpiar:ControlDinamico = ControlDinamico(1,"Limpiar")
         var eventoBotonCancelar:ControlDinamico = ControlDinamico(2,"Cancelar")
-        var eventoBotonGuardar:ControlDinamico = ControlDinamico(3,"Guardad")
+        var eventoBotonGuardar:ControlDinamico = ControlDinamico(3,"Guardar")
 
         btnLimpiar.id = eventoBotonLimpiar.cod;
         btnLimpiar.text =  eventoBotonLimpiar.nombre;
@@ -407,7 +407,7 @@ class AltasFragment : Fragment() {
 
         var eventoBotonLimpiar:ControlDinamico = ControlDinamico(1,"Limpiar")
         var eventoBotonCancelar:ControlDinamico = ControlDinamico(2,"Cancelar")
-        var eventoBotonGuardar:ControlDinamico = ControlDinamico(3,"Guardad")
+        var eventoBotonGuardar:ControlDinamico = ControlDinamico(3,"Guardar")
 
         btnLimpiar.id = eventoBotonLimpiar.cod;
         btnLimpiar.text =  eventoBotonLimpiar.nombre;
@@ -652,7 +652,7 @@ class AltasFragment : Fragment() {
 
         var eventoBotonLimpiar:ControlDinamico = ControlDinamico(1,"Limpiar")
         var eventoBotonCancelar:ControlDinamico = ControlDinamico(2,"Cancelar")
-        var eventoBotonGuardar:ControlDinamico = ControlDinamico(3,"Guardad")
+        var eventoBotonGuardar:ControlDinamico = ControlDinamico(3,"Guardar")
 
         btnLimpiar.id = eventoBotonLimpiar.cod;
         btnLimpiar.text =  eventoBotonLimpiar.nombre;
@@ -787,7 +787,7 @@ class AltasFragment : Fragment() {
 
         var eventoBotonLimpiar:ControlDinamico = ControlDinamico(1,"Limpiar")
         var eventoBotonCancelar:ControlDinamico = ControlDinamico(2,"Cancelar")
-        var eventoBotonGuardar:ControlDinamico = ControlDinamico(3,"Guardad")
+        var eventoBotonGuardar:ControlDinamico = ControlDinamico(3,"Guardar")
 
         btnLimpiar.id = eventoBotonLimpiar.cod;
         btnLimpiar.text =  eventoBotonLimpiar.nombre;
@@ -1001,7 +1001,7 @@ class AltasFragment : Fragment() {
 
         var eventoBotonLimpiar:ControlDinamico = ControlDinamico(1,"Limpiar")
         var eventoBotonCancelar:ControlDinamico = ControlDinamico(2,"Cancelar")
-        var eventoBotonGuardar:ControlDinamico = ControlDinamico(3,"Guardad")
+        var eventoBotonGuardar:ControlDinamico = ControlDinamico(3,"Guardar")
 
         btnLimpiar.id = eventoBotonLimpiar.cod;
         btnLimpiar.text =  eventoBotonLimpiar.nombre;
