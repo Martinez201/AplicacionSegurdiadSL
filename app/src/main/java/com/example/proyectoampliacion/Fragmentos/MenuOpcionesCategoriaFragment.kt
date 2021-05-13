@@ -91,24 +91,31 @@ class MenuOpcionesCategoriaFragment : Fragment() {
                 when(i){
 
                     0->{
+
+                        bundle.putInt("tipo",tipo);
+                        Navigation.findNavController(view).navigate(R.id.listarFragment,bundle);
+                    }
+                    1->{
+
                         bundle.putInt("tipo",tipo);
                         Navigation.findNavController(view).navigate(R.id.altasFragment,bundle);
 
                     }
-                    1->{
+                    2->{
+
                         bundle.putInt("tipo",tipo);
                         Navigation.findNavController(view).navigate(R.id.modificarFragment,bundle);
 
                     }
-                    2->{
+                    3->{
+
                         bundle.putInt("tipo",tipo);
                         Navigation.findNavController(view).navigate(R.id.bajasFragment,bundle);
 
                     }
-                    3->{
+                    4->{
 
                         Navigation.findNavController(view).navigate(R.id.menuPrincipalFragment);
-
                     }
 
                 }
