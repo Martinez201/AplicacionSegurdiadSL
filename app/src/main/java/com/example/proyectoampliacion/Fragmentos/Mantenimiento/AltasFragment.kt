@@ -52,7 +52,7 @@ class AltasFragment : Fragment() {
                 2->{
                     tvTitulo.setText("Altas Clientes");
                     (activity as AppCompatActivity?)!!.supportActionBar!!.title = "Altas Clientes";
-                    construirFormClientes();
+                    construirFormClientes(view);
                 }
                 3->{
                     tvTitulo.setText("Altas Delegación");
@@ -865,7 +865,7 @@ class AltasFragment : Fragment() {
         }
     }
 
-    fun construirFormClientes(){
+    fun construirFormClientes(view: View){
 
         val txtNombre:EditText = EditText(this.context);
         val txtApellidos:EditText = EditText(this.context);
@@ -906,6 +906,18 @@ class AltasFragment : Fragment() {
         contenedorEstado.orientation = LinearLayout.HORIZONTAL;
         val contenedorBotones:LinearLayout = LinearLayout(this.context);
         contenedorBotones.orientation = LinearLayout.HORIZONTAL;
+
+        var eventoBotonLimpiar:ControlDinamico = ControlDinamico(1,"Limpiar")
+        var eventoBotonCancelar:ControlDinamico = ControlDinamico(2,"Cancelar")
+        var eventoBotonGuardar:ControlDinamico = ControlDinamico(3,"Guardad")
+
+        btnLimpiar.id = eventoBotonLimpiar.cod;
+        btnLimpiar.text =  eventoBotonLimpiar.nombre;
+        btnGuardar.id = eventoBotonGuardar.cod;
+        btnGuardar.text = eventoBotonGuardar.nombre;
+        btnCancelar.id = eventoBotonCancelar.cod;
+        btnCancelar.text = eventoBotonCancelar.nombre;
+
 
         cbEstado.text = "Alta";
 
@@ -1019,5 +1031,23 @@ class AltasFragment : Fragment() {
         contenedor.addView(contenedorEstado);
         contenedor.addView(contenedorBotones);
 
+        val botonLimpiar:Button = view?.findViewById(eventoBotonLimpiar.cod)
+
+        botonLimpiar.setOnClickListener {
+
+
+        }
+        val botonGuardar:Button = view?.findViewById(eventoBotonGuardar.cod)
+
+        botonGuardar.setOnClickListener {
+
+
+        }
+        val botonCancelar:Button = view?.findViewById(eventoBotonCancelar.cod)
+
+        botonCancelar.setOnClickListener {
+
+
+        }
     }
 }
