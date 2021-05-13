@@ -120,10 +120,16 @@ class AltasFragment : Fragment() {
         val btnGuardar:Button = Button(this.context);
         val btnLimpiar:Button = Button(this.context);
 
-        var controlDin:ControlDinamico = ControlDinamico(1,"Limpiar")
+        var eventoBotonLimpiar:ControlDinamico = ControlDinamico(1,"Limpiar")
+        var eventoBotonCancelar:ControlDinamico = ControlDinamico(2,"Cancelar")
+        var eventoBotonGuardar:ControlDinamico = ControlDinamico(3,"Guardad")
 
-        btnLimpiar.id = controlDin.cod;
-        btnLimpiar.text =  controlDin.nombre;
+        btnLimpiar.id = eventoBotonLimpiar.cod;
+        btnLimpiar.text =  eventoBotonLimpiar.nombre;
+        btnGuardar.id = eventoBotonGuardar.cod;
+        btnGuardar.text = eventoBotonGuardar.nombre;
+        btnCancelar.id = eventoBotonCancelar.cod;
+        btnCancelar.text = eventoBotonCancelar.nombre;
 
         val contenedorFecha:LinearLayout = LinearLayout(this.context);
         contenedorFecha.orientation = LinearLayout.HORIZONTAL;
@@ -170,11 +176,22 @@ class AltasFragment : Fragment() {
         contenedor.addView(contenedorProveedor);
         contenedor.addView(contenedorBotones)
 
-        val boton:Button = view?.findViewById(controlDin.cod)
+        val botonLimpiar:Button = view?.findViewById(eventoBotonLimpiar.cod)
 
-        boton.setOnClickListener {
+        botonLimpiar.setOnClickListener {
 
-            Toast.makeText(this.context,"HOLA",Toast.LENGTH_SHORT).show();
+
+        }
+        val botonGuardar:Button = view?.findViewById(eventoBotonGuardar.cod)
+
+        botonGuardar.setOnClickListener {
+
+
+        }
+        val botonCancelar:Button = view?.findViewById(eventoBotonCancelar.cod)
+
+        botonCancelar.setOnClickListener {
+
 
         }
     }
