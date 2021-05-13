@@ -47,7 +47,7 @@ class AltasFragment : Fragment() {
                 1->{
                     tvTitulo.setText("Altas Almacén");
                     (activity as AppCompatActivity?)!!.supportActionBar!!.title = "Altas Almacén";
-                    construirFormAlmacen();
+                    construirFormAlmacen(view);
                 }
                 2->{
                     tvTitulo.setText("Altas Clientes");
@@ -196,7 +196,7 @@ class AltasFragment : Fragment() {
         }
     }
 
-    fun construirFormAlmacen(){
+    fun construirFormAlmacen(view: View){
 
         val txtNombre:EditText = EditText(this.context);
         val spTipo:Spinner = Spinner(this.context);
@@ -205,6 +205,17 @@ class AltasFragment : Fragment() {
         val btnCancelar:Button = Button(this.context);
         val btnGuardar:Button = Button(this.context);
         val btnLimpiar:Button = Button(this.context);
+
+        var eventoBotonLimpiar:ControlDinamico = ControlDinamico(1,"Limpiar")
+        var eventoBotonCancelar:ControlDinamico = ControlDinamico(2,"Cancelar")
+        var eventoBotonGuardar:ControlDinamico = ControlDinamico(3,"Guardad")
+
+        btnLimpiar.id = eventoBotonLimpiar.cod;
+        btnLimpiar.text =  eventoBotonLimpiar.nombre;
+        btnGuardar.id = eventoBotonGuardar.cod;
+        btnGuardar.text = eventoBotonGuardar.nombre;
+        btnCancelar.id = eventoBotonCancelar.cod;
+        btnCancelar.text = eventoBotonCancelar.nombre;
 
         val contenedorNombre:LinearLayout = LinearLayout(this.context);
         contenedorNombre.orientation = LinearLayout.HORIZONTAL;
@@ -268,6 +279,25 @@ class AltasFragment : Fragment() {
         contenedor.addView(contenedorPrecio);
         contenedor.addView(contenedorStock);
         contenedor.addView(contenedorBotones);
+
+        val botonLimpiar:Button = view?.findViewById(eventoBotonLimpiar.cod)
+
+        botonLimpiar.setOnClickListener {
+
+
+        }
+        val botonGuardar:Button = view?.findViewById(eventoBotonGuardar.cod)
+
+        botonGuardar.setOnClickListener {
+
+
+        }
+        val botonCancelar:Button = view?.findViewById(eventoBotonCancelar.cod)
+
+        botonCancelar.setOnClickListener {
+
+
+        }
     }
 
     fun construirFormDelegacion(){
