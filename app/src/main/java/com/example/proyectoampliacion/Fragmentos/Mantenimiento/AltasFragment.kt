@@ -77,6 +77,7 @@ class AltasFragment : Fragment() {
                 7->{
                     tvTitulo.setText("Altas Presupuestos");
                     (activity as AppCompatActivity?)!!.supportActionBar!!.title = "Altas Presupuestos";
+                    construirFormPresupuestos(view);
                 }
             }
 
@@ -109,6 +110,97 @@ class AltasFragment : Fragment() {
         contenedorDialog.gravity= Gravity.CENTER;
         contenedor.addView(contenedorDialog);
 
+    }
+
+    fun construirFormPresupuestos(view: View){
+
+        val txtFecha:EditText = EditText(this.context);
+        val txtDireccion:EditText = EditText(this.context);
+        val spEstado:Spinner = Spinner(this.context);
+        val btnCancelar:Button = Button(this.context);
+        val btnGuardar:Button = Button(this.context);
+        val btnLimpiar:Button = Button(this.context);
+
+        var eventoBotonLimpiar:ControlDinamico = ControlDinamico(1,"Limpiar")
+        var eventoBotonCancelar:ControlDinamico = ControlDinamico(2,"Cancelar")
+        var eventoBotonGuardar:ControlDinamico = ControlDinamico(3,"Guardar")
+
+        btnLimpiar.id = eventoBotonLimpiar.cod;
+        btnLimpiar.text =  eventoBotonLimpiar.nombre;
+        btnGuardar.id = eventoBotonGuardar.cod;
+        btnGuardar.text = eventoBotonGuardar.nombre;
+        btnCancelar.id = eventoBotonCancelar.cod;
+        btnCancelar.text = eventoBotonCancelar.nombre;
+
+        val contenedorFecha:LinearLayout = LinearLayout(this.context);
+        contenedorFecha.orientation = LinearLayout.HORIZONTAL;
+        val contenedorEstado:LinearLayout = LinearLayout(this.context);
+        contenedorEstado.orientation = LinearLayout.HORIZONTAL;
+        val contenedorDireccion:LinearLayout = LinearLayout(this.context);
+        contenedorDireccion.orientation = LinearLayout.HORIZONTAL;
+        val contenedorBotones:LinearLayout = LinearLayout(this.context);
+        contenedorBotones.orientation = LinearLayout.HORIZONTAL;
+
+        contenedorFecha.setLayoutParams(ActionBar.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,ViewGroup.LayoutParams.MATCH_PARENT));
+        contenedorFecha.orientation = LinearLayout.HORIZONTAL;
+        contenedorDireccion.setLayoutParams(ActionBar.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,ViewGroup.LayoutParams.MATCH_PARENT));
+        contenedorDireccion.orientation = LinearLayout.HORIZONTAL;
+        contenedorEstado.setLayoutParams(ActionBar.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,ViewGroup.LayoutParams.MATCH_PARENT));
+        contenedorEstado.orientation = LinearLayout.HORIZONTAL;
+
+
+        txtFecha.width = 800;
+        txtFecha.maxLines = 1;
+        txtFecha.setLayoutParams(ActionBar.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT,ViewGroup.LayoutParams.WRAP_CONTENT));
+        txtDireccion.width = 800;
+        txtDireccion.maxLines = 1;
+        txtDireccion.setLayoutParams(ActionBar.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT,ViewGroup.LayoutParams.WRAP_CONTENT));
+        spEstado.setLayoutParams(ActionBar.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT,ViewGroup.LayoutParams.WRAP_CONTENT));
+
+
+        txtFecha.hint = "Introduzca Fecha";
+        txtDireccion.hint = "Introduzca Dirección Instalación";
+
+        btnCancelar.text = "Cancelar";
+        btnGuardar.text = "Guardar";
+        btnLimpiar.text = "Limpiar";
+
+
+        contenedorBotones.gravity = Gravity.CENTER;
+        contenedorBotones.addView(btnGuardar);
+        contenedorBotones.addView(btnCancelar);
+        contenedorBotones.addView(btnLimpiar)
+        contenedorFecha.gravity= Gravity.CENTER;
+        contenedorFecha.addView(txtFecha);
+        contenedorEstado.gravity= Gravity.CENTER;
+        contenedorEstado.addView(spEstado);
+        contenedorDireccion.gravity= Gravity.CENTER;
+        contenedorDireccion.addView(txtDireccion);
+
+
+        contenedor.addView(contenedorDireccion);
+        contenedor.addView(contenedorFecha);
+        contenedor.addView(contenedorEstado)
+        contenedor.addView(contenedorBotones)
+
+        val botonLimpiar:Button = view?.findViewById(eventoBotonLimpiar.cod)
+
+        botonLimpiar.setOnClickListener {
+
+
+        }
+        val botonGuardar:Button = view?.findViewById(eventoBotonGuardar.cod)
+
+        botonGuardar.setOnClickListener {
+
+
+        }
+        val botonCancelar:Button = view?.findViewById(eventoBotonCancelar.cod)
+
+        botonCancelar.setOnClickListener {
+
+
+        }
     }
 
 
