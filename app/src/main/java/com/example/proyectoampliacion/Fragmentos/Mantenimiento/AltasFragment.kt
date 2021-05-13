@@ -67,12 +67,12 @@ class AltasFragment : Fragment() {
                 5->{
                     tvTitulo.setText("Altas Facturas");
                     (activity as AppCompatActivity?)!!.supportActionBar!!.title = "Altas Facturas";
-                    cosntruirFormFactura();
+                    cosntruirFormFactura(view);
                 }
                 6->{
                     tvTitulo.setText("Altas Partes");
                     (activity as AppCompatActivity?)!!.supportActionBar!!.title = "Altas Partes";
-                    construirFormParte();
+                    construirFormParte(view);
                 }
                 7->{
                     tvTitulo.setText("Altas Presupuestos");
@@ -447,7 +447,7 @@ class AltasFragment : Fragment() {
         }
     }
 
-    fun construirFormParte(){
+    fun construirFormParte(view: View){
 
         val slCliente:Spinner = Spinner(this.context);
         val txtFecha:EditText = EditText(this.context);
@@ -534,9 +534,10 @@ class AltasFragment : Fragment() {
         contenedor.addView(contenedorFecha);
         contenedor.addView(contenedorSpEstado);
         contenedor.addView(contenedorBotones);
+
     }
 
-    fun cosntruirFormFactura(){
+    fun cosntruirFormFactura(view: View){
 
         val slCliente:Spinner = Spinner(this.context);
         val txtFecha:EditText = EditText(this.context);
@@ -557,7 +558,16 @@ class AltasFragment : Fragment() {
         val contenedorBotones:LinearLayout = LinearLayout(this.context);
         contenedorBotones.orientation = LinearLayout.HORIZONTAL;
 
+        var eventoBotonLimpiar:ControlDinamico = ControlDinamico(1,"Limpiar")
+        var eventoBotonCancelar:ControlDinamico = ControlDinamico(2,"Cancelar")
+        var eventoBotonGuardar:ControlDinamico = ControlDinamico(3,"Guardad")
 
+        btnLimpiar.id = eventoBotonLimpiar.cod;
+        btnLimpiar.text =  eventoBotonLimpiar.nombre;
+        btnGuardar.id = eventoBotonGuardar.cod;
+        btnGuardar.text = eventoBotonGuardar.nombre;
+        btnCancelar.id = eventoBotonCancelar.cod;
+        btnCancelar.text = eventoBotonCancelar.nombre;
 
         contenedorSpCliente.setLayoutParams(ActionBar.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,ViewGroup.LayoutParams.MATCH_PARENT));
         contenedorSpCliente.orientation = LinearLayout.HORIZONTAL;
@@ -609,6 +619,24 @@ class AltasFragment : Fragment() {
         contenedor.addView(contenedorConcepto);
         contenedor.addView(contenedorBotones);
 
+        val botonLimpiar:Button = view?.findViewById(eventoBotonLimpiar.cod)
+
+        botonLimpiar.setOnClickListener {
+
+
+        }
+        val botonGuardar:Button = view?.findViewById(eventoBotonGuardar.cod)
+
+        botonGuardar.setOnClickListener {
+
+
+        }
+        val botonCancelar:Button = view?.findViewById(eventoBotonCancelar.cod)
+
+        botonCancelar.setOnClickListener {
+
+
+        }
     }
 
     fun construirFormEmpleados(){
