@@ -25,7 +25,7 @@ open class MiAdaptadorClientes(private val mContext:Context,private val listaCli
         layout.tvDireccion.text = elementoActual.direccion + " "+ elementoActual.ciudad + " " +elementoActual.provincia;
         layout.tvTelefono.text = elementoActual.telefono;
 
-        if (elementoActual.estado.equals("TRUE")){
+        if (elementoActual.estado.equals("true")){
 
             layout.btnEstado.text = "ALTA";
             layout.btnEstado.setTextColor(Color.WHITE);

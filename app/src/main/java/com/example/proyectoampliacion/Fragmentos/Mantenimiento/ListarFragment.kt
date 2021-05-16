@@ -11,6 +11,8 @@ import com.android.volley.Request
 import com.android.volley.Response
 import com.android.volley.toolbox.JsonObjectRequest
 import com.android.volley.toolbox.Volley
+import com.example.proyectoampliacion.Adaptadores.MiAdaptadorClientes
+import com.example.proyectoampliacion.Classes_Auxiliares.Cliente
 import com.example.proyectoampliacion.R
 import kotlinx.android.synthetic.main.fragment_altas.*
 import kotlinx.android.synthetic.main.fragment_bajas.*
@@ -50,6 +52,7 @@ class ListarFragment : Fragment() {
                 2->{
                     tvTituloLis.setText("Listados Clientes");
                     (activity as AppCompatActivity?)!!.supportActionBar!!.title = "Listados Clientes";
+                    obtenerDatosVolley(view,2)
                 }
                 3->{
                     tvTituloLis.setText("Listados Delegación");
@@ -75,26 +78,64 @@ class ListarFragment : Fragment() {
 
         }
 
-        obtenerDatosVolley()
+
     }
 
 
-    fun obtenerDatosVolley(){
+    fun obtenerDatosVolley(view: View,tipo:Int){
 
         val queue = Volley.newRequestQueue(this.context)
         val url = "http://192.168.1.141/symfony/web/app.php/movil/clientes"
+        val personas:MutableList<Cliente> = mutableListOf();
 
         val jsObjectRequest = JsonObjectRequest(
                 Request.Method.GET, url, null,
-                Response.Listener { response ->
+                { response ->
 
-                    tvMostrar.text = response.toString().split("},")[1].split(":{")[1] // queda partir por , y después por :
+                    var datos = response.toString().split("},")
+
+                    for (i in 0..datos.count() - 1){
+
+                        var ejemplo = datos[i].split(":{")[1]
+                        var definitivo =  ejemplo.split(",")
+
+
+                       when(tipo){
+                           0->{
+
+                           }
+                           1->{
+
+                           }
+                           2->{
+
+                           var persona = Cliente(definitivo[0].split(':')[1],definitivo[1].split(':')[1],definitivo[8].split(':')[1]+" "+definitivo[9]+""+definitivo[10],definitivo[2].split(':')[1],definitivo[8].split(':')[1],definitivo[6].split(':')[1],definitivo[12].split(':')[1],definitivo[13].split(':')[1].split('}')[0].toInt());
+                               personas.add(persona);
+                               mostarPersonas(view,personas);
+                           }
+                           3->{
+
+                           }
+                           4->{
+
+                           }
+                           5->{
+
+                           }
+                           6->{
+
+                           }
+                           7->{
+                           }
+                       }
+
+                    }
+
 
                 },
-                Response.ErrorListener { error ->
+                { error ->
 
-                    tvMostrar.text = error.message.toString()
-                    
+
                 }
         )
 
@@ -112,6 +153,13 @@ class ListarFragment : Fragment() {
         }
 
 
+    }
+
+    fun mostarPersonas(view: View,personas:MutableList<Cliente> ){
+
+        val adaptador = MiAdaptadorClientes(view.context,personas)
+
+        lvClientes.adapter = adaptador
     }
 
 
