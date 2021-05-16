@@ -24,8 +24,8 @@
 
     <TextView
         android:id="@+id/tvMostrar"
-        android:layout_width="49dp"
-        android:layout_height="13dp"
+        android:layout_width="394dp"
+        android:layout_height="426dp"
         android:text="TextView"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"

@@ -18,6 +18,7 @@ import kotlinx.android.synthetic.main.fragment_listar.*
 
 class ListarFragment : Fragment() {
 
+    var datos:String = "";
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -85,10 +86,15 @@ class ListarFragment : Fragment() {
 
         val jsObjectRequest = JsonObjectRequest(
                 Request.Method.GET, url, null,
-                Response.Listener { response -> tvMostrar.text = response.toString()
+                Response.Listener { response ->
+
+                    tvMostrar.text = response.toString().split("},")[1].split(":{")[1] // queda partir por , y después por :
+
                 },
                 Response.ErrorListener { error ->
-                    tvMostrar.text = "Comete una mierda"
+
+                    tvMostrar.text = error.message.toString()
+                    
                 }
         )
 
