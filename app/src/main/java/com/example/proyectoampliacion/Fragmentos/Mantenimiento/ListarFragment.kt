@@ -109,9 +109,10 @@ class ListarFragment : Fragment() {
                            }
                            2->{
 
-                           var persona = Cliente(definitivo[0].split(':')[1],definitivo[1].split(':')[1],definitivo[8].split(':')[1]+" "+definitivo[9]+""+definitivo[10],definitivo[2].split(':')[1],definitivo[8].split(':')[1],definitivo[6].split(':')[1],definitivo[12].split(':')[1],definitivo[13].split(':')[1].split('}')[0].toInt());
+                           var persona = Cliente(definitivo[0].split(':')[1],definitivo[1].split(':')[1],definitivo[8].split(':')[1]+" "+definitivo[9]+""+definitivo[10],definitivo[2].split(':')[1],definitivo[11].split(':')[1],definitivo[6].split(':')[1],definitivo[12].split(':')[1],definitivo[13].split(':')[1].split('}')[0].toInt());
                                personas.add(persona);
                                mostarPersonas(view,personas);
+                               //corregir error en cuanto a la direccion del cliente da error si se pone por ejemplo ==> Avdenida Andalucia 18
                            }
                            3->{
 
