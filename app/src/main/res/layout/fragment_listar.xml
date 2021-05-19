@@ -24,13 +24,10 @@
 
     <ListView
         android:id="@+id/lvClientes"
-        android:layout_width="408dp"
-        android:layout_height="623dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.4"
-        app:layout_constraintStart_toStartOf="parent"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginTop="120dp"
         app:layout_constraintTop_toBottomOf="@+id/tvTituloLis"
-        app:layout_constraintVertical_bias="1.0" />
+        tools:layout_editor_absoluteX="166dp" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
