@@ -42,36 +42,28 @@ class ListarFragment : Fragment() {
             when(it.getInt("tipo")){
 
                 0->{
-                    tvTituloLis.setText("Listados Albaranes");
                     (activity as AppCompatActivity?)!!.supportActionBar!!.title = "Listados Albaranes";
                 }
                 1->{
-                    tvTituloLis.setText("Listados Almacén");
                     (activity as AppCompatActivity?)!!.supportActionBar!!.title = "Listados Almacén";
                 }
                 2->{
-                    tvTituloLis.setText("Listados Clientes");
                     (activity as AppCompatActivity?)!!.supportActionBar!!.title = "Listados Clientes";
                     obtenerDatosVolley(view,2)
                 }
                 3->{
-                    tvTituloLis.setText("Listados Delegación");
                     (activity as AppCompatActivity?)!!.supportActionBar!!.title = "Listados Delegación";
                 }
                 4->{
-                    tvTituloLis.setText("Listados Empleados");
                     (activity as AppCompatActivity?)!!.supportActionBar!!.title = "Listados Empleados";
                 }
                 5->{
-                    tvTituloLis.setText("Listados Facturas");
                     (activity as AppCompatActivity?)!!.supportActionBar!!.title = "Listados Facturas";
                 }
                 6->{
-                    tvTituloLis.setText("Listados Partes");
                     (activity as AppCompatActivity?)!!.supportActionBar!!.title = "Listados Partes";
                 }
                 7->{
-                    tvTituloLis.setText("Listados Presupuestos");
                     (activity as AppCompatActivity?)!!.supportActionBar!!.title = "Listados Presupuestos";
                 }
             }
