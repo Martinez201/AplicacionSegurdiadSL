@@ -49,7 +49,7 @@ class ListarFragment : Fragment() {
                 }
                 2->{
                     (activity as AppCompatActivity?)!!.supportActionBar!!.title = "Listados Clientes";
-                    obtenerDatosVolley(view,2)
+                    obtenerDatosVolleyCliente(view)
                 }
                 3->{
                     (activity as AppCompatActivity?)!!.supportActionBar!!.title = "Listados Delegación";
@@ -74,7 +74,7 @@ class ListarFragment : Fragment() {
     }
 
 
-    fun obtenerDatosVolley(view: View,tipo:Int){
+    fun obtenerDatosVolleyCliente(view: View){
 
         val queue = Volley.newRequestQueue(this.context)
         val url = "http://192.168.1.141/symfony/web/app.php/movil/clientes"
@@ -90,45 +90,15 @@ class ListarFragment : Fragment() {
 
                         var ejemplo = datos[i].split(":{")[1]
                         var definitivo =  ejemplo.split(",")
-
-
-                       when(tipo){
-                           0->{
-
-                           }
-                           1->{
-
-                           }
-                           2->{
-
-                           var persona = Cliente(definitivo[0].split(':')[1],definitivo[1].split(':')[1],definitivo[8].split(':')[1]+" "+definitivo[9]+""+definitivo[10],definitivo[2].split(':')[1],definitivo[11].split(':')[1],definitivo[6].split(':')[1],definitivo[12].split(':')[1],definitivo[13].split(':')[1].split('}')[0].toInt());
-                               personas.add(persona);
-                               mostarPersonas(view,personas);
-                               //corregir error en cuanto a la direccion del cliente da error si se pone por ejemplo ==> Avdenida Andalucia 18
-                           }
-                           3->{
-
-                           }
-                           4->{
-
-                           }
-                           5->{
-
-                           }
-                           6->{
-
-                           }
-                           7->{
-                           }
-                       }
-
+                        var persona = Cliente(definitivo[0].split(':')[1],definitivo[1].split(':')[1],definitivo[8].split(':')[1]+" "+definitivo[9]+""+definitivo[10],definitivo[2].split(':')[1],definitivo[11].split(':')[1],definitivo[6].split(':')[1],definitivo[12].split(':')[1],definitivo[13].split(':')[1].split('}')[0].toInt());
+                        personas.add(persona);
+                        mostarPersonas(view,personas);
+                        //corregir error en cuanto a la direccion del cliente da error si se pone por ejemplo ==> Avdenida Andalucia 18
                     }
-
-
                 },
                 { error ->
 
-
+                    Toast.makeText(view.context,error.message.toString(),Toast.LENGTH_SHORT).show();
                 }
         )
 
