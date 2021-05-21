@@ -11,6 +11,7 @@ import com.android.volley.Request
 import com.android.volley.Response
 import com.android.volley.toolbox.JsonObjectRequest
 import com.android.volley.toolbox.Volley
+import com.example.proyectoampliacion.Adaptadores.MiAdaptadorAlbaranes
 import com.example.proyectoampliacion.Adaptadores.MiAdaptadorClientes
 import com.example.proyectoampliacion.Classes_Auxiliares.Albaran
 import com.example.proyectoampliacion.Classes_Auxiliares.Cliente
@@ -78,7 +79,7 @@ class ListarFragment : Fragment() {
     fun obtenerDatosVolleyAlbaran(view: View){
 
         val queue = Volley.newRequestQueue(this.context)
-        val url = "http://172.28.255.238/prueba/web/app.php/movil/albaranes"
+        val url = "http://192.168.1.141/symfony/web/app.php/movil/albaranes"
         val albaranes:MutableList<Albaran> = mutableListOf();
 
         val jsObjectRequest = JsonObjectRequest(
@@ -87,14 +88,15 @@ class ListarFragment : Fragment() {
 
                     var datos = response.toString().split("},")
 
+
                     for (i in 0..datos.count() - 1){
 
                         var ejemplo = datos[i].split(":{")[1]
                         var definitivo =  ejemplo.split(",")
-                        //var albaran = Albaran(definitivo[0].split(':')[1].toInt(),definitivo[1].split(':')[1].toInt(),definitivo[0].split(':')[1],definitivo[0].split(':')[1]);
-                       // albaranes.add(albaran);
-                        //mostarPersonas(view,personas);
-                        tvPruebas.text = definitivo[1].split(':')[1]
+                        var tamanio:Int = definitivo[3].split("}}")[0].length
+                        var albaran = Albaran(definitivo[0].split(':')[1].toInt(),definitivo[3].substring(11,tamanio).toInt(),definitivo[1].split(':')[1],definitivo[2].split(':')[1]);
+                        albaranes.add(albaran);
+                        mostarAlbaranes(view,albaranes);
                     }
 
                 },
@@ -112,7 +114,7 @@ class ListarFragment : Fragment() {
     fun obtenerDatosVolleyCliente(view: View){
 
         val queue = Volley.newRequestQueue(this.context)
-        val url = "http://172.28.255.238/prueba/web/app.php/movil/clientes"
+        val url = "http://192.168.1.141/symfony/web/app.php/movil/clientes"
         val personas:MutableList<Cliente> = mutableListOf();
 
         val jsObjectRequest = JsonObjectRequest(
@@ -144,6 +146,13 @@ class ListarFragment : Fragment() {
     fun mostarPersonas(view: View,personas:MutableList<Cliente> ){
 
         val adaptador = MiAdaptadorClientes(view.context,personas)
+
+        lvClientes.adapter = adaptador
+    }
+
+    fun mostarAlbaranes(view: View,albaranes:MutableList<Albaran> ){
+
+        val adaptador = MiAdaptadorAlbaranes(view.context,albaranes)
 
         lvClientes.adapter = adaptador
     }
