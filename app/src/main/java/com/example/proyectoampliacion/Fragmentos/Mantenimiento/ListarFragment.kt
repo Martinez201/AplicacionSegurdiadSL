@@ -12,6 +12,7 @@ import com.android.volley.Response
 import com.android.volley.toolbox.JsonObjectRequest
 import com.android.volley.toolbox.Volley
 import com.example.proyectoampliacion.Adaptadores.MiAdaptadorClientes
+import com.example.proyectoampliacion.Classes_Auxiliares.Albaran
 import com.example.proyectoampliacion.Classes_Auxiliares.Cliente
 import com.example.proyectoampliacion.R
 import kotlinx.android.synthetic.main.fragment_altas.*
@@ -43,13 +44,14 @@ class ListarFragment : Fragment() {
 
                 0->{
                     (activity as AppCompatActivity?)!!.supportActionBar!!.title = "Listados Albaranes";
+                    obtenerDatosVolleyAlbaran(view);
                 }
                 1->{
                     (activity as AppCompatActivity?)!!.supportActionBar!!.title = "Listados Almacén";
                 }
                 2->{
                     (activity as AppCompatActivity?)!!.supportActionBar!!.title = "Listados Clientes";
-                    obtenerDatosVolleyCliente(view)
+                    obtenerDatosVolleyCliente(view);
                 }
                 3->{
                     (activity as AppCompatActivity?)!!.supportActionBar!!.title = "Listados Delegación";
@@ -70,6 +72,32 @@ class ListarFragment : Fragment() {
 
         }
 
+
+    }
+
+    fun obtenerDatosVolleyAlbaran(view: View){
+
+        val queue = Volley.newRequestQueue(this.context)
+        val url = "http://192.168.1.141/symfony/web/app.php/movil/clientes"
+        val albaranes:MutableList<Albaran> = mutableListOf();
+
+
+        val jsObjectRequest = JsonObjectRequest(
+                Request.Method.GET, url, null,
+                { response ->
+
+                    var datos = response.toString().split("},")
+
+                    tvPruebas.text = datos[0];
+
+                },
+                { error ->
+
+                    Toast.makeText(view.context,error.message.toString(),Toast.LENGTH_SHORT).show();
+                }
+        )
+
+        queue.add(jsObjectRequest);
 
     }
 
@@ -103,18 +131,6 @@ class ListarFragment : Fragment() {
         )
 
         queue.add(jsObjectRequest);
-
-
-        try {
-
-        } catch (e: Exception) {
-
-            Toast.makeText(this.context,e.message,Toast.LENGTH_SHORT).show();
-
-        } finally {
-
-        }
-
 
     }
 
