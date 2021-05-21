@@ -78,9 +78,8 @@ class ListarFragment : Fragment() {
     fun obtenerDatosVolleyAlbaran(view: View){
 
         val queue = Volley.newRequestQueue(this.context)
-        val url = "http://192.168.1.141/symfony/web/app.php/movil/clientes"
+        val url = "http://172.28.255.238/prueba/web/app.php/movil/albaranes"
         val albaranes:MutableList<Albaran> = mutableListOf();
-
 
         val jsObjectRequest = JsonObjectRequest(
                 Request.Method.GET, url, null,
@@ -88,7 +87,15 @@ class ListarFragment : Fragment() {
 
                     var datos = response.toString().split("},")
 
-                    tvPruebas.text = datos[0];
+                    for (i in 0..datos.count() - 1){
+
+                        var ejemplo = datos[i].split(":{")[1]
+                        var definitivo =  ejemplo.split(",")
+                        //var albaran = Albaran(definitivo[0].split(':')[1].toInt(),definitivo[1].split(':')[1].toInt(),definitivo[0].split(':')[1],definitivo[0].split(':')[1]);
+                       // albaranes.add(albaran);
+                        //mostarPersonas(view,personas);
+                        tvPruebas.text = definitivo[1].split(':')[1]
+                    }
 
                 },
                 { error ->
@@ -105,7 +112,7 @@ class ListarFragment : Fragment() {
     fun obtenerDatosVolleyCliente(view: View){
 
         val queue = Volley.newRequestQueue(this.context)
-        val url = "http://192.168.1.141/symfony/web/app.php/movil/clientes"
+        val url = "http://172.28.255.238/prueba/web/app.php/movil/clientes"
         val personas:MutableList<Cliente> = mutableListOf();
 
         val jsObjectRequest = JsonObjectRequest(
