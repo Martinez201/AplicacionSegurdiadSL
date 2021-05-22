@@ -13,8 +13,10 @@ import com.android.volley.toolbox.JsonObjectRequest
 import com.android.volley.toolbox.Volley
 import com.example.proyectoampliacion.Adaptadores.MiAdaptadorAlbaranes
 import com.example.proyectoampliacion.Adaptadores.MiAdaptadorClientes
+import com.example.proyectoampliacion.Adaptadores.MiAdaptadorFactura
 import com.example.proyectoampliacion.Classes_Auxiliares.Albaran
 import com.example.proyectoampliacion.Classes_Auxiliares.Cliente
+import com.example.proyectoampliacion.Classes_Auxiliares.Factura
 import com.example.proyectoampliacion.R
 import kotlinx.android.synthetic.main.fragment_altas.*
 import kotlinx.android.synthetic.main.fragment_bajas.*
@@ -62,6 +64,7 @@ class ListarFragment : Fragment() {
                 }
                 5->{
                     (activity as AppCompatActivity?)!!.supportActionBar!!.title = "Listados Facturas";
+                    obtenerDatosVolleyFactura(view);
                 }
                 6->{
                     (activity as AppCompatActivity?)!!.supportActionBar!!.title = "Listados Partes";
@@ -75,6 +78,42 @@ class ListarFragment : Fragment() {
 
 
     }
+
+
+    fun obtenerDatosVolleyFactura(view: View){
+
+        val queue = Volley.newRequestQueue(this.context)
+        val url = "http://192.168.1.141/symfony/web/app.php/movil/facturas"
+        val facturas:MutableList<Factura> = mutableListOf();
+
+        val jsObjectRequest = JsonObjectRequest(
+                Request.Method.GET, url, null,
+                { response ->
+
+                    var datos = response.toString().split("},")
+
+
+                    for (i in 0..datos.count() - 1){
+
+                        var ejemplo = datos[i].split(":{")[1]
+                        var definitivo =  ejemplo.split(",")
+                        var factura = Factura(definitivo[6].split(':')[1].split('}')[0].toInt(),definitivo[0].split(':')[1].toInt(),definitivo[1].split(':')[1].toInt(),definitivo[2].split(':')[1],definitivo[3].split(':')[1].toDouble(),definitivo[4].split(':')[1].toDouble(),definitivo[6].split(':')[1]);
+                        facturas.add(factura);
+                        mostarFacturas(view,facturas);
+
+                    }
+
+                },
+                { error ->
+
+                    Toast.makeText(view.context,error.message.toString(),Toast.LENGTH_SHORT).show();
+                }
+        )
+
+        queue.add(jsObjectRequest);
+
+    }
+
 
     fun obtenerDatosVolleyAlbaran(view: View){
 
@@ -153,6 +192,13 @@ class ListarFragment : Fragment() {
     fun mostarAlbaranes(view: View,albaranes:MutableList<Albaran> ){
 
         val adaptador = MiAdaptadorAlbaranes(view.context,albaranes)
+
+        lvClientes.adapter = adaptador
+    }
+
+    fun mostarFacturas(view: View,facturas:MutableList<Factura> ){
+
+        val adaptador = MiAdaptadorFactura(view.context,facturas)
 
         lvClientes.adapter = adaptador
     }
