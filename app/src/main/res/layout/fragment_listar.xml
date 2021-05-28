@@ -6,6 +6,16 @@
     android:layout_height="match_parent"
     tools:context=".Fragmentos.Mantenimiento.ListarFragment">
 
+    <TextView
+        android:id="@+id/tvPrueba"
+        android:layout_width="410dp"
+        android:layout_height="494dp"
+        android:text="TextView"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
     <ListView
         android:id="@+id/lvClientes"
         android:layout_width="wrap_content"

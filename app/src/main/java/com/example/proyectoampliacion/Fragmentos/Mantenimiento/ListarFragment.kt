@@ -13,9 +13,11 @@ import com.android.volley.toolbox.JsonObjectRequest
 import com.android.volley.toolbox.Volley
 import com.example.proyectoampliacion.Adaptadores.MiAdaptadorAlbaranes
 import com.example.proyectoampliacion.Adaptadores.MiAdaptadorClientes
+import com.example.proyectoampliacion.Adaptadores.MiAdaptadorEmpleados
 import com.example.proyectoampliacion.Adaptadores.MiAdaptadorFactura
 import com.example.proyectoampliacion.Classes_Auxiliares.Albaran
 import com.example.proyectoampliacion.Classes_Auxiliares.Cliente
+import com.example.proyectoampliacion.Classes_Auxiliares.Empleado
 import com.example.proyectoampliacion.Classes_Auxiliares.Factura
 import com.example.proyectoampliacion.R
 import kotlinx.android.synthetic.main.fragment_altas.*
@@ -61,6 +63,7 @@ class ListarFragment : Fragment() {
                 }
                 4->{
                     (activity as AppCompatActivity?)!!.supportActionBar!!.title = "Listados Empleados";
+                    obtenerDatosVolleyEmpleados(view);
                 }
                 5->{
                     (activity as AppCompatActivity?)!!.supportActionBar!!.title = "Listados Facturas";
@@ -78,6 +81,51 @@ class ListarFragment : Fragment() {
 
 
     }
+
+    fun obtenerDatosVolleyEmpleados(view: View){
+
+        val queue = Volley.newRequestQueue(this.context)
+        val url = "http://192.168.1.141/symfony/web/app.php/movil/empleados"
+        val empleados:MutableList<Empleado> = mutableListOf();
+
+        val jsObjectRequest = JsonObjectRequest(
+                Request.Method.GET, url, null,
+                { response ->
+
+                    var datos = response.toString();
+
+                    tvPrueba.text = datos.split(":{")[1].split(':')[6].split('"')[1] // obtengo la direccion completa
+
+                    //datos.split(',')[5],[6][7] ==> juntarlos para obtener direccion
+                    // datos.split(',')[14] ==> delegacion id
+                    // datos.split(',')[15] ==> delegacion provincia
+                    // datos.split(',')[18][19][20] ==> direccion
+
+
+
+                    for (i in 0..datos.count() - 1){
+
+                       // var ejemplo = datos[i].split(":{")[1]
+                        //var definitivo =  ejemplo.split(",")
+                        //var factura = Factura(definitivo[6].split(':')[1].split('}')[0].toInt(),definitivo[0].split(':')[1].toInt(),definitivo[1].split(':')[1].toInt(),definitivo[2].split(':')[1],definitivo[3].split(':')[1].toDouble(),definitivo[4].split(':')[1].toDouble(),definitivo[6].split(':')[1]);
+                        //facturas.add(factura);
+                        //mostarFacturas(view,facturas);
+
+
+
+                    }
+
+                },
+                { error ->
+
+                    Toast.makeText(view.context,error.message.toString(),Toast.LENGTH_SHORT).show();
+                }
+        )
+
+        queue.add(jsObjectRequest);
+
+    }
+
 
 
     fun obtenerDatosVolleyFactura(view: View){
@@ -182,6 +230,38 @@ class ListarFragment : Fragment() {
 
     }
 
+    fun obtenerDatosVolleyEmpleado(view: View){
+
+        val queue = Volley.newRequestQueue(this.context)
+        val url = "http://192.168.1.141/symfony/web/app.php/movil/clientes"
+        val personas:MutableList<Cliente> = mutableListOf();
+
+        val jsObjectRequest = JsonObjectRequest(
+                Request.Method.GET, url, null,
+                { response ->
+
+                    var datos = response.toString().split("},")
+
+                    for (i in 0..datos.count() - 1){
+
+                        var ejemplo = datos[i].split(":{")[1]
+                        var definitivo =  ejemplo.split(",")
+                        var persona = Cliente(definitivo[0].split(':')[1],definitivo[1].split(':')[1],definitivo[8].split(':')[1]+" "+definitivo[9]+""+definitivo[10],definitivo[2].split(':')[1],definitivo[11].split(':')[1],definitivo[6].split(':')[1],definitivo[12].split(':')[1],definitivo[13].split(':')[1].split('}')[0].toInt());
+                        personas.add(persona);
+                        mostarPersonas(view,personas);
+                        //corregir error en cuanto a la direccion del cliente da error si se pone por ejemplo ==> Avdenida Andalucia 18
+                    }
+                },
+                { error ->
+
+                    Toast.makeText(view.context,error.message.toString(),Toast.LENGTH_SHORT).show();
+                }
+        )
+
+        queue.add(jsObjectRequest);
+
+    }
+
     fun mostarPersonas(view: View,personas:MutableList<Cliente> ){
 
         val adaptador = MiAdaptadorClientes(view.context,personas)
@@ -202,6 +282,14 @@ class ListarFragment : Fragment() {
 
         lvClientes.adapter = adaptador
     }
+
+    fun mostarEmpleados(view: View,empleados:MutableList<Empleado> ){
+
+        val adaptador = MiAdaptadorEmpleados(view.context,empleados)
+
+        lvClientes.adapter = adaptador
+    }
+
 
 
 
