@@ -142,14 +142,26 @@ class ListarFragment : Fragment() {
                 Request.Method.GET, url, null,
                 { response ->
 
-                    var datos = response.toString().split("},")
+                    var datos = response.toString().split(":{");
+
+                    tvPrueba.text = datos[1].split(":[")[2].split(']')[1].split(',')[4].split(':')[1]
+
+                    for (i in 1..datos.count() - 1){
+
+                        var trozo1 = datos[i].split(":[")[1]
+                        var trozo2 = datos[i].split(":[")[2]
 
 
-                    for (i in 0..datos.count() - 1){
+                        var factura = Factura(
+                                datos[i].split(":[")[2].split(']')[1].split(',')[5].split(':')[1].replace('}',' ').trim().toInt(),
+                                datos[i].split(":[")[2].split(']')[0],
+                                datos[i].split(":[")[1].split(']')[0],
+                                datos[i].split(":[")[2].split(']')[1].split(',')[1].split(':')[1],
+                                datos[i].split(":[")[2].split(']')[1].split(',')[2].split(':')[1].toDouble(),
+                                datos[i].split(":[")[2].split(']')[1].split(',')[3].split(':')[1].toDouble(),
+                                datos[1].split(":[")[2].split(']')[1].split(',')[4].split(':')[1]
+                        );
 
-                        var ejemplo = datos[i].split(":{")[1]
-                        var definitivo =  ejemplo.split(",")
-                        var factura = Factura(definitivo[6].split(':')[1].split('}')[0].toInt(),definitivo[0].split(':')[1].toInt(),definitivo[1].split(':')[1].toInt(),definitivo[2].split(':')[1],definitivo[3].split(':')[1].toDouble(),definitivo[4].split(':')[1].toDouble(),definitivo[6].split(':')[1]);
                         facturas.add(factura);
                         mostarFacturas(view,facturas);
 
