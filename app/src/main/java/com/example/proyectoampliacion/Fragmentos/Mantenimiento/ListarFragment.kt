@@ -148,9 +148,6 @@ class ListarFragment : Fragment() {
 
                     for (i in 1..datos.count() - 1){
 
-                        var trozo1 = datos[i].split(":[")[1]
-                        var trozo2 = datos[i].split(":[")[2]
-
 
                         var factura = Factura(
                                 datos[i].split(":[")[2].split(']')[1].split(',')[5].split(':')[1].replace('}',' ').trim().toInt(),
@@ -189,15 +186,16 @@ class ListarFragment : Fragment() {
                 Request.Method.GET, url, null,
                 { response ->
 
-                    var datos = response.toString().split("},")
+                    var datos = response.toString().split(":{");
 
+                    for (i in 1..datos.count() - 1){
 
-                    for (i in 0..datos.count() - 1){
-
-                        var ejemplo = datos[i].split(":{")[1]
-                        var definitivo =  ejemplo.split(",")
-                        var tamanio:Int = definitivo[3].split("}}")[0].length
-                        var albaran = Albaran(definitivo[0].split(':')[1].toInt(),definitivo[3].substring(11,tamanio).toInt(),definitivo[1].split(':')[1],definitivo[2].split(':')[1]);
+                        var albaran = Albaran(
+                                datos[i].split(":[")[0].split(',')[0].split(':')[1].toInt(),
+                                datos[i].split(":[")[1].split(']')[0],
+                                datos[i].split(":[")[0].split(',')[1].split(':')[1],
+                                datos[1].split(":[")[0].split(',')[2].split(':')[1]
+                        );
                         albaranes.add(albaran);
                         mostarAlbaranes(view,albaranes);
                     }
