@@ -92,29 +92,33 @@ class ListarFragment : Fragment() {
                 Request.Method.GET, url, null,
                 { response ->
 
-                    var datos = response.toString();
-
-                    tvPrueba.text = datos.split(":{")[1].split(':')[6].split('"')[1] // obtengo la direccion completa
-
-                    //datos.split(',')[5],[6][7] ==> juntarlos para obtener direccion
-                    // datos.split(',')[14] ==> delegacion id
-                    // datos.split(',')[15] ==> delegacion provincia
-                    // datos.split(',')[18][19][20] ==> direccion
+                    var datos = response.toString().split(":{");
 
 
+                  for (i in 1..datos.count() - 1){
 
-                    for (i in 0..datos.count() - 1){
-
-                       // var ejemplo = datos[i].split(":{")[1]
-                        //var definitivo =  ejemplo.split(",")
-                        //var factura = Factura(definitivo[6].split(':')[1].split('}')[0].toInt(),definitivo[0].split(':')[1].toInt(),definitivo[1].split(':')[1].toInt(),definitivo[2].split(':')[1],definitivo[3].split(':')[1].toDouble(),definitivo[4].split(':')[1].toDouble(),definitivo[6].split(':')[1]);
-                        //facturas.add(factura);
-                        //mostarFacturas(view,facturas);
-
-
+                        var empleado = Empleado(datos[i].split(',')[26].split('"')[2].replace(':',' ').replace('}',' ').trim().toInt()
+                        ,datos[i].split(',')[14].split('[')[1].toInt()
+                        ,datos[i].split(',')[0].split(':')[1]
+                        ,datos[i].split(',')[1].split(':')[1]
+                        ,datos[i].split(',')[2].split(':')[1]
+                        ,datos[i].split(',')[3].split(':')[1]
+                        ,datos[i].split(',')[4].split(':')[1]
+                        ,datos[i].split(',')[6].split(':')[1]
+                        ,datos[i].split(',')[9].split(':')[1]
+                        ,datos[i].split(',')[5].split(':')[1]
+                        ,datos[i].split(',')[21].split(':')[1].toBoolean()
+                        ,datos[i].split(',')[22].split(':')[1].toBoolean()
+                        ,datos[i].split(',')[23].split(':')[1].toBoolean()
+                        ,datos[i].split(',')[24].split(':')[1].toBoolean()
+                                ,datos[i].split(',')[25].split(':')[1]
+                                ,datos[i].split(',')[10].split(':')[1]);
+                        empleados.add(empleado);
+                        mostarEmpleados(view,empleados);
 
                     }
 
+                    tvPrueba.text = empleados.count().toString()
                 },
                 { error ->
 
