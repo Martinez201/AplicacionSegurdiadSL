@@ -222,48 +222,28 @@ class ListarFragment : Fragment() {
                 Request.Method.GET, url, null,
                 { response ->
 
-                    var datos = response.toString().split("},")
+                    var datos = response.toString().split(":{");
 
-                    for (i in 0..datos.count() - 1){
+                    for (i in 1..datos.count() - 1){
 
-                        var ejemplo = datos[i].split(":{")[1]
-                        var definitivo =  ejemplo.split(",")
-                        var persona = Cliente(definitivo[0].split(':')[1],definitivo[1].split(':')[1],definitivo[8].split(':')[1]+" "+definitivo[9]+""+definitivo[10],definitivo[2].split(':')[1],definitivo[11].split(':')[1],definitivo[6].split(':')[1],definitivo[12].split(':')[1],definitivo[13].split(':')[1].split('}')[0].toInt());
+
+
+                        var persona = Cliente(
+                                datos[i].split(',')[0].split(':')[1],
+                                datos[i].split(',')[1].split(':')[1],
+                                datos[i].split(',')[8].split(':')[1],
+                                datos[i].split(',')[2].split(':')[1],
+                                datos[i].split(',')[9].split(':')[1],
+                                datos[i].split(',')[6].split(':')[1],
+                                datos[i].split(',')[10].split(':')[1],
+                                datos[i].split(',')[11].split(':')[1].split('}')[0].toInt(),
+                                datos[i].split(',')[3].split(':')[1],
+                                datos[i].split(',')[5].split(':')[1],
+                                datos[i].split(',')[4].split(':')[1],
+                                datos[i].split(',')[7].split(':')[1]
+                        )
                         personas.add(persona);
                         mostarPersonas(view,personas);
-                        //corregir error en cuanto a la direccion del cliente da error si se pone por ejemplo ==> Avdenida Andalucia 18
-                    }
-                },
-                { error ->
-
-                    Toast.makeText(view.context,error.message.toString(),Toast.LENGTH_SHORT).show();
-                }
-        )
-
-        queue.add(jsObjectRequest);
-
-    }
-
-    fun obtenerDatosVolleyEmpleado(view: View){
-
-        val queue = Volley.newRequestQueue(this.context)
-        val url = "http://192.168.1.141/symfony/web/app.php/movil/clientes"
-        val personas:MutableList<Cliente> = mutableListOf();
-
-        val jsObjectRequest = JsonObjectRequest(
-                Request.Method.GET, url, null,
-                { response ->
-
-                    var datos = response.toString().split("},")
-
-                    for (i in 0..datos.count() - 1){
-
-                        var ejemplo = datos[i].split(":{")[1]
-                        var definitivo =  ejemplo.split(",")
-                        var persona = Cliente(definitivo[0].split(':')[1],definitivo[1].split(':')[1],definitivo[8].split(':')[1]+" "+definitivo[9]+""+definitivo[10],definitivo[2].split(':')[1],definitivo[11].split(':')[1],definitivo[6].split(':')[1],definitivo[12].split(':')[1],definitivo[13].split(':')[1].split('}')[0].toInt());
-                        personas.add(persona);
-                        mostarPersonas(view,personas);
-                        //corregir error en cuanto a la direccion del cliente da error si se pone por ejemplo ==> Avdenida Andalucia 18
                     }
                 },
                 { error ->
