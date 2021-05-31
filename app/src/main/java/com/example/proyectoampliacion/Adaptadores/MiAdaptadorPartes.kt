@@ -13,6 +13,7 @@ import com.example.proyectoampliacion.Classes_Auxiliares.Parte
 import com.example.proyectoampliacion.R
 import kotlinx.android.synthetic.main.vista_clientes.view.*
 import kotlinx.android.synthetic.main.vista_partes.view.*
+import kotlinx.android.synthetic.main.vista_presupuesto.view.*
 
 class MiAdaptadorPartes(private val mContext: Context, private val listaPartes: List<Parte>): ArrayAdapter<Parte>(mContext,0,listaPartes) {
 
@@ -20,7 +21,7 @@ class MiAdaptadorPartes(private val mContext: Context, private val listaPartes: 
 
         //return super.getView(position, convertView, parent)
 
-        val layout = LayoutInflater.from(mContext).inflate(R.layout.vista_clientes,parent,false);
+        val layout = LayoutInflater.from(mContext).inflate(R.layout.vista_partes,parent,false);
 
         val elementoActual = listaPartes[position];
 
@@ -28,18 +29,19 @@ class MiAdaptadorPartes(private val mContext: Context, private val listaPartes: 
         layout.tvEmpleadoP.text = elementoActual.empleado.nombre + " " +elementoActual.empleado.apellidos;
         layout.tvTipoP.text = elementoActual.tipo;
         layout.tvDetalleP.text = elementoActual.observaciones;
+        layout.tvFechaP.text = elementoActual.fecha
 
         if (elementoActual.estado.equals("true")){
 
             layout.btnEstadoP.text = "ABIERTO";
             layout.btnEstadoP.setTextColor(Color.WHITE);
-            layout.btnEstadoP.setBackgroundColor(Color.GREEN);
+            layout.btnEstadoP.setBackgroundColor(Color.YELLOW);
 
         }else{
 
             layout.btnEstadoP.text = "CERRADO";
             layout.btnEstadoP.setTextColor(Color.WHITE);
-            layout.btnEstadoP.setBackgroundColor(Color.YELLOW);
+            layout.btnEstadoP.setBackgroundColor(Color.GREEN);
         }
 
 
