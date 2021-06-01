@@ -18,7 +18,7 @@ open class MiAdaptadorAlmacen(private val mContext:Context,private val listaProd
 
         //return super.getView(position, convertView, parent)
 
-        val layout = LayoutInflater.from(mContext).inflate(R.layout.vista_clientes,parent,false);
+        val layout = LayoutInflater.from(mContext).inflate(R.layout.vista_productos,parent,false);
 
         val elementoActual = listaProductos[position];
 

@@ -16,7 +16,7 @@
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/imgProducto"
-        app:layout_constraintVertical_bias="0.063" />
+        app:layout_constraintVertical_bias="0.096" />
 
     <ImageView
         android:id="@+id/imgProducto"
@@ -34,10 +34,10 @@
         android:id="@+id/tvNombreP"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="24dp"
+        android:layout_marginTop="16dp"
         android:text="TextView"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.18"
+        app:layout_constraintHorizontal_bias="0.314"
         app:layout_constraintStart_toEndOf="@+id/imgProducto"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -45,10 +45,10 @@
         android:id="@+id/tvTipo"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
+        android:layout_marginTop="12dp"
         android:text="TextView"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.18"
+        app:layout_constraintHorizontal_bias="0.314"
         app:layout_constraintStart_toEndOf="@+id/imgProducto"
         app:layout_constraintTop_toBottomOf="@+id/tvNombreP" />
 
@@ -59,7 +59,7 @@
         android:layout_marginTop="12dp"
         android:text="TextView"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.18"
+        app:layout_constraintHorizontal_bias="0.314"
         app:layout_constraintStart_toEndOf="@+id/imgProducto"
         app:layout_constraintTop_toBottomOf="@+id/tvTipo" />
 
@@ -70,7 +70,7 @@
         android:layout_marginTop="8dp"
         android:text="TextView"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.18"
+        app:layout_constraintHorizontal_bias="0.314"
         app:layout_constraintStart_toEndOf="@+id/imgProducto"
         app:layout_constraintTop_toBottomOf="@+id/tvPrecio" />
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -47,6 +47,7 @@ class ListarFragment : Fragment() {
                 }
                 1->{
                     (activity as AppCompatActivity?)!!.supportActionBar!!.title = "Listados Almacén";
+                    obtenerDatosVolleyProductos(view)
                 }
                 2->{
                     (activity as AppCompatActivity?)!!.supportActionBar!!.title = "Listados Clientes";
@@ -78,6 +79,55 @@ class ListarFragment : Fragment() {
 
     }
 
+    fun obtenerDatosVolleyProductos(view: View){
+
+        val queue = Volley.newRequestQueue(this.context)
+        val url = "http://192.168.1.141/symfony/web/app.php/movil/productos"
+        val productos:MutableList<Almacen> = mutableListOf();
+
+        val jsObjectRequest = JsonObjectRequest(
+                Request.Method.GET, url, null,
+                { response ->
+
+                    var datos = response.toString().split(":{");
+
+                    tvPrueba.text = datos[1].split(',')[5].split(':')[1].split('}')[0]
+
+                    /*
+                        nombre ==> datos[1].split(',')[0].split(':')[1]
+                        cantidad ==> datos[1].split(',')[0].split(':')[1]
+                        tipo ==> datos[1].split(',')[2].split(':')[1]
+                        precio ==> datos[1].split(',')[3].split(':')[1]
+                        imagen ==> datos[1].split(',')[4].split(':')[1]
+                        id ==> datos[1].split(',')[5].split(':')[1].split('}')[0]
+
+                    * */
+
+                    for (i in 1..datos.count() - 1){
+
+                        var producto = Almacen(
+                                datos[1].split(',')[5].split(':')[1].split('}')[0].toInt(),
+                                datos[1].split(',')[0].split(':')[1],
+                                datos[1].split(',')[2].split(':')[1],
+                                datos[1].split(',')[3].split(':')[1].toDouble(),
+                                datos[1].split(',')[1].split(':')[1].toInt(),
+                                datos[1].split(',')[4].split(':')[1]
+                        );
+                        productos.add(producto);
+                        mostarProductos(view,productos);
+                    }
+
+                },
+                { error ->
+
+                    Toast.makeText(view.context,error.message.toString(),Toast.LENGTH_SHORT).show();
+                }
+        )
+
+        queue.add(jsObjectRequest);
+
+    }
+
     fun obtenerDatosVolleyPresupuestos(view: View){
 
         val queue = Volley.newRequestQueue(this.context)
@@ -90,20 +140,6 @@ class ListarFragment : Fragment() {
 
                     var datos = response.toString().split(":{");
 
-
-                    /*
-                    *
-                    *  id presupuesto ==> datos[1].split(":[")[0].split(',')[0].split(':')[1]
-                    *   fecha presupuesto ==> datos[1].split(":[")[0].split(',')[1].split(':')[1]
-                    *
-                    * empleado Nombre ==> datos[1].split(":[")[1].split(']')[0].split(',')[0]
-                    * empleado Apellidos ==> datos[1].split(":[")[1].split(']')[0].split(',')[1]
-                    * empleado Id ==> datos[1].split(":[")[1].split(']')[0].split(',')[2]
-                    *
-                    *  instalacion ==> datos[1].split(":[")[1].split(']')[1].split(',')[1].split(':')[1]
-                    * estado ==> datos[1].split(":[")[1].split(']')[1].split(',')[2].split(':')[1]
-                    * contrato ==> datos[1].split(":[")[1].split(']')[1].split(',')[3].split(':')[1].split('}')[0]
-                    * */
 
                     for (i in 1..datos.count() - 1){
 
@@ -414,6 +450,13 @@ class ListarFragment : Fragment() {
 
         queue.add(jsObjectRequest);
 
+    }
+
+    fun mostarProductos(view: View,productos:MutableList<Almacen> ){
+
+        val adaptador = MiAdaptadorAlmacen(view.context,productos)
+
+        lvClientes.adapter = adaptador
     }
 
     fun mostarPresupuestos(view: View,presupuestos:MutableList<Presupuesto> ){
