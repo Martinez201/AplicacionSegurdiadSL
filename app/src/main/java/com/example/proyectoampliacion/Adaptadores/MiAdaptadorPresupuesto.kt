@@ -17,7 +17,7 @@ class MiAdaptadorPresupuesto(private val mContext: Context, private val listaPre
 
         //return super.getView(position, convertView, parent)
 
-        val layout = LayoutInflater.from(mContext).inflate(R.layout.vista_clientes,parent,false);
+        val layout = LayoutInflater.from(mContext).inflate(R.layout.vista_presupuesto,parent,false);
 
         val elementoActual = listaPresupuestos[position];
 
@@ -29,15 +29,15 @@ class MiAdaptadorPresupuesto(private val mContext: Context, private val listaPre
 
         if (elementoActual.estado.equals("true")){
 
-            layout.btnEstadoP.text = "ABIERTO";
-            layout.btnEstadoP.setTextColor(Color.WHITE);
-            layout.btnEstadoP.setBackgroundColor(Color.GREEN);
+            layout.btnEstadoPre.text = "ABIERTO";
+            layout.btnEstadoPre.setTextColor(Color.WHITE);
+            layout.btnEstadoPre.setBackgroundColor(Color.GREEN);
 
         }else{
 
-            layout.btnEstadoP.text = "CERRADO";
-            layout.btnEstadoP.setTextColor(Color.WHITE);
-            layout.btnEstadoP.setBackgroundColor(Color.YELLOW);
+            layout.btnEstadoPre.text = "CERRADO";
+            layout.btnEstadoPre.setTextColor(Color.WHITE);
+            layout.btnEstadoPre.setBackgroundColor(Color.YELLOW);
         }
 
 

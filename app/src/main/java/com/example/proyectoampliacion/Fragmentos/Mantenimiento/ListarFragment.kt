@@ -69,6 +69,7 @@ class ListarFragment : Fragment() {
                 }
                 7->{
                     (activity as AppCompatActivity?)!!.supportActionBar!!.title = "Listados Presupuestos";
+                    obtenerDatosVolleyPresupuestos(view);
                 }
             }
 
@@ -76,6 +77,81 @@ class ListarFragment : Fragment() {
 
 
     }
+
+    fun obtenerDatosVolleyPresupuestos(view: View){
+
+        val queue = Volley.newRequestQueue(this.context)
+        val url = "http://192.168.1.141/symfony/web/app.php/movil/presupuestos"
+        val presupuestos:MutableList<Presupuesto> = mutableListOf();
+
+        val jsObjectRequest = JsonObjectRequest(
+                Request.Method.GET, url, null,
+                { response ->
+
+                    var datos = response.toString().split(":{");
+
+
+                    /*
+                    *
+                    *  id presupuesto ==> datos[1].split(":[")[0].split(',')[0].split(':')[1]
+                    *   fecha presupuesto ==> datos[1].split(":[")[0].split(',')[1].split(':')[1]
+                    *
+                    * empleado Nombre ==> datos[1].split(":[")[1].split(']')[0].split(',')[0]
+                    * empleado Apellidos ==> datos[1].split(":[")[1].split(']')[0].split(',')[1]
+                    * empleado Id ==> datos[1].split(":[")[1].split(']')[0].split(',')[2]
+                    *
+                    *  instalacion ==> datos[1].split(":[")[1].split(']')[1].split(',')[1].split(':')[1]
+                    * estado ==> datos[1].split(":[")[1].split(']')[1].split(',')[2].split(':')[1]
+                    * contrato ==> datos[1].split(":[")[1].split(']')[1].split(',')[3].split(':')[1].split('}')[0]
+                    * */
+
+                    for (i in 1..datos.count() - 1){
+
+                        var empleado = Empleado(
+
+                                datos[i].split(":[")[1].split(']')[0].split(',')[2].toInt(),
+                                0,
+                                datos[i].split(":[")[1].split(']')[0].split(',')[0],
+                                datos[i].split(":[")[1].split(']')[0].split(',')[1],
+                                "",
+                                "",
+                                "",
+                                "",
+                                "",
+                                "",
+                                false,
+                                false,
+                                false,
+                                false,
+                                "",
+                                ""
+                        );
+
+                        var presupuesto = Presupuesto(
+
+                                datos[i].split(":[")[0].split(',')[0].split(':')[1].toInt(),
+                                empleado,
+                                datos[i].split(":[")[0].split(',')[1].split(':')[1],
+                                datos[i].split(":[")[1].split(']')[1].split(',')[1].split(':')[1],
+                                datos[i].split(":[")[1].split(']')[1].split(',')[2].split(':')[1],
+                                datos[i].split(":[")[1].split(']')[1].split(',')[3].split(':')[1].split('}')[0]
+
+                        );
+                        presupuestos.add(presupuesto);
+                        mostarPresupuestos(view,presupuestos);
+                    }
+
+                },
+                { error ->
+
+                    Toast.makeText(view.context,error.message.toString(),Toast.LENGTH_SHORT).show();
+                }
+        )
+
+        queue.add(jsObjectRequest);
+
+    }
+
 
     fun obtenerDatosVolleyEmpleados(view: View){
 
@@ -264,32 +340,6 @@ class ListarFragment : Fragment() {
                     var datos = response.toString().split(":{");
 
 
-
-                    /*
-
-                    nombre Cliente ==> datos[1].split(":[")[1].split(']')[0].split(',')[0];
-                    apellidos Cliente ==> datos[1].split(":[")[1].split(']')[0].split(',')[0];
-                    id Cliente ==> datos[1].split(":[")[1].split(']')[0].split(',')[0];
-
-                    nombre Empleado ==> datos[1].split(":[")[2].split(']')[0].split(',')[0];
-                    apelldidos Empeleado ==> datos[1].split(":[")[2].split(']')[0].split(',')[0];
-                    id empleado ==> datos[1].split(":[")[2].split(']')[0].split(',')[0];
-
-                    FechaParte ==> datos[1].split(":[")[2].split(']')[1].split(',')[1].split(':')[1];
-                    ObservacionesParte ==> datos[1].split(":[")[2].split(']')[1].split(',')[2].split(':')[1];
-                    EstadoParte ==> datos[1].split(":[")[2].split(']')[1].split(',')[3].split(':')[1];
-                    tipoParte ==> datos[1].split(":[")[2].split(']')[1].split(',')[4].split(':')[1];
-                    Parte id ==> datos[1].split(":[")[3].split(']')[1].split(':')[1].split('}')[0]
-
-                    Delegacion id ==> datos[1].split(":[")[3].split(',')[0]
-                    delegacion provincia ==> datos[1].split(":[")[3].split(',')[1]
-                    delegacion ciudad ==> datos[1].split(":[")[3].split(',')[2]
-                    delegacion direccion ==> datos[1].split(":[")[3].split(',')[3]
-                    delegacion nombre ==> datos[1].split(":[")[3].split(',')[4]
-
-                     */
-
-
                     for (i in 1..datos.count() - 1){
 
                             var cliente = Cliente(
@@ -364,6 +414,13 @@ class ListarFragment : Fragment() {
 
         queue.add(jsObjectRequest);
 
+    }
+
+    fun mostarPresupuestos(view: View,presupuestos:MutableList<Presupuesto> ){
+
+        val adaptador = MiAdaptadorPresupuesto(view.context,presupuestos)
+
+        lvClientes.adapter = adaptador
     }
 
     fun mostarPartes(view: View,partes:MutableList<Parte> ){
