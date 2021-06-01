@@ -55,6 +55,7 @@ class ListarFragment : Fragment() {
                 }
                 3->{
                     (activity as AppCompatActivity?)!!.supportActionBar!!.title = "Listados Delegación";
+                    obtenerDatosVolleyDelegaciones(view);
                 }
                 4->{
                     (activity as AppCompatActivity?)!!.supportActionBar!!.title = "Listados Empleados";
@@ -79,6 +80,47 @@ class ListarFragment : Fragment() {
 
     }
 
+    fun obtenerDatosVolleyDelegaciones(view: View){
+
+        val queue = Volley.newRequestQueue(this.context)
+        val url = "http://192.168.1.141/symfony/web/app.php/movil/delegaciones"
+        val delegaciones:MutableList<Delegacion> = mutableListOf();
+
+        val jsObjectRequest = JsonObjectRequest(
+                Request.Method.GET, url, null,
+                { response ->
+
+                    var datos = response.toString().split(":{");
+
+
+                    for (i in 1..datos.count() - 1){
+
+                        var delegacion = Delegacion(
+
+                                datos[i].split(',')[0].split(':')[1].toInt(),
+                                datos[i].split(',')[1].split(':')[1],
+                                datos[i].split(',')[2].split(':')[1],
+                                datos[i].split(',')[3].split(':')[1],
+                                datos[i].split(',')[4].split(':')[1],
+                                datos[1].split(',')[5].split(':')[1],
+                                datos[1].split(',')[6].split(':')[1].split('}')[0]
+                        );
+                        delegaciones.add(delegacion);
+                    }
+
+                    mostarDelegaciones(view,delegaciones);
+
+                },
+                { error ->
+
+                    Toast.makeText(view.context,error.message.toString(),Toast.LENGTH_SHORT).show();
+                }
+        )
+
+        queue.add(jsObjectRequest);
+
+    }
+
     fun obtenerDatosVolleyProductos(view: View){
 
         val queue = Volley.newRequestQueue(this.context)
@@ -93,15 +135,6 @@ class ListarFragment : Fragment() {
 
                     tvPrueba.text = datos[1].split(',')[5].split(':')[1].split('}')[0]
 
-                    /*
-                        nombre ==> datos[1].split(',')[0].split(':')[1]
-                        cantidad ==> datos[1].split(',')[0].split(':')[1]
-                        tipo ==> datos[1].split(',')[2].split(':')[1]
-                        precio ==> datos[1].split(',')[3].split(':')[1]
-                        imagen ==> datos[1].split(',')[4].split(':')[1]
-                        id ==> datos[1].split(',')[5].split(':')[1].split('}')[0]
-
-                    * */
 
                     for (i in 1..datos.count() - 1){
 
@@ -450,6 +483,14 @@ class ListarFragment : Fragment() {
 
         queue.add(jsObjectRequest);
 
+    }
+
+
+    fun mostarDelegaciones(view: View,delegaciones:MutableList<Delegacion> ){
+
+        val adaptador = MiAdaptadorDelegacion(view.context,delegaciones)
+
+        lvClientes.adapter = adaptador
     }
 
     fun mostarProductos(view: View,productos:MutableList<Almacen> ){

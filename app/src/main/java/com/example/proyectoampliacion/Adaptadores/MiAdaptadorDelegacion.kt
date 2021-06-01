@@ -17,7 +17,7 @@ open class MiAdaptadorDelegacion(private val mContext:Context,private val listaD
 
         //return super.getView(position, convertView, parent)
 
-        val layout = LayoutInflater.from(mContext).inflate(R.layout.vista_clientes,parent,false);
+        val layout = LayoutInflater.from(mContext).inflate(R.layout.vista_delegacion,parent,false);
 
         val elementoActual = listaDelegaciones[position];
 
