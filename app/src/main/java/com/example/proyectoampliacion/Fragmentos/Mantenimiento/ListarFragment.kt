@@ -17,10 +17,12 @@ import com.example.proyectoampliacion.R
 import kotlinx.android.synthetic.main.fragment_altas.*
 import kotlinx.android.synthetic.main.fragment_bajas.*
 import kotlinx.android.synthetic.main.fragment_listar.*
+import org.json.JSONObject
 
 class ListarFragment : Fragment() {
 
-    var datos:String = "";
+
+    var tipo:Int = 0;
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -44,33 +46,75 @@ class ListarFragment : Fragment() {
                 0->{
                     (activity as AppCompatActivity?)!!.supportActionBar!!.title = "Listados Albaranes";
                     obtenerDatosVolleyAlbaran(view);
+                    tipo = 0;
                 }
                 1->{
                     (activity as AppCompatActivity?)!!.supportActionBar!!.title = "Listados Almacén";
-                    obtenerDatosVolleyProductos(view)
+                    obtenerDatosVolleyProductos(view);
+                    tipo = 1;
                 }
                 2->{
                     (activity as AppCompatActivity?)!!.supportActionBar!!.title = "Listados Clientes";
                     obtenerDatosVolleyCliente(view);
+                    tipo = 2;
                 }
                 3->{
                     (activity as AppCompatActivity?)!!.supportActionBar!!.title = "Listados Delegación";
                     obtenerDatosVolleyDelegaciones(view);
+                    tipo = 3;
                 }
                 4->{
                     (activity as AppCompatActivity?)!!.supportActionBar!!.title = "Listados Empleados";
                     obtenerDatosVolleyEmpleados(view);
+                    tipo = 4;
                 }
                 5->{
                     (activity as AppCompatActivity?)!!.supportActionBar!!.title = "Listados Facturas";
                     obtenerDatosVolleyFactura(view);
+                    tipo = 5;
                 }
                 6->{
                     (activity as AppCompatActivity?)!!.supportActionBar!!.title = "Listados Partes";
                     obtenerDatosVolleyPartes(view);
+                    tipo = 6;
                 }
                 7->{
                     (activity as AppCompatActivity?)!!.supportActionBar!!.title = "Listados Presupuestos";
+                    obtenerDatosVolleyPresupuestos(view);
+                    tipo = 7;
+                }
+            }
+
+        }
+
+        btnBuscar.setOnClickListener { it->
+
+            var buscar:String = edtBuscar.text.toString()
+
+            when(tipo){
+
+                0 ->{
+                    obtenerDatosVolleyAlbaran(view);
+                }
+                1 ->{
+                    obtenerDatosVolleyProductos(view)
+                }
+                2 ->{
+                    obtenerDatosVolleyCliente(view);
+                }
+                3 ->{
+                    busquedaDelegaciones(view,buscar)
+                }
+                4 ->{
+                    obtenerDatosVolleyEmpleados(view);
+                }
+                5 -> {
+                    obtenerDatosVolleyFactura(view);
+                }
+                6 ->{
+                    obtenerDatosVolleyPartes(view);
+                }
+                7 ->{
                     obtenerDatosVolleyPresupuestos(view);
                 }
             }
@@ -78,6 +122,33 @@ class ListarFragment : Fragment() {
         }
 
 
+    }
+
+    fun busquedaDelegaciones(view: View,busqueda:String){
+
+        val queue = Volley.newRequestQueue(view.context);
+        val url = "http://192.168.1.141/symfony/web/app.php/movil/buscar/delegacion";
+
+        val jsonObject = JSONObject();
+        jsonObject.put("delegacion",busqueda);
+
+        val jsonObjectRequest = JsonObjectRequest(url, jsonObject,
+
+                { response ->
+
+                    Toast.makeText(view.context, response.toString(), Toast.LENGTH_SHORT).show();
+
+
+                },
+                {  error ->
+
+                    Toast.makeText(view.context, error.message.toString(), Toast.LENGTH_SHORT).show();
+
+                }
+
+                )
+
+        queue.add(jsonObjectRequest);
     }
 
     fun obtenerDatosVolleyDelegaciones(view: View){
