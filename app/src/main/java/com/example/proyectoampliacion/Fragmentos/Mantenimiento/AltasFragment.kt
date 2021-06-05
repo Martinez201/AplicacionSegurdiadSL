@@ -2,18 +2,23 @@ package com.example.proyectoampliacion.Fragmentos.Mantenimiento
 
 import android.app.ActionBar
 import android.os.Bundle
-import android.service.controls.Control
+import android.provider.ContactsContract
 import android.text.InputType
 import android.view.Gravity
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.isVisible
+import androidx.fragment.app.Fragment
+import com.android.volley.Response
+import com.android.volley.toolbox.JsonObjectRequest
+import com.android.volley.toolbox.Volley
 import com.example.proyectoampliacion.R
 import kotlinx.android.synthetic.main.fragment_altas.*
+import org.json.JSONArray
+import org.json.JSONObject
 
 
 class AltasFragment : Fragment() {
@@ -24,8 +29,8 @@ class AltasFragment : Fragment() {
     }
 
     override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
+            inflater: LayoutInflater, container: ViewGroup?,
+            savedInstanceState: Bundle?
     ): View? {
         // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_altas, container, false)
@@ -39,42 +44,42 @@ class AltasFragment : Fragment() {
 
             when(it.getInt("tipo")){
 
-                0->{
+                0 -> {
                     tvTitulo.setText("Altas Albaranes");
                     (activity as AppCompatActivity?)!!.supportActionBar!!.title = "Altas Albaranes";
                     construirFormAlbarán(view);
                 }
-                1->{
+                1 -> {
                     tvTitulo.setText("Altas Almacén");
                     (activity as AppCompatActivity?)!!.supportActionBar!!.title = "Altas Almacén";
                     construirFormAlmacen(view);
                 }
-                2->{
+                2 -> {
                     tvTitulo.setText("Altas Clientes");
                     (activity as AppCompatActivity?)!!.supportActionBar!!.title = "Altas Clientes";
                     construirFormClientes(view);
                 }
-                3->{
+                3 -> {
                     tvTitulo.setText("Altas Delegación");
                     (activity as AppCompatActivity?)!!.supportActionBar!!.title = "Altas Delegación";
                     construirFormDelegacion(view);
                 }
-                4->{
+                4 -> {
                     tvTitulo.setText("Altas Empleados");
                     (activity as AppCompatActivity?)!!.supportActionBar!!.title = "Altas Empleados";
                     construirFormEmpleados(view);
                 }
-                5->{
+                5 -> {
                     tvTitulo.setText("Altas Facturas");
                     (activity as AppCompatActivity?)!!.supportActionBar!!.title = "Altas Facturas";
                     cosntruirFormFactura(view);
                 }
-                6->{
+                6 -> {
                     tvTitulo.setText("Altas Partes");
                     (activity as AppCompatActivity?)!!.supportActionBar!!.title = "Altas Partes";
                     construirFormParte(view);
                 }
-                7->{
+                7 -> {
                     tvTitulo.setText("Altas Presupuestos");
                     (activity as AppCompatActivity?)!!.supportActionBar!!.title = "Altas Presupuestos";
                     construirFormPresupuestos(view);
@@ -87,7 +92,7 @@ class AltasFragment : Fragment() {
 
     }
 
-    class ControlDinamico( cod:Int , nombre:String) {
+    class ControlDinamico(cod: Int, nombre: String) {
         var cod: Int
         var nombre: String
 
@@ -104,7 +109,7 @@ class AltasFragment : Fragment() {
 
         val contenedorDialog:LinearLayout = LinearLayout(this.context);
 
-        contenedorDialog.setLayoutParams(ActionBar.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,ViewGroup.LayoutParams.MATCH_PARENT));
+        contenedorDialog.setLayoutParams(ActionBar.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
         contenedorDialog.orientation = LinearLayout.HORIZONTAL;
 
         contenedorDialog.gravity= Gravity.CENTER;
@@ -121,9 +126,9 @@ class AltasFragment : Fragment() {
         val btnGuardar:Button = Button(this.context);
         val btnLimpiar:Button = Button(this.context);
 
-        var eventoBotonLimpiar:ControlDinamico = ControlDinamico(1,"Limpiar")
-        var eventoBotonCancelar:ControlDinamico = ControlDinamico(2,"Cancelar")
-        var eventoBotonGuardar:ControlDinamico = ControlDinamico(3,"Guardar")
+        var eventoBotonLimpiar:ControlDinamico = ControlDinamico(1, "Limpiar")
+        var eventoBotonCancelar:ControlDinamico = ControlDinamico(2, "Cancelar")
+        var eventoBotonGuardar:ControlDinamico = ControlDinamico(3, "Guardar")
 
         btnLimpiar.id = eventoBotonLimpiar.cod;
         btnLimpiar.text =  eventoBotonLimpiar.nombre;
@@ -141,21 +146,21 @@ class AltasFragment : Fragment() {
         val contenedorBotones:LinearLayout = LinearLayout(this.context);
         contenedorBotones.orientation = LinearLayout.HORIZONTAL;
 
-        contenedorFecha.setLayoutParams(ActionBar.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,ViewGroup.LayoutParams.MATCH_PARENT));
+        contenedorFecha.setLayoutParams(ActionBar.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
         contenedorFecha.orientation = LinearLayout.HORIZONTAL;
-        contenedorDireccion.setLayoutParams(ActionBar.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,ViewGroup.LayoutParams.MATCH_PARENT));
+        contenedorDireccion.setLayoutParams(ActionBar.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
         contenedorDireccion.orientation = LinearLayout.HORIZONTAL;
-        contenedorEstado.setLayoutParams(ActionBar.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,ViewGroup.LayoutParams.MATCH_PARENT));
+        contenedorEstado.setLayoutParams(ActionBar.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
         contenedorEstado.orientation = LinearLayout.HORIZONTAL;
 
 
         txtFecha.width = 800;
         txtFecha.maxLines = 1;
-        txtFecha.setLayoutParams(ActionBar.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT,ViewGroup.LayoutParams.WRAP_CONTENT));
+        txtFecha.setLayoutParams(ActionBar.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT));
         txtDireccion.width = 800;
         txtDireccion.maxLines = 1;
-        txtDireccion.setLayoutParams(ActionBar.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT,ViewGroup.LayoutParams.WRAP_CONTENT));
-        spEstado.setLayoutParams(ActionBar.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT,ViewGroup.LayoutParams.WRAP_CONTENT));
+        txtDireccion.setLayoutParams(ActionBar.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT));
+        spEstado.setLayoutParams(ActionBar.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT));
 
 
         txtFecha.hint = "Introduzca Fecha";
@@ -204,7 +209,7 @@ class AltasFragment : Fragment() {
     }
 
 
-    fun construirFormAlbarán( view: View){
+    fun construirFormAlbarán(view: View){
 
         val txtFecha:EditText = EditText(this.context);
         val txtProveedor:EditText = EditText(this.context);
@@ -212,9 +217,9 @@ class AltasFragment : Fragment() {
         val btnGuardar:Button = Button(this.context);
         val btnLimpiar:Button = Button(this.context);
 
-        var eventoBotonLimpiar:ControlDinamico = ControlDinamico(1,"Limpiar")
-        var eventoBotonCancelar:ControlDinamico = ControlDinamico(2,"Cancelar")
-        var eventoBotonGuardar:ControlDinamico = ControlDinamico(3,"Guardar")
+        var eventoBotonLimpiar:ControlDinamico = ControlDinamico(1, "Limpiar")
+        var eventoBotonCancelar:ControlDinamico = ControlDinamico(2, "Cancelar")
+        var eventoBotonGuardar:ControlDinamico = ControlDinamico(3, "Guardar")
 
         btnLimpiar.id = eventoBotonLimpiar.cod;
         btnLimpiar.text =  eventoBotonLimpiar.nombre;
@@ -230,9 +235,9 @@ class AltasFragment : Fragment() {
         val contenedorBotones:LinearLayout = LinearLayout(this.context);
         contenedorBotones.orientation = LinearLayout.HORIZONTAL;
 
-        contenedorFecha.setLayoutParams(ActionBar.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,ViewGroup.LayoutParams.MATCH_PARENT));
+        contenedorFecha.setLayoutParams(ActionBar.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
         contenedorFecha.orientation = LinearLayout.HORIZONTAL;
-        contenedorProveedor.setLayoutParams(ActionBar.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,ViewGroup.LayoutParams.MATCH_PARENT));
+        contenedorProveedor.setLayoutParams(ActionBar.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
         contenedorProveedor.orientation = LinearLayout.HORIZONTAL;
 
 
@@ -241,10 +246,10 @@ class AltasFragment : Fragment() {
 
         txtFecha.width = 800;
         txtFecha.maxLines = 1;
-        txtFecha.setLayoutParams(ActionBar.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT,ViewGroup.LayoutParams.WRAP_CONTENT));
+        txtFecha.setLayoutParams(ActionBar.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT));
         txtProveedor.width = 800;
         txtProveedor.maxLines = 1;
-        txtProveedor.setLayoutParams(ActionBar.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT,ViewGroup.LayoutParams.WRAP_CONTENT));
+        txtProveedor.setLayoutParams(ActionBar.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT));
 
         btnCancelar.text = "Cancelar";
         btnGuardar.text = "Guardar";
@@ -298,9 +303,9 @@ class AltasFragment : Fragment() {
         val btnGuardar:Button = Button(this.context);
         val btnLimpiar:Button = Button(this.context);
 
-        var eventoBotonLimpiar:ControlDinamico = ControlDinamico(1,"Limpiar")
-        var eventoBotonCancelar:ControlDinamico = ControlDinamico(2,"Cancelar")
-        var eventoBotonGuardar:ControlDinamico = ControlDinamico(3,"Guardar")
+        var eventoBotonLimpiar:ControlDinamico = ControlDinamico(1, "Limpiar")
+        var eventoBotonCancelar:ControlDinamico = ControlDinamico(2, "Cancelar")
+        var eventoBotonGuardar:ControlDinamico = ControlDinamico(3, "Guardar")
 
         btnLimpiar.id = eventoBotonLimpiar.cod;
         btnLimpiar.text =  eventoBotonLimpiar.nombre;
@@ -320,15 +325,15 @@ class AltasFragment : Fragment() {
         val contenedorBotones:LinearLayout = LinearLayout(this.context);
         contenedorBotones.orientation = LinearLayout.HORIZONTAL;
 
-        contenedorNombre.setLayoutParams(ActionBar.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,ViewGroup.LayoutParams.MATCH_PARENT));
+        contenedorNombre.setLayoutParams(ActionBar.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
         contenedorNombre.orientation = LinearLayout.HORIZONTAL;
-        contenedorTipo.setLayoutParams(ActionBar.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,ViewGroup.LayoutParams.MATCH_PARENT));
+        contenedorTipo.setLayoutParams(ActionBar.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
         contenedorTipo.orientation = LinearLayout.HORIZONTAL;
-        contenedorPrecio.setLayoutParams(ActionBar.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,ViewGroup.LayoutParams.MATCH_PARENT));
+        contenedorPrecio.setLayoutParams(ActionBar.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
         contenedorPrecio.orientation = LinearLayout.HORIZONTAL;
-        contenedorStock.setLayoutParams(ActionBar.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,ViewGroup.LayoutParams.MATCH_PARENT));
+        contenedorStock.setLayoutParams(ActionBar.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
         contenedorStock.orientation = LinearLayout.HORIZONTAL;
-        contenedorBotones.setLayoutParams(ActionBar.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,ViewGroup.LayoutParams.MATCH_PARENT));
+        contenedorBotones.setLayoutParams(ActionBar.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
         contenedorBotones.orientation = LinearLayout.HORIZONTAL;
 
         txtNombre.hint = "Introduzca Nombre";
@@ -337,14 +342,14 @@ class AltasFragment : Fragment() {
 
         txtNombre.width = 800;
         txtNombre.maxLines = 1;
-        txtNombre.setLayoutParams(ActionBar.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT,ViewGroup.LayoutParams.WRAP_CONTENT));
+        txtNombre.setLayoutParams(ActionBar.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT));
         txtPrecio.width = 800;
         txtPrecio.maxLines = 1;
-        txtPrecio.setLayoutParams(ActionBar.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT,ViewGroup.LayoutParams.WRAP_CONTENT));
+        txtPrecio.setLayoutParams(ActionBar.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT));
         txtPrecio.inputType = InputType.TYPE_NUMBER_FLAG_DECIMAL;
         txtStock.width = 800;
         txtStock.maxLines = 1;
-        txtStock.setLayoutParams(ActionBar.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT,ViewGroup.LayoutParams.WRAP_CONTENT));
+        txtStock.setLayoutParams(ActionBar.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT));
         txtStock.inputType = InputType.TYPE_NUMBER_FLAG_DECIMAL;
 
 
@@ -405,9 +410,18 @@ class AltasFragment : Fragment() {
         val btnGuardar:Button = Button(this.context);
         val btnLimpiar:Button = Button(this.context);
 
-        var eventoBotonLimpiar:ControlDinamico = ControlDinamico(1,"Limpiar")
-        var eventoBotonCancelar:ControlDinamico = ControlDinamico(2,"Cancelar")
-        var eventoBotonGuardar:ControlDinamico = ControlDinamico(3,"Guardar")
+        val eventoBotonLimpiar:ControlDinamico = ControlDinamico(1, "Limpiar")
+        val eventoBotonCancelar:ControlDinamico = ControlDinamico(2, "Cancelar")
+        val eventoBotonGuardar:ControlDinamico = ControlDinamico(3, "Guardar")
+
+        /*val eventoBotonGuardar:ControlDinamico = ControlDinamico(3, "Guardar")
+        val eventoBotonGuardar:ControlDinamico = ControlDinamico(3, "Guardar")
+        val eventoBotonGuardar:ControlDinamico = ControlDinamico(3, "Guardar")
+        val eventoBotonGuardar:ControlDinamico = ControlDinamico(3, "Guardar")
+        val eventoBotonGuardar:ControlDinamico = ControlDinamico(3, "Guardar")
+        val eventoBotonGuardar:ControlDinamico = ControlDinamico(3, "Guardar")
+        val eventoBotonGuardar:ControlDinamico = ControlDinamico(3, "Guardar")*/
+
 
         btnLimpiar.id = eventoBotonLimpiar.cod;
         btnLimpiar.text =  eventoBotonLimpiar.nombre;
@@ -434,21 +448,21 @@ class AltasFragment : Fragment() {
         val contenedorBotones:LinearLayout = LinearLayout(this.context);
         contenedorBotones.orientation = LinearLayout.HORIZONTAL;
 
-        contenedorIdentificacion.setLayoutParams(ActionBar.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,ViewGroup.LayoutParams.MATCH_PARENT));
+        contenedorIdentificacion.setLayoutParams(ActionBar.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
         contenedorIdentificacion.orientation = LinearLayout.HORIZONTAL;
-        contenedorDireccion.setLayoutParams(ActionBar.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,ViewGroup.LayoutParams.MATCH_PARENT));
+        contenedorDireccion.setLayoutParams(ActionBar.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
         contenedorDireccion.orientation = LinearLayout.HORIZONTAL;
-        contenedorProvincia.setLayoutParams(ActionBar.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,ViewGroup.LayoutParams.MATCH_PARENT));
+        contenedorProvincia.setLayoutParams(ActionBar.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
         contenedorProvincia.orientation = LinearLayout.HORIZONTAL;
-        contenedorCiudad.setLayoutParams(ActionBar.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,ViewGroup.LayoutParams.MATCH_PARENT));
+        contenedorCiudad.setLayoutParams(ActionBar.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
         contenedorCiudad.orientation = LinearLayout.HORIZONTAL;
-        contenedorcPostal.setLayoutParams(ActionBar.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,ViewGroup.LayoutParams.MATCH_PARENT));
+        contenedorcPostal.setLayoutParams(ActionBar.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
         contenedorcPostal.orientation = LinearLayout.HORIZONTAL;
-        contenedorBotones.setLayoutParams(ActionBar.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,ViewGroup.LayoutParams.MATCH_PARENT));
+        contenedorBotones.setLayoutParams(ActionBar.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
         contenedorBotones.orientation = LinearLayout.HORIZONTAL;
-        contenedorEmail.setLayoutParams(ActionBar.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,ViewGroup.LayoutParams.MATCH_PARENT));
+        contenedorEmail.setLayoutParams(ActionBar.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
         contenedorEmail.orientation = LinearLayout.HORIZONTAL;
-        contenedorTelefono.setLayoutParams(ActionBar.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,ViewGroup.LayoutParams.MATCH_PARENT));
+        contenedorTelefono.setLayoutParams(ActionBar.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
         contenedorTelefono.orientation = LinearLayout.HORIZONTAL;
 
 
@@ -462,28 +476,28 @@ class AltasFragment : Fragment() {
 
         txtCiudad.width = 800;
         txtCiudad.maxLines = 1;
-        txtCiudad.setLayoutParams(ActionBar.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT,ViewGroup.LayoutParams.WRAP_CONTENT));
+        txtCiudad.setLayoutParams(ActionBar.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT));
         txtDireccion.width = 800;
         txtDireccion.maxLines = 1;
-        txtDireccion.setLayoutParams(ActionBar.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT,ViewGroup.LayoutParams.WRAP_CONTENT));
+        txtDireccion.setLayoutParams(ActionBar.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT));
         txtEmail.width = 800;
         txtEmail.maxLines = 1;
-        txtEmail.setLayoutParams(ActionBar.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT,ViewGroup.LayoutParams.WRAP_CONTENT));
+        txtEmail.setLayoutParams(ActionBar.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT));
         txtEmail.inputType = InputType.TYPE_TEXT_VARIATION_EMAIL_ADDRESS
         txtTelefono.width = 800;
         txtTelefono.maxLines = 1;
-        txtTelefono.setLayoutParams(ActionBar.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT,ViewGroup.LayoutParams.WRAP_CONTENT));
+        txtTelefono.setLayoutParams(ActionBar.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT));
         txtTelefono.inputType = InputType.TYPE_CLASS_PHONE
         txtcPostal.width = 800;
         txtcPostal.maxLines = 1;
-        txtcPostal.setLayoutParams(ActionBar.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT,ViewGroup.LayoutParams.WRAP_CONTENT));
+        txtcPostal.setLayoutParams(ActionBar.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT));
         txtcPostal.inputType = InputType.TYPE_TEXT_VARIATION_POSTAL_ADDRESS
         txtIdentificacion.width = 800;
         txtIdentificacion.maxLines = 1;
-        txtIdentificacion.setLayoutParams(ActionBar.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT,ViewGroup.LayoutParams.WRAP_CONTENT));
+        txtIdentificacion.setLayoutParams(ActionBar.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT));
         txtProvincia.width = 800;
         txtProvincia.maxLines = 1;
-        txtProvincia.setLayoutParams(ActionBar.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT,ViewGroup.LayoutParams.WRAP_CONTENT));
+        txtProvincia.setLayoutParams(ActionBar.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT));
 
 
         btnCancelar.text = "Cancelar";
@@ -529,6 +543,7 @@ class AltasFragment : Fragment() {
 
         botonGuardar.setOnClickListener {
 
+             annadirDelegacion(txtIdentificacion.text.toString(),txtDireccion.text.toString(),txtProvincia.text.toString(),txtCiudad.text.toString(),txtcPostal.text.toString(),txtEmail.text.toString(),txtTelefono.text.toString())
 
         }
         val botonCancelar:Button = view?.findViewById(eventoBotonCancelar.cod)
@@ -567,9 +582,9 @@ class AltasFragment : Fragment() {
         contenedorBotones.orientation = LinearLayout.HORIZONTAL;
 
 
-        var eventoBotonLimpiar:ControlDinamico = ControlDinamico(1,"Limpiar")
-        var eventoBotonCancelar:ControlDinamico = ControlDinamico(2,"Cancelar")
-        var eventoBotonGuardar:ControlDinamico = ControlDinamico(3,"Guardar")
+        var eventoBotonLimpiar:ControlDinamico = ControlDinamico(1, "Limpiar")
+        var eventoBotonCancelar:ControlDinamico = ControlDinamico(2, "Cancelar")
+        var eventoBotonGuardar:ControlDinamico = ControlDinamico(3, "Guardar")
 
         btnLimpiar.id = eventoBotonLimpiar.cod;
         btnLimpiar.text =  eventoBotonLimpiar.nombre;
@@ -578,19 +593,19 @@ class AltasFragment : Fragment() {
         btnCancelar.id = eventoBotonCancelar.cod;
         btnCancelar.text = eventoBotonCancelar.nombre;
 
-        contenedorSpCliente.setLayoutParams(ActionBar.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,ViewGroup.LayoutParams.MATCH_PARENT));
+        contenedorSpCliente.setLayoutParams(ActionBar.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
         contenedorSpCliente.orientation = LinearLayout.HORIZONTAL;
-        contenedorSpTipo.setLayoutParams(ActionBar.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,ViewGroup.LayoutParams.MATCH_PARENT));
+        contenedorSpTipo.setLayoutParams(ActionBar.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
         contenedorSpTipo.orientation = LinearLayout.HORIZONTAL;
-        contenedorFecha.setLayoutParams(ActionBar.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,ViewGroup.LayoutParams.MATCH_PARENT));
+        contenedorFecha.setLayoutParams(ActionBar.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
         contenedorFecha.orientation = LinearLayout.HORIZONTAL;
-        contenedorDetalles.setLayoutParams(ActionBar.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,ViewGroup.LayoutParams.MATCH_PARENT));
+        contenedorDetalles.setLayoutParams(ActionBar.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
         contenedorDetalles.orientation = LinearLayout.HORIZONTAL;
-        contenedorObservaciones.setLayoutParams(ActionBar.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,ViewGroup.LayoutParams.MATCH_PARENT));
+        contenedorObservaciones.setLayoutParams(ActionBar.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
         contenedorObservaciones.orientation = LinearLayout.HORIZONTAL;
-        contenedorBotones.setLayoutParams(ActionBar.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,ViewGroup.LayoutParams.MATCH_PARENT));
+        contenedorBotones.setLayoutParams(ActionBar.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
         contenedorBotones.orientation = LinearLayout.HORIZONTAL;
-        contenedorSpEstado.setLayoutParams(ActionBar.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,ViewGroup.LayoutParams.MATCH_PARENT));
+        contenedorSpEstado.setLayoutParams(ActionBar.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
         contenedorSpEstado.orientation = LinearLayout.HORIZONTAL;
 
         txtFecha.hint = "Introduzca Fecha";
@@ -600,13 +615,13 @@ class AltasFragment : Fragment() {
         txtFecha.width = 800;
         txtFecha.maxLines = 1;
         txtFecha.inputType = InputType.TYPE_CLASS_DATETIME
-        txtFecha.setLayoutParams(ActionBar.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT,ViewGroup.LayoutParams.WRAP_CONTENT));
+        txtFecha.setLayoutParams(ActionBar.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT));
         txtDetalles.width = 800;
         txtDetalles.maxLines = 6;
-        txtDetalles.setLayoutParams(ActionBar.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT,ViewGroup.LayoutParams.WRAP_CONTENT));
+        txtDetalles.setLayoutParams(ActionBar.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT));
         txtObservaciones.width = 800;
         txtObservaciones.maxLines = 6;
-        txtObservaciones.setLayoutParams(ActionBar.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT,ViewGroup.LayoutParams.WRAP_CONTENT));
+        txtObservaciones.setLayoutParams(ActionBar.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT));
 
         btnCancelar.text = "Cancelar";
         btnGuardar.text = "Guardar";
@@ -679,9 +694,9 @@ class AltasFragment : Fragment() {
         val contenedorBotones:LinearLayout = LinearLayout(this.context);
         contenedorBotones.orientation = LinearLayout.HORIZONTAL;
 
-        var eventoBotonLimpiar:ControlDinamico = ControlDinamico(1,"Limpiar")
-        var eventoBotonCancelar:ControlDinamico = ControlDinamico(2,"Cancelar")
-        var eventoBotonGuardar:ControlDinamico = ControlDinamico(3,"Guardar")
+        var eventoBotonLimpiar:ControlDinamico = ControlDinamico(1, "Limpiar")
+        var eventoBotonCancelar:ControlDinamico = ControlDinamico(2, "Cancelar")
+        var eventoBotonGuardar:ControlDinamico = ControlDinamico(3, "Guardar")
 
         btnLimpiar.id = eventoBotonLimpiar.cod;
         btnLimpiar.text =  eventoBotonLimpiar.nombre;
@@ -690,13 +705,13 @@ class AltasFragment : Fragment() {
         btnCancelar.id = eventoBotonCancelar.cod;
         btnCancelar.text = eventoBotonCancelar.nombre;
 
-        contenedorSpCliente.setLayoutParams(ActionBar.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,ViewGroup.LayoutParams.MATCH_PARENT));
+        contenedorSpCliente.setLayoutParams(ActionBar.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
         contenedorSpCliente.orientation = LinearLayout.HORIZONTAL;
-        contenedorFecha.setLayoutParams(ActionBar.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,ViewGroup.LayoutParams.MATCH_PARENT));
+        contenedorFecha.setLayoutParams(ActionBar.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
         contenedorFecha.orientation = LinearLayout.HORIZONTAL;
-        contenedorPrecio.setLayoutParams(ActionBar.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,ViewGroup.LayoutParams.MATCH_PARENT));
+        contenedorPrecio.setLayoutParams(ActionBar.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
         contenedorPrecio.orientation = LinearLayout.HORIZONTAL;
-        contenedorConcepto.setLayoutParams(ActionBar.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,ViewGroup.LayoutParams.MATCH_PARENT));
+        contenedorConcepto.setLayoutParams(ActionBar.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
         contenedorConcepto.orientation = LinearLayout.HORIZONTAL;
 
         txtFecha.hint = "Introduzca Fecha"
@@ -707,14 +722,14 @@ class AltasFragment : Fragment() {
         txtFecha.width = 800;
         txtFecha.maxLines = 1;
         txtFecha.inputType = InputType.TYPE_CLASS_DATETIME
-        txtFecha.setLayoutParams(ActionBar.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT,ViewGroup.LayoutParams.WRAP_CONTENT));
+        txtFecha.setLayoutParams(ActionBar.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT));
         txtPrecioSinIva.width = 800;
         txtPrecioSinIva.maxLines = 1;
         txtPrecioSinIva.inputType = InputType.TYPE_CLASS_NUMBER
-        txtPrecioSinIva.setLayoutParams(ActionBar.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT,ViewGroup.LayoutParams.WRAP_CONTENT));
+        txtPrecioSinIva.setLayoutParams(ActionBar.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT));
         txtConcepto.width = 800;
         txtConcepto.maxLines = 1;
-        txtConcepto.setLayoutParams(ActionBar.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT,ViewGroup.LayoutParams.WRAP_CONTENT));
+        txtConcepto.setLayoutParams(ActionBar.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT));
 
         btnCancelar.text = "Cancelar"
         btnGuardar.text = "Guardar"
@@ -814,9 +829,9 @@ class AltasFragment : Fragment() {
         val contenedorBotones:LinearLayout = LinearLayout(this.context);
         contenedorBotones.orientation = LinearLayout.HORIZONTAL;
 
-        var eventoBotonLimpiar:ControlDinamico = ControlDinamico(1,"Limpiar")
-        var eventoBotonCancelar:ControlDinamico = ControlDinamico(2,"Cancelar")
-        var eventoBotonGuardar:ControlDinamico = ControlDinamico(3,"Guardar")
+        var eventoBotonLimpiar:ControlDinamico = ControlDinamico(1, "Limpiar")
+        var eventoBotonCancelar:ControlDinamico = ControlDinamico(2, "Cancelar")
+        var eventoBotonGuardar:ControlDinamico = ControlDinamico(3, "Guardar")
 
         btnLimpiar.id = eventoBotonLimpiar.cod;
         btnLimpiar.text =  eventoBotonLimpiar.nombre;
@@ -825,31 +840,31 @@ class AltasFragment : Fragment() {
         btnCancelar.id = eventoBotonCancelar.cod;
         btnCancelar.text = eventoBotonCancelar.nombre;
 
-        contenedorUsuario.setLayoutParams(ActionBar.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,ViewGroup.LayoutParams.MATCH_PARENT));
+        contenedorUsuario.setLayoutParams(ActionBar.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
         contenedorUsuario.orientation = LinearLayout.HORIZONTAL;
-        contenedorPassword.setLayoutParams(ActionBar.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,ViewGroup.LayoutParams.MATCH_PARENT));
+        contenedorPassword.setLayoutParams(ActionBar.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
         contenedorPassword.orientation = LinearLayout.HORIZONTAL;
-        contenedorSlDelegacion.setLayoutParams(ActionBar.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,ViewGroup.LayoutParams.MATCH_PARENT));
+        contenedorSlDelegacion.setLayoutParams(ActionBar.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
         contenedorSlDelegacion.orientation = LinearLayout.HORIZONTAL;
-        contenedorNombre.setLayoutParams(ActionBar.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,ViewGroup.LayoutParams.MATCH_PARENT));
+        contenedorNombre.setLayoutParams(ActionBar.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
         contenedorNombre.orientation = LinearLayout.HORIZONTAL;
-        contenedorApellidos.setLayoutParams(ActionBar.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,ViewGroup.LayoutParams.MATCH_PARENT));
+        contenedorApellidos.setLayoutParams(ActionBar.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
         contenedorApellidos.orientation = LinearLayout.HORIZONTAL;
-        contenedorCiudad.setLayoutParams(ActionBar.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,ViewGroup.LayoutParams.MATCH_PARENT));
+        contenedorCiudad.setLayoutParams(ActionBar.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
         contenedorCiudad.orientation = LinearLayout.HORIZONTAL;
-        contenedorDireccion.setLayoutParams(ActionBar.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,ViewGroup.LayoutParams.MATCH_PARENT));
+        contenedorDireccion.setLayoutParams(ActionBar.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
         contenedorDireccion.orientation = LinearLayout.HORIZONTAL;
-        contenedorDni.setLayoutParams(ActionBar.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,ViewGroup.LayoutParams.MATCH_PARENT));
+        contenedorDni.setLayoutParams(ActionBar.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
         contenedorDni.orientation = LinearLayout.HORIZONTAL;
-        contenedorEmail.setLayoutParams(ActionBar.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,ViewGroup.LayoutParams.MATCH_PARENT));
+        contenedorEmail.setLayoutParams(ActionBar.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
         contenedorEmail.orientation = LinearLayout.HORIZONTAL;
-        contenedorProvincia.setLayoutParams(ActionBar.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,ViewGroup.LayoutParams.MATCH_PARENT));
+        contenedorProvincia.setLayoutParams(ActionBar.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
         contenedorProvincia.orientation = LinearLayout.HORIZONTAL;
-        contenedorTelefono.setLayoutParams(ActionBar.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,ViewGroup.LayoutParams.MATCH_PARENT));
+        contenedorTelefono.setLayoutParams(ActionBar.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
         contenedorTelefono.orientation = LinearLayout.HORIZONTAL;
-        contenedorcPostal.setLayoutParams(ActionBar.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,ViewGroup.LayoutParams.MATCH_PARENT));
+        contenedorcPostal.setLayoutParams(ActionBar.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
         contenedorcPostal.orientation = LinearLayout.HORIZONTAL;
-        contenedorRol.setLayoutParams(ActionBar.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,ViewGroup.LayoutParams.MATCH_PARENT));
+        contenedorRol.setLayoutParams(ActionBar.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
         contenedorRol.orientation = LinearLayout.HORIZONTAL;
 
         txtUsuario.hint = "Introduzca Usuario"
@@ -868,40 +883,40 @@ class AltasFragment : Fragment() {
         txtPassword.width = 800;
         txtPassword.maxLines = 1;
         txtPassword.inputType = InputType.TYPE_TEXT_VARIATION_PASSWORD
-        txtPassword.setLayoutParams(ActionBar.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT,ViewGroup.LayoutParams.WRAP_CONTENT));
+        txtPassword.setLayoutParams(ActionBar.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT));
         txtUsuario.width = 800;
         txtUsuario.maxLines = 1;
-        txtUsuario.setLayoutParams(ActionBar.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT,ViewGroup.LayoutParams.WRAP_CONTENT));
+        txtUsuario.setLayoutParams(ActionBar.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT));
         txtNombre.width = 800;
         txtNombre.maxLines = 1;
-        txtNombre.setLayoutParams(ActionBar.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT,ViewGroup.LayoutParams.WRAP_CONTENT));
+        txtNombre.setLayoutParams(ActionBar.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT));
         txtApellidos.width= 800;
         txtApellidos.maxLines = 1
-        txtApellidos.setLayoutParams(ActionBar.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT,ViewGroup.LayoutParams.WRAP_CONTENT));
+        txtApellidos.setLayoutParams(ActionBar.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT));
         txtCiudad.width= 800;
         txtCiudad.maxLines = 1
-        txtCiudad.setLayoutParams(ActionBar.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT,ViewGroup.LayoutParams.WRAP_CONTENT));
+        txtCiudad.setLayoutParams(ActionBar.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT));
         txtDireccion.width= 800;
         txtDireccion.maxLines = 1
-        txtDireccion.setLayoutParams(ActionBar.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT,ViewGroup.LayoutParams.WRAP_CONTENT));
+        txtDireccion.setLayoutParams(ActionBar.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT));
         txtEmail.width= 800;
         txtEmail.maxLines = 1
-        txtEmail.setLayoutParams(ActionBar.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT,ViewGroup.LayoutParams.WRAP_CONTENT));
+        txtEmail.setLayoutParams(ActionBar.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT));
         txtProvincia.width= 800;
-        txtProvincia.setLayoutParams(ActionBar.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT,ViewGroup.LayoutParams.WRAP_CONTENT));
+        txtProvincia.setLayoutParams(ActionBar.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT));
         txtcPostal.width= 800;
         txtcPostal.maxLines = 1
         txtcPostal.inputType = InputType.TYPE_TEXT_VARIATION_POSTAL_ADDRESS;
-        txtcPostal.setLayoutParams(ActionBar.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT,ViewGroup.LayoutParams.WRAP_CONTENT));
+        txtcPostal.setLayoutParams(ActionBar.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT));
         txtTelefono.width= 800
         txtTelefono.maxLines = 1
         txtTelefono.inputType = InputType.TYPE_CLASS_PHONE
-        txtTelefono.setLayoutParams(ActionBar.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT,ViewGroup.LayoutParams.WRAP_CONTENT));
+        txtTelefono.setLayoutParams(ActionBar.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT));
         txtDni.width= 800;
-        txtDni.setLayoutParams(ActionBar.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT,ViewGroup.LayoutParams.WRAP_CONTENT));
+        txtDni.setLayoutParams(ActionBar.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT));
         txtNacimiento.width= 800;
         txtNacimiento.maxLines = 1
-        txtNacimiento.setLayoutParams(ActionBar.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT,ViewGroup.LayoutParams.WRAP_CONTENT));
+        txtNacimiento.setLayoutParams(ActionBar.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT));
         txtNacimiento.inputType = InputType.TYPE_CLASS_DATETIME;
 
         btnCancelar.text = "Cancelar"
@@ -1028,9 +1043,9 @@ class AltasFragment : Fragment() {
         val contenedorBotones:LinearLayout = LinearLayout(this.context);
         contenedorBotones.orientation = LinearLayout.HORIZONTAL;
 
-        var eventoBotonLimpiar:ControlDinamico = ControlDinamico(1,"Limpiar")
-        var eventoBotonCancelar:ControlDinamico = ControlDinamico(2,"Cancelar")
-        var eventoBotonGuardar:ControlDinamico = ControlDinamico(3,"Guardar")
+        var eventoBotonLimpiar:ControlDinamico = ControlDinamico(1, "Limpiar")
+        var eventoBotonCancelar:ControlDinamico = ControlDinamico(2, "Cancelar")
+        var eventoBotonGuardar:ControlDinamico = ControlDinamico(3, "Guardar")
 
         btnLimpiar.id = eventoBotonLimpiar.cod;
         btnLimpiar.text =  eventoBotonLimpiar.nombre;
@@ -1042,25 +1057,25 @@ class AltasFragment : Fragment() {
 
         cbEstado.text = "Alta";
 
-        contenedorNombre.setLayoutParams(ActionBar.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,ViewGroup.LayoutParams.MATCH_PARENT));
+        contenedorNombre.setLayoutParams(ActionBar.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
         contenedorNombre.orientation = LinearLayout.HORIZONTAL;
-        contenedorApellidos.setLayoutParams(ActionBar.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,ViewGroup.LayoutParams.MATCH_PARENT));
+        contenedorApellidos.setLayoutParams(ActionBar.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
         contenedorApellidos.orientation = LinearLayout.HORIZONTAL;
-        contenedorCiudad.setLayoutParams(ActionBar.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,ViewGroup.LayoutParams.MATCH_PARENT));
+        contenedorCiudad.setLayoutParams(ActionBar.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
         contenedorCiudad.orientation = LinearLayout.HORIZONTAL;
-        contenedorDireccion.setLayoutParams(ActionBar.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,ViewGroup.LayoutParams.MATCH_PARENT));
+        contenedorDireccion.setLayoutParams(ActionBar.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
         contenedorDireccion.orientation = LinearLayout.HORIZONTAL;
-        contenedorDni.setLayoutParams(ActionBar.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,ViewGroup.LayoutParams.MATCH_PARENT));
+        contenedorDni.setLayoutParams(ActionBar.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
         contenedorDni.orientation = LinearLayout.HORIZONTAL;
-        contenedorEmail.setLayoutParams(ActionBar.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,ViewGroup.LayoutParams.MATCH_PARENT));
+        contenedorEmail.setLayoutParams(ActionBar.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
         contenedorEmail.orientation = LinearLayout.HORIZONTAL;
-        contenedorProvincia.setLayoutParams(ActionBar.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,ViewGroup.LayoutParams.MATCH_PARENT));
+        contenedorProvincia.setLayoutParams(ActionBar.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
         contenedorProvincia.orientation = LinearLayout.HORIZONTAL;
-        contenedorTelefono.setLayoutParams(ActionBar.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,ViewGroup.LayoutParams.MATCH_PARENT));
+        contenedorTelefono.setLayoutParams(ActionBar.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
         contenedorTelefono.orientation = LinearLayout.HORIZONTAL;
-        contenedorcPostal.setLayoutParams(ActionBar.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,ViewGroup.LayoutParams.MATCH_PARENT));
+        contenedorcPostal.setLayoutParams(ActionBar.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
         contenedorcPostal.orientation = LinearLayout.HORIZONTAL;
-        contenedorEstado.setLayoutParams(ActionBar.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,ViewGroup.LayoutParams.MATCH_PARENT));
+        contenedorEstado.setLayoutParams(ActionBar.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
         contenedorEstado.orientation = LinearLayout.HORIZONTAL;
 
         txtNombre.hint = "Introduzca Nombre";
@@ -1077,34 +1092,34 @@ class AltasFragment : Fragment() {
 
         txtNombre.width = 800;
         txtNombre.maxLines = 1;
-        txtNombre.setLayoutParams(ActionBar.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT,ViewGroup.LayoutParams.WRAP_CONTENT));
+        txtNombre.setLayoutParams(ActionBar.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT));
         txtApellidos.width= 800;
         txtApellidos.maxLines = 1
-        txtApellidos.setLayoutParams(ActionBar.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT,ViewGroup.LayoutParams.WRAP_CONTENT));
+        txtApellidos.setLayoutParams(ActionBar.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT));
         txtCiudad.width= 800;
         txtCiudad.maxLines = 1
-        txtCiudad.setLayoutParams(ActionBar.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT,ViewGroup.LayoutParams.WRAP_CONTENT));
+        txtCiudad.setLayoutParams(ActionBar.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT));
         txtDireccion.width= 800;
         txtDireccion.maxLines = 1
-        txtDireccion.setLayoutParams(ActionBar.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT,ViewGroup.LayoutParams.WRAP_CONTENT));
+        txtDireccion.setLayoutParams(ActionBar.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT));
         txtEmail.width= 800;
         txtEmail.maxLines = 1
-        txtEmail.setLayoutParams(ActionBar.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT,ViewGroup.LayoutParams.WRAP_CONTENT));
+        txtEmail.setLayoutParams(ActionBar.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT));
         txtProvincia.width= 800;
-        txtProvincia.setLayoutParams(ActionBar.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT,ViewGroup.LayoutParams.WRAP_CONTENT));
+        txtProvincia.setLayoutParams(ActionBar.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT));
         txtcPostal.width= 800;
         txtcPostal.maxLines = 1
         txtcPostal.inputType = InputType.TYPE_CLASS_NUMBER;
-        txtcPostal.setLayoutParams(ActionBar.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT,ViewGroup.LayoutParams.WRAP_CONTENT));
+        txtcPostal.setLayoutParams(ActionBar.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT));
         txtTelefono.width= 800
         txtTelefono.maxLines = 1
         txtTelefono.inputType = InputType.TYPE_CLASS_PHONE
-        txtTelefono.setLayoutParams(ActionBar.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT,ViewGroup.LayoutParams.WRAP_CONTENT));
+        txtTelefono.setLayoutParams(ActionBar.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT));
         txtDni.width= 800;
-        txtDni.setLayoutParams(ActionBar.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT,ViewGroup.LayoutParams.WRAP_CONTENT));
+        txtDni.setLayoutParams(ActionBar.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT));
         txtNacimiento.width= 800;
         txtNacimiento.maxLines = 1
-        txtNacimiento.setLayoutParams(ActionBar.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT,ViewGroup.LayoutParams.WRAP_CONTENT));
+        txtNacimiento.setLayoutParams(ActionBar.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT));
         txtNacimiento.inputType = InputType.TYPE_CLASS_DATETIME;
 
         btnCancelar.text = "Cancelar"
@@ -1171,4 +1186,38 @@ class AltasFragment : Fragment() {
 
         }
     }
+
+
+    fun annadirDelegacion(identificacion:String,direccion:String,provincia:String,ciudad:String,postal:String,email:String,telefono:String){
+
+        val queue = Volley.newRequestQueue(this.context)
+        val url = "http://192.168.1.141/symfony/web/app.php/movil/buscar/delegacion"
+        val jsonObject= JSONObject();
+
+        jsonObject.put("identificacion",identificacion);
+        jsonObject.put("direccion",direccion);
+        jsonObject.put("provincia",provincia);
+        jsonObject.put("ciudad",ciudad);
+        jsonObject.put("cPostal",postal);
+        jsonObject.put("email",email);
+        jsonObject.put("telefono",telefono);
+
+        val jsonObjectRequest = JsonObjectRequest(url,jsonObject,
+
+                { response ->
+
+                    Toast.makeText(this.context,response.toString(),Toast.LENGTH_SHORT).show();
+
+                },
+
+                {   it->
+
+                    Toast.makeText(this.context,it.message.toString(),Toast.LENGTH_SHORT).show();
+                }
+
+        )
+
+        queue.add(jsonObjectRequest);
+    }
+
 }
