@@ -5,11 +5,13 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ArrayAdapter
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.android.volley.Request
 import com.android.volley.Response
 import com.android.volley.toolbox.JsonObjectRequest
+import com.android.volley.toolbox.StringRequest
 import com.android.volley.toolbox.Volley
 import com.example.proyectoampliacion.Adaptadores.*
 import com.example.proyectoampliacion.Classes_Auxiliares.*
@@ -87,69 +89,14 @@ class ListarFragment : Fragment() {
 
         }
 
-        btnBuscar.setOnClickListener { it->
+        btnBuscar.setOnClickListener { it ->
 
-            var buscar:String = edtBuscar.text.toString()
-
-            when(tipo){
-
-                0 ->{
-                    obtenerDatosVolleyAlbaran(view);
-                }
-                1 ->{
-                    obtenerDatosVolleyProductos(view)
-                }
-                2 ->{
-                    obtenerDatosVolleyCliente(view);
-                }
-                3 ->{
-                    busquedaDelegaciones(view,buscar)
-                }
-                4 ->{
-                    obtenerDatosVolleyEmpleados(view);
-                }
-                5 -> {
-                    obtenerDatosVolleyFactura(view);
-                }
-                6 ->{
-                    obtenerDatosVolleyPartes(view);
-                }
-                7 ->{
-                    obtenerDatosVolleyPresupuestos(view);
-                }
-            }
 
         }
 
-
     }
 
-    fun busquedaDelegaciones(view: View,busqueda:String){
 
-        val queue = Volley.newRequestQueue(view.context);
-        val url = "http://192.168.1.141/symfony/web/app.php/movil/buscar/delegacion";
-
-        val jsonObject = JSONObject();
-        jsonObject.put("delegacion",busqueda);
-
-        val jsonObjectRequest = JsonObjectRequest(url, jsonObject,
-
-                { response ->
-
-                    Toast.makeText(view.context, response.toString(), Toast.LENGTH_SHORT).show();
-
-
-                },
-                {  error ->
-
-                    Toast.makeText(view.context, error.message.toString(), Toast.LENGTH_SHORT).show();
-
-                }
-
-                )
-
-        queue.add(jsonObjectRequest);
-    }
 
     fun obtenerDatosVolleyDelegaciones(view: View){
 
@@ -562,6 +509,7 @@ class ListarFragment : Fragment() {
         val adaptador = MiAdaptadorDelegacion(view.context,delegaciones)
 
         lvClientes.adapter = adaptador
+
     }
 
     fun mostarProductos(view: View,productos:MutableList<Almacen> ){
