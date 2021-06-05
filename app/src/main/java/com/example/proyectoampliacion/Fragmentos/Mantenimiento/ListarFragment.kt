@@ -151,7 +151,6 @@ class ListarFragment : Fragment() {
 
                     var datos = response.toString().split(":{");
 
-                    tvPrueba.text = datos[1].split(',')[5].split(':')[1].split('}')[0]
 
 
                     for (i in 1..datos.count() - 1){
@@ -276,7 +275,6 @@ class ListarFragment : Fragment() {
 
                     }
 
-                    tvPrueba.text = empleados.count().toString()
                 },
                 { error ->
 
@@ -302,7 +300,6 @@ class ListarFragment : Fragment() {
 
                     var datos = response.toString().split(":{");
 
-                    tvPrueba.text = datos[1].split(":[")[2].split(']')[1].split(',')[4].split(':')[1]
 
                     for (i in 1..datos.count() - 1){
 
