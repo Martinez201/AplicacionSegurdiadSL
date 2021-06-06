@@ -11,7 +11,10 @@ import android.view.ViewGroup
 import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.isVisible
+import androidx.core.view.marginTop
 import androidx.fragment.app.Fragment
+import androidx.navigation.NavAction
+import androidx.navigation.Navigation
 import com.android.volley.Response
 import com.android.volley.toolbox.JsonObjectRequest
 import com.android.volley.toolbox.Volley
@@ -414,14 +417,6 @@ class AltasFragment : Fragment() {
         val eventoBotonCancelar:ControlDinamico = ControlDinamico(2, "Cancelar")
         val eventoBotonGuardar:ControlDinamico = ControlDinamico(3, "Guardar")
 
-        /*val eventoBotonGuardar:ControlDinamico = ControlDinamico(3, "Guardar")
-        val eventoBotonGuardar:ControlDinamico = ControlDinamico(3, "Guardar")
-        val eventoBotonGuardar:ControlDinamico = ControlDinamico(3, "Guardar")
-        val eventoBotonGuardar:ControlDinamico = ControlDinamico(3, "Guardar")
-        val eventoBotonGuardar:ControlDinamico = ControlDinamico(3, "Guardar")
-        val eventoBotonGuardar:ControlDinamico = ControlDinamico(3, "Guardar")
-        val eventoBotonGuardar:ControlDinamico = ControlDinamico(3, "Guardar")*/
-
 
         btnLimpiar.id = eventoBotonLimpiar.cod;
         btnLimpiar.text =  eventoBotonLimpiar.nombre;
@@ -537,8 +532,16 @@ class AltasFragment : Fragment() {
 
         botonLimpiar.setOnClickListener {
 
+            txtCiudad.setText("");
+            txtDireccion.setText("");
+            txtEmail.setText("");
+            txtIdentificacion.setText("");
+            txtProvincia.setText("");
+            txtTelefono.setText("");
+            txtcPostal.setText("");
 
         }
+
         val botonGuardar:Button = view?.findViewById(eventoBotonGuardar.cod)
 
         botonGuardar.setOnClickListener {
@@ -546,10 +549,12 @@ class AltasFragment : Fragment() {
              annadirDelegacion(txtIdentificacion.text.toString(),txtDireccion.text.toString(),txtProvincia.text.toString(),txtCiudad.text.toString(),txtcPostal.text.toString(),txtEmail.text.toString(),txtTelefono.text.toString())
 
         }
+
         val botonCancelar:Button = view?.findViewById(eventoBotonCancelar.cod)
 
         botonCancelar.setOnClickListener {
 
+            Navigation.findNavController(view).navigate(R.id.menuPrincipalFragment);
 
         }
     }
@@ -568,7 +573,7 @@ class AltasFragment : Fragment() {
 
         val contenedorSpTipo:LinearLayout = LinearLayout(this.context);
         contenedorSpTipo.orientation = LinearLayout.HORIZONTAL;
-        val contenedorFecha:LinearLayout = LinearLayout(this.context);
+        var contenedorFecha:LinearLayout = LinearLayout(this.context);
         contenedorFecha.orientation = LinearLayout.HORIZONTAL;
         val contenedorSpEstado:LinearLayout = LinearLayout(this.context);
         contenedorSpEstado.orientation = LinearLayout.HORIZONTAL;
@@ -607,6 +612,13 @@ class AltasFragment : Fragment() {
         contenedorBotones.orientation = LinearLayout.HORIZONTAL;
         contenedorSpEstado.setLayoutParams(ActionBar.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
         contenedorSpEstado.orientation = LinearLayout.HORIZONTAL;
+
+        contenedorSpTipo.setPadding(0,50,0,0);
+        contenedorDetalles.setPadding(0,50,0,0);
+        contenedorObservaciones.setPadding(0,50,0,0);
+        contenedorFecha.setPadding(0,50,0,0);
+        contenedorSpEstado.setPadding(0,50,0,0);
+        contenedorBotones.setPadding(0,400,0,0);
 
         txtFecha.hint = "Introduzca Fecha";
         txtDetalles.hint = "Introduzca los Detalles";
