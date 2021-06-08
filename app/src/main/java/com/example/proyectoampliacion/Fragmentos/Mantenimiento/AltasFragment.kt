@@ -15,6 +15,7 @@ import androidx.core.view.marginTop
 import androidx.fragment.app.Fragment
 import androidx.navigation.NavAction
 import androidx.navigation.Navigation
+import com.android.volley.Request
 import com.android.volley.Response
 import com.android.volley.toolbox.JsonObjectRequest
 import com.android.volley.toolbox.Volley
@@ -25,6 +26,10 @@ import org.json.JSONObject
 
 
 class AltasFragment : Fragment() {
+
+    var clienteSeleccionado:String? = null;
+    val personas:HashMap<String,String> = HashMap();
+    val nombres:MutableList<String> = mutableListOf();
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -191,19 +196,19 @@ class AltasFragment : Fragment() {
         contenedor.addView(contenedorEstado)
         contenedor.addView(contenedorBotones)
 
-        val botonLimpiar:Button = view?.findViewById(eventoBotonLimpiar.cod)
+        val botonLimpiar:Button = view.findViewById(eventoBotonLimpiar.cod)
 
         botonLimpiar.setOnClickListener {
 
 
         }
-        val botonGuardar:Button = view?.findViewById(eventoBotonGuardar.cod)
+        val botonGuardar:Button = view.findViewById(eventoBotonGuardar.cod)
 
         botonGuardar.setOnClickListener {
 
 
         }
-        val botonCancelar:Button = view?.findViewById(eventoBotonCancelar.cod)
+        val botonCancelar:Button = view.findViewById(eventoBotonCancelar.cod)
 
         botonCancelar.setOnClickListener {
 
@@ -276,19 +281,19 @@ class AltasFragment : Fragment() {
         contenedor.addView(contenedorProveedor);
         contenedor.addView(contenedorBotones)
 
-        val botonLimpiar:Button = view?.findViewById(eventoBotonLimpiar.cod)
+        val botonLimpiar:Button = view.findViewById(eventoBotonLimpiar.cod)
 
         botonLimpiar.setOnClickListener {
 
 
         }
-        val botonGuardar:Button = view?.findViewById(eventoBotonGuardar.cod)
+        val botonGuardar:Button = view.findViewById(eventoBotonGuardar.cod)
 
         botonGuardar.setOnClickListener {
 
 
         }
-        val botonCancelar:Button = view?.findViewById(eventoBotonCancelar.cod)
+        val botonCancelar:Button = view.findViewById(eventoBotonCancelar.cod)
 
         botonCancelar.setOnClickListener {
 
@@ -380,19 +385,19 @@ class AltasFragment : Fragment() {
         contenedor.addView(contenedorStock);
         contenedor.addView(contenedorBotones);
 
-        val botonLimpiar:Button = view?.findViewById(eventoBotonLimpiar.cod)
+        val botonLimpiar:Button = view.findViewById(eventoBotonLimpiar.cod)
 
         botonLimpiar.setOnClickListener {
 
 
         }
-        val botonGuardar:Button = view?.findViewById(eventoBotonGuardar.cod)
+        val botonGuardar:Button = view.findViewById(eventoBotonGuardar.cod)
 
         botonGuardar.setOnClickListener {
 
 
         }
-        val botonCancelar:Button = view?.findViewById(eventoBotonCancelar.cod)
+        val botonCancelar:Button = view.findViewById(eventoBotonCancelar.cod)
 
         botonCancelar.setOnClickListener {
 
@@ -528,7 +533,7 @@ class AltasFragment : Fragment() {
         contenedor.addView(contenedorEmail);
         contenedor.addView(contenedorBotones);
 
-        val botonLimpiar:Button = view?.findViewById(eventoBotonLimpiar.cod)
+        val botonLimpiar:Button = view.findViewById(eventoBotonLimpiar.cod)
 
         botonLimpiar.setOnClickListener {
 
@@ -542,7 +547,7 @@ class AltasFragment : Fragment() {
 
         }
 
-        val botonGuardar:Button = view?.findViewById(eventoBotonGuardar.cod)
+        val botonGuardar:Button = view.findViewById(eventoBotonGuardar.cod)
 
         botonGuardar.setOnClickListener {
 
@@ -550,7 +555,7 @@ class AltasFragment : Fragment() {
 
         }
 
-        val botonCancelar:Button = view?.findViewById(eventoBotonCancelar.cod)
+        val botonCancelar:Button = view.findViewById(eventoBotonCancelar.cod)
 
         botonCancelar.setOnClickListener {
 
@@ -634,7 +639,7 @@ class AltasFragment : Fragment() {
         txtObservaciones.width = 800;
         txtObservaciones.maxLines = 6;
         txtObservaciones.setLayoutParams(ActionBar.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT));
-
+        slCliente.minimumWidth = 800
         btnCancelar.text = "Cancelar";
         btnGuardar.text = "Guardar";
         btnLimpiar.text = "Limpiar";
@@ -658,6 +663,7 @@ class AltasFragment : Fragment() {
         contenedorObservaciones.addView(txtObservaciones);
 
         contenedor.addView(contenedorSpCliente);
+
         contenedor.addView(contenedorDetalles);
         contenedor.addView(contenedorSpTipo);
         contenedor.addView(contenedorObservaciones);
@@ -665,19 +671,19 @@ class AltasFragment : Fragment() {
         contenedor.addView(contenedorSpEstado);
         contenedor.addView(contenedorBotones);
 
-        val botonLimpiar:Button = view?.findViewById(eventoBotonLimpiar.cod)
+        val botonLimpiar:Button = view.findViewById(eventoBotonLimpiar.cod)
 
         botonLimpiar.setOnClickListener {
 
 
         }
-        val botonGuardar:Button = view?.findViewById(eventoBotonGuardar.cod)
+        val botonGuardar:Button = view.findViewById(eventoBotonGuardar.cod)
 
         botonGuardar.setOnClickListener {
 
 
         }
-        val botonCancelar:Button = view?.findViewById(eventoBotonCancelar.cod)
+        val botonCancelar:Button = view.findViewById(eventoBotonCancelar.cod)
 
         botonCancelar.setOnClickListener {
 
@@ -706,9 +712,9 @@ class AltasFragment : Fragment() {
         val contenedorBotones:LinearLayout = LinearLayout(this.context);
         contenedorBotones.orientation = LinearLayout.HORIZONTAL;
 
-        var eventoBotonLimpiar:ControlDinamico = ControlDinamico(1, "Limpiar")
-        var eventoBotonCancelar:ControlDinamico = ControlDinamico(2, "Cancelar")
-        var eventoBotonGuardar:ControlDinamico = ControlDinamico(3, "Guardar")
+        val eventoBotonLimpiar:ControlDinamico = ControlDinamico(1, "Limpiar")
+        val eventoBotonCancelar:ControlDinamico = ControlDinamico(2, "Cancelar")
+        val eventoBotonGuardar:ControlDinamico = ControlDinamico(3, "Guardar")
 
         btnLimpiar.id = eventoBotonLimpiar.cod;
         btnLimpiar.text =  eventoBotonLimpiar.nombre;
@@ -742,7 +748,6 @@ class AltasFragment : Fragment() {
         txtConcepto.width = 800;
         txtConcepto.maxLines = 1;
         txtConcepto.setLayoutParams(ActionBar.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT));
-
         btnCancelar.text = "Cancelar"
         btnGuardar.text = "Guardar"
         btnLimpiar.text = "Limpiar"
@@ -767,19 +772,19 @@ class AltasFragment : Fragment() {
         contenedor.addView(contenedorConcepto);
         contenedor.addView(contenedorBotones);
 
-        val botonLimpiar:Button = view?.findViewById(eventoBotonLimpiar.cod)
+        val botonLimpiar:Button = view.findViewById(eventoBotonLimpiar.cod)
 
         botonLimpiar.setOnClickListener {
 
 
         }
-        val botonGuardar:Button = view?.findViewById(eventoBotonGuardar.cod)
+        val botonGuardar:Button = view.findViewById(eventoBotonGuardar.cod)
 
         botonGuardar.setOnClickListener {
 
 
         }
-        val botonCancelar:Button = view?.findViewById(eventoBotonCancelar.cod)
+        val botonCancelar:Button = view.findViewById(eventoBotonCancelar.cod)
 
         botonCancelar.setOnClickListener {
 
@@ -993,19 +998,19 @@ class AltasFragment : Fragment() {
         contenedor.addView(contenedorSlDelegacion);
         contenedor.addView(contenedorBotones);
 
-        val botonLimpiar:Button = view?.findViewById(eventoBotonLimpiar.cod)
+        val botonLimpiar:Button = view.findViewById(eventoBotonLimpiar.cod)
 
         botonLimpiar.setOnClickListener {
 
 
         }
-        val botonGuardar:Button = view?.findViewById(eventoBotonGuardar.cod)
+        val botonGuardar:Button = view.findViewById(eventoBotonGuardar.cod)
 
         botonGuardar.setOnClickListener {
 
 
         }
-        val botonCancelar:Button = view?.findViewById(eventoBotonCancelar.cod)
+        val botonCancelar:Button = view.findViewById(eventoBotonCancelar.cod)
 
         botonCancelar.setOnClickListener {
 
@@ -1179,19 +1184,19 @@ class AltasFragment : Fragment() {
         contenedor.addView(contenedorEstado);
         contenedor.addView(contenedorBotones);
 
-        val botonLimpiar:Button = view?.findViewById(eventoBotonLimpiar.cod)
+        val botonLimpiar:Button = view.findViewById(eventoBotonLimpiar.cod)
 
         botonLimpiar.setOnClickListener {
 
 
         }
-        val botonGuardar:Button = view?.findViewById(eventoBotonGuardar.cod)
+        val botonGuardar:Button = view.findViewById(eventoBotonGuardar.cod)
 
         botonGuardar.setOnClickListener {
 
 
         }
-        val botonCancelar:Button = view?.findViewById(eventoBotonCancelar.cod)
+        val botonCancelar:Button = view.findViewById(eventoBotonCancelar.cod)
 
         botonCancelar.setOnClickListener {
 
