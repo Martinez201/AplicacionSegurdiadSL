@@ -28,10 +28,11 @@ import org.json.JSONObject
 class AltasFragment : Fragment() {
 
     var clienteSeleccionado:String? = null;
-    val personas:HashMap<String,String> = HashMap();
-    val nombres:MutableList<String> = mutableListOf();
+    var argumento1:String? = null;
+    var argumento2:String? = null;
+    var argumento3:String? = null;
 
-    override fun onCreate(savedInstanceState: Bundle?) {
+        override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
     }
@@ -48,6 +49,9 @@ class AltasFragment : Fragment() {
 
         arguments?.let {
 
+             argumento1 = it.getString("nombre").toString()
+             argumento2 = it.getString("apellidos").toString()
+             argumento3= it.getString("id").toString()
 
 
             when(it.getInt("tipo")){
@@ -566,7 +570,7 @@ class AltasFragment : Fragment() {
 
     fun construirFormParte(view: View){
 
-        val slCliente:Spinner = Spinner(this.context);
+        val txtCliente:EditText = EditText(this.context);
         val txtFecha:EditText = EditText(this.context);
         val txtDetalles:EditText = EditText(this.context);
         val txtObservaciones:EditText = EditText(this.context);
@@ -575,10 +579,11 @@ class AltasFragment : Fragment() {
         val btnCancelar:Button = Button(this.context);
         val btnGuardar:Button = Button(this.context);
         val btnLimpiar:Button = Button(this.context);
+        val btnBuscar:Button = Button(this.context)
 
         val contenedorSpTipo:LinearLayout = LinearLayout(this.context);
         contenedorSpTipo.orientation = LinearLayout.HORIZONTAL;
-        var contenedorFecha:LinearLayout = LinearLayout(this.context);
+        val contenedorFecha:LinearLayout = LinearLayout(this.context);
         contenedorFecha.orientation = LinearLayout.HORIZONTAL;
         val contenedorSpEstado:LinearLayout = LinearLayout(this.context);
         contenedorSpEstado.orientation = LinearLayout.HORIZONTAL;
@@ -592,9 +597,11 @@ class AltasFragment : Fragment() {
         contenedorBotones.orientation = LinearLayout.HORIZONTAL;
 
 
-        var eventoBotonLimpiar:ControlDinamico = ControlDinamico(1, "Limpiar")
-        var eventoBotonCancelar:ControlDinamico = ControlDinamico(2, "Cancelar")
-        var eventoBotonGuardar:ControlDinamico = ControlDinamico(3, "Guardar")
+        val eventoBotonLimpiar:ControlDinamico = ControlDinamico(1, "Limpiar")
+        val eventoBotonCancelar:ControlDinamico = ControlDinamico(2, "Cancelar")
+        val eventoBotonGuardar:ControlDinamico = ControlDinamico(3, "Guardar")
+
+        val eventoBotonBuscar:ControlDinamico = ControlDinamico(4, "Buscar")
 
         btnLimpiar.id = eventoBotonLimpiar.cod;
         btnLimpiar.text =  eventoBotonLimpiar.nombre;
@@ -602,6 +609,8 @@ class AltasFragment : Fragment() {
         btnGuardar.text = eventoBotonGuardar.nombre;
         btnCancelar.id = eventoBotonCancelar.cod;
         btnCancelar.text = eventoBotonCancelar.nombre;
+        btnBuscar.text = eventoBotonBuscar.nombre
+        btnBuscar.id =  eventoBotonBuscar.cod
 
         contenedorSpCliente.setLayoutParams(ActionBar.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
         contenedorSpCliente.orientation = LinearLayout.HORIZONTAL;
@@ -629,20 +638,20 @@ class AltasFragment : Fragment() {
         txtDetalles.hint = "Introduzca los Detalles";
         txtObservaciones.hint = "Introduzca Observaciones";
 
-        txtFecha.width = 800;
+        txtFecha.width = 900;
         txtFecha.maxLines = 1;
         txtFecha.inputType = InputType.TYPE_CLASS_DATETIME
         txtFecha.setLayoutParams(ActionBar.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT));
-        txtDetalles.width = 800;
+        txtDetalles.width = 900;
         txtDetalles.maxLines = 6;
         txtDetalles.setLayoutParams(ActionBar.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT));
-        txtObservaciones.width = 800;
+        txtObservaciones.width = 900;
         txtObservaciones.maxLines = 6;
         txtObservaciones.setLayoutParams(ActionBar.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT));
-        slCliente.minimumWidth = 800
-        btnCancelar.text = "Cancelar";
-        btnGuardar.text = "Guardar";
-        btnLimpiar.text = "Limpiar";
+        txtCliente.width = 750;
+        txtCliente.maxLines = 1;
+        txtCliente.isEnabled = false;
+        txtCliente.hint = "Buscar Cliente ..."
 
 
         contenedorBotones.gravity = Gravity.CENTER;
@@ -652,7 +661,8 @@ class AltasFragment : Fragment() {
         contenedorFecha.gravity= Gravity.CENTER;
         contenedorFecha.addView(txtFecha);
         contenedorSpCliente.gravity= Gravity.CENTER;
-        contenedorSpCliente.addView(slCliente);
+        contenedorSpCliente.addView(txtCliente);
+        contenedorSpCliente.addView(btnBuscar);
         contenedorSpEstado.gravity= Gravity.CENTER;
         contenedorSpEstado.addView(slEstado);
         contenedorSpTipo.gravity= Gravity.CENTER;
@@ -689,6 +699,37 @@ class AltasFragment : Fragment() {
 
 
         }
+
+        val botonBuscar:Button = view.findViewById(eventoBotonBuscar.cod)
+
+        botonBuscar.setOnClickListener(){  vista ->
+
+            var bundle:Bundle = Bundle()
+
+            bundle.putInt("tipo",7)
+
+            Navigation.findNavController(vista).navigate(R.id.consultaClienteFragment,bundle);
+
+        }
+
+        arguments?.let {
+
+
+
+            if (argumento1 == null || argumento2 == null || argumento3 == null){
+
+                txtCliente.setText(" ")
+                clienteSeleccionado = "";
+            }
+            else{
+
+                txtCliente.setText(argumento1 + " " +argumento2 + " " +argumento3);
+                clienteSeleccionado = argumento1 + " " +argumento2 + " " +argumento3;
+
+            }
+
+        }
+
     }
 
     fun cosntruirFormFactura(view: View){

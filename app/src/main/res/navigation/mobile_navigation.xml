@@ -23,8 +23,20 @@
             android:name="tipo_formulario"
             app:argType="integer" />
         <action
-            android:id="@+id/action_altasFragment_to_menuPrincipalFragment"
-            app:destination="@id/menuPrincipalFragment" />
+            android:id="@+id/action_altasFragment_to_consultaClienteFragment"
+            app:destination="@id/consultaClienteFragment" />
+        <argument
+            android:name="Nombre"
+            app:argType="string"
+            app:nullable="true" />
+        <argument
+            android:name="Apellidos"
+            app:argType="string"
+            app:nullable="true" />
+        <argument
+            android:name="Id"
+            app:argType="string"
+            app:nullable="true" />
     </fragment>
     <fragment
         android:id="@+id/bajasFragment"
@@ -34,9 +46,6 @@
         <argument
             android:name="tipo_formulario"
             app:argType="integer" />
-        <action
-            android:id="@+id/action_bajasFragment_to_menuPrincipalFragment"
-            app:destination="@id/menuPrincipalFragment" />
     </fragment>
     <fragment
         android:id="@+id/listarFragment"
@@ -44,9 +53,6 @@
         android:label="fragment_listar"
         tools:layout="@layout/fragment_listar" >
         <argument android:name="tipo_formulario" />
-        <action
-            android:id="@+id/action_listarFragment_to_menuPrincipalFragment"
-            app:destination="@id/menuPrincipalFragment" />
     </fragment>
     <fragment
         android:id="@+id/modificarFragment"
@@ -54,9 +60,6 @@
         android:label="fragment_modificar"
         tools:layout="@layout/fragment_modificar" >
         <argument android:name="tipo_formulario" />
-        <action
-            android:id="@+id/action_modificarFragment_to_menuPrincipalFragment"
-            app:destination="@id/menuPrincipalFragment" />
     </fragment>
     <fragment
         android:id="@+id/menuOpcionesCategoriaFragment"
@@ -66,8 +69,17 @@
         <argument
             android:name="tipo_menu"
             app:argType="integer" />
+    </fragment>
+    <fragment
+        android:id="@+id/consultaClienteFragment"
+        android:name="com.example.proyectoampliacion.Fragmentos.SubConsultas.ConsultaClienteFragment"
+        android:label="fragment_consulta_cliente"
+        tools:layout="@layout/fragment_consulta_cliente" >
         <action
-            android:id="@+id/action_menuOpcionesCategoriaFragment_to_menuPrincipalFragment"
-            app:destination="@id/menuPrincipalFragment" />
+            android:id="@+id/action_consultaClienteFragment_to_altasFragment"
+            app:destination="@id/altasFragment" />
+        <argument
+            android:name="tipo"
+            app:argType="integer" />
     </fragment>
 </navigation>
