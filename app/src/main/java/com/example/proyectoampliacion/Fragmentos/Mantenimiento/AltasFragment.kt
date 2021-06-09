@@ -635,7 +635,7 @@ class AltasFragment : Fragment(), AdapterView.OnItemSelectedListener{
         contenedorObservaciones.setPadding(0,50,0,0);
         contenedorFecha.setPadding(0,50,0,0);
         contenedorSpEstado.setPadding(0,50,0,0);
-        contenedorBotones.setPadding(0,400,0,0);
+        contenedorBotones.setPadding(0,200,0,100);
 
         txtFecha.hint = "Introduzca Fecha";
         txtDetalles.hint = "Introduzca los Detalles";
