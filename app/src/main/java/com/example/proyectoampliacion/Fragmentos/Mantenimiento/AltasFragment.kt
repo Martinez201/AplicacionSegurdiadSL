@@ -1043,6 +1043,22 @@ class AltasFragment : Fragment(), AdapterView.OnItemSelectedListener{
         contenedorNacimiento.gravity= Gravity.CENTER;
         contenedorNacimiento.addView(txtNacimiento);
 
+        contenedorUsuario.setPadding(0,50,0,0);
+        contenedorSlDelegacion.setPadding(0,50,0,0);
+        contenedorPassword.setPadding(0,50,0,0);
+        contenedorRol.setPadding(0,150,0,0);
+        contenedorNombre.setPadding(0,50,0,0);
+        contenedorApellidos.setPadding(0,50,0,0);
+        contenedorCiudad.setPadding(0,50,0,0);
+        contenedorDireccion.setPadding(0,50,0,0);
+        contenedorDni.setPadding(0,50,0,0);
+        contenedorEmail.setPadding(0,50,0,0);
+        contenedorProvincia.setPadding(0,50,0,0);
+        contenedorcPostal.setPadding(0,50,0,0);
+        contenedorTelefono.setPadding(0,50,0,0);
+        contenedorNacimiento.setPadding(0,50,0,0);
+        contenedorBotones.setPadding(0,200,0,100);
+
 
         contenedor.addView(contenedorUsuario);
         contenedor.addView(contenedorPassword);
