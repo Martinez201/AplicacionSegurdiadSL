@@ -25,12 +25,12 @@ import org.json.JSONArray
 import org.json.JSONObject
 
 
-class AltasFragment : Fragment() {
+class AltasFragment : Fragment(), AdapterView.OnItemSelectedListener{
 
     var clienteSeleccionado:String? = null;
-    var argumento1:String? = null;
-    var argumento2:String? = null;
-    var argumento3:String? = null;
+    var argumento1:String = "";
+    var argumento2:String = "";
+    var argumento3:String = "";
 
         override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -581,6 +581,9 @@ class AltasFragment : Fragment() {
         val btnLimpiar:Button = Button(this.context);
         val btnBuscar:Button = Button(this.context)
 
+        val listaOpcionesEstado:List<String> = listOf("<- Seleccione una opción ->","ABIERTO","CERRADO");
+        val listaOpcionesTipo:List<String> = listOf("<- Seleccione una opción ->","INSTALACIÓN","MANTENIMIENTO","AVERIA");
+
         val contenedorSpTipo:LinearLayout = LinearLayout(this.context);
         contenedorSpTipo.orientation = LinearLayout.HORIZONTAL;
         val contenedorFecha:LinearLayout = LinearLayout(this.context);
@@ -716,19 +719,28 @@ class AltasFragment : Fragment() {
 
 
 
-            if (argumento1 == null || argumento2 == null || argumento3 == null){
+            if (argumento1.equals("null")  || argumento2.equals("null")  || argumento3.equals("null") ){
 
                 txtCliente.setText(" ")
                 clienteSeleccionado = "";
             }
             else{
 
-                txtCliente.setText(argumento1 + " " +argumento2 + " " +argumento3);
+                txtCliente.setText(argumento1 + " " +argumento2);
                 clienteSeleccionado = argumento1 + " " +argumento2 + " " +argumento3;
 
             }
 
         }
+
+
+        val adaptadorEstado:ArrayAdapter<String> = ArrayAdapter(view.context,android.R.layout.simple_spinner_item,listaOpcionesEstado)
+        slEstado.adapter = adaptadorEstado
+        slEstado.onItemSelectedListener = this
+
+        val adaptadorTipo:ArrayAdapter<String> = ArrayAdapter(view.context,android.R.layout.simple_spinner_item,listaOpcionesTipo)
+        slTipo.adapter = adaptadorTipo
+        slTipo.onItemSelectedListener = this
 
     }
 
@@ -1276,6 +1288,16 @@ class AltasFragment : Fragment() {
         )
 
         queue.add(jsonObjectRequest);
+    }
+    override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
+
+        val opcion:String = parent?.getItemAtPosition(position).toString()
+
+        Toast.makeText(this.context,opcion,Toast.LENGTH_LONG).show()
+    }
+
+    override fun onNothingSelected(parent: AdapterView<*>?) {
+        TODO("Not yet implemented")
     }
 
 }

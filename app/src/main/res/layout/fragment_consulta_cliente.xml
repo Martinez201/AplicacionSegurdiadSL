@@ -8,8 +8,8 @@
 
     <ListView
         android:id="@+id/lvPersonas"
-        android:layout_width="409dp"
-        android:layout_height="586dp"
+        android:layout_width="412dp"
+        android:layout_height="564dp"
         android:layout_marginStart="1dp"
         android:layout_marginLeft="1dp"
         android:layout_marginTop="64dp"
