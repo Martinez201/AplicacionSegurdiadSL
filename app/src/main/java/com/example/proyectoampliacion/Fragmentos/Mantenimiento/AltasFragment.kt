@@ -862,7 +862,8 @@ class AltasFragment : Fragment(), AdapterView.OnItemSelectedListener{
         val btnCancelar:Button = Button(this.context);
         val btnGuardar:Button = Button(this.context);
         val btnLimpiar:Button = Button(this.context);
-        val slDelegacion:Spinner = Spinner(this.context);
+        val btnBuscar:Button = Button(this.context)
+        val slDelegacion:EditText = EditText(this.context);
         val cbAdministrador:CheckBox= CheckBox(this.context);
         val cbInstalador:CheckBox= CheckBox(this.context);
         val cbGestor:CheckBox= CheckBox(this.context);
@@ -903,12 +904,17 @@ class AltasFragment : Fragment(), AdapterView.OnItemSelectedListener{
         var eventoBotonCancelar:ControlDinamico = ControlDinamico(2, "Cancelar")
         var eventoBotonGuardar:ControlDinamico = ControlDinamico(3, "Guardar")
 
+        var eventoBotonBuscar:ControlDinamico = ControlDinamico(4, "Buscar")
+
         btnLimpiar.id = eventoBotonLimpiar.cod;
         btnLimpiar.text =  eventoBotonLimpiar.nombre;
         btnGuardar.id = eventoBotonGuardar.cod;
         btnGuardar.text = eventoBotonGuardar.nombre;
         btnCancelar.id = eventoBotonCancelar.cod;
         btnCancelar.text = eventoBotonCancelar.nombre;
+
+        btnBuscar.text = eventoBotonBuscar.nombre
+        btnBuscar.id = eventoBotonBuscar.cod
 
         contenedorUsuario.setLayoutParams(ActionBar.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
         contenedorUsuario.orientation = LinearLayout.HORIZONTAL;
@@ -988,10 +994,12 @@ class AltasFragment : Fragment(), AdapterView.OnItemSelectedListener{
         txtNacimiento.maxLines = 1
         txtNacimiento.setLayoutParams(ActionBar.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT));
         txtNacimiento.inputType = InputType.TYPE_CLASS_DATETIME;
+        slDelegacion.width = 750
+        slDelegacion.maxLines = 1
+        slDelegacion.isEnabled = false
+        slDelegacion.hint = "Buscar Delegación ..."
 
-        btnCancelar.text = "Cancelar"
-        btnGuardar.text = "Guardar"
-        btnLimpiar.text = "Limpiar"
+
 
         cbAdministrador.text = "Administrador";
         cbGestor.text = "Gestor"
@@ -1007,6 +1015,7 @@ class AltasFragment : Fragment(), AdapterView.OnItemSelectedListener{
         contenedorUsuario.addView(txtUsuario);
         contenedorSlDelegacion.gravity= Gravity.CENTER;
         contenedorSlDelegacion.addView(slDelegacion);
+        contenedorSlDelegacion.addView(btnBuscar);
         contenedorPassword.gravity= Gravity.CENTER;
         contenedorPassword.addView(txtPassword);
         contenedorRol.gravity= Gravity.CENTER;
@@ -1047,8 +1056,8 @@ class AltasFragment : Fragment(), AdapterView.OnItemSelectedListener{
         contenedor.addView(contenedorcPostal);
         contenedor.addView(contenedorDni);
         contenedor.addView(contenedorNacimiento);
-        contenedor.addView(contenedorRol);
         contenedor.addView(contenedorSlDelegacion);
+        contenedor.addView(contenedorRol);
         contenedor.addView(contenedorBotones);
 
         val botonLimpiar:Button = view.findViewById(eventoBotonLimpiar.cod)
