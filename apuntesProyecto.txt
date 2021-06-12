@@ -25,3 +25,61 @@
             Toast.makeText(applicationContext,e.message.toString(),Toast.LENGTH_SHORT).show()
         }
     }
+    
+    
+    =============================================================================================================================
+    
+    val queue = Volley.newRequestQueue(this.context)
+        val url = "http://192.168.1.141/symfony/web/app.php/movil/alta/delegacion"
+        val jsonObject= JSONObject();
+        var response:JSONObject? = null
+
+        jsonObject.put("identificacion",identificacion);
+        jsonObject.put("direccion",direccion);
+        jsonObject.put("provincia",provincia);
+        jsonObject.put("ciudad",ciudad);
+        jsonObject.put("cPostal",postal);
+        jsonObject.put("email",email);
+        jsonObject.put("telefono",telefono);
+
+        val future = RequestFuture.newFuture<JSONObject>()
+        val request = JsonObjectRequest(Request.Method.POST,url, jsonObject, future, future)
+        queue.add(request);
+
+        try {
+
+            response = future.get(5, TimeUnit.SECONDS);
+
+            Toast.makeText(this.context,response?.toString(),Toast.LENGTH_SHORT).show()
+
+
+
+        } catch (e: InterruptedException) {
+
+            //Toast.makeText(this.context,e.message.toString(),Toast.LENGTH_SHORT).show()
+
+        } catch (e: ExecutionException) {
+
+           // Toast.makeText(this.context,e.message.toString(),Toast.LENGTH_SHORT).show()
+
+        } catch (e: TimeoutException) {
+
+            Toast.makeText(this.context,response.toString(),Toast.LENGTH_SHORT).show()
+
+        }
+
+        /* val jsonObjectRequest = JsonObjectRequest(url,jsonObject,
+
+                 { response ->
+
+                     Toast.makeText(this.context,response.toString(),Toast.LENGTH_SHORT).show();
+
+                 },
+
+                 {   it->
+
+                     Toast.makeText(this.context,it.message.toString(),Toast.LENGTH_SHORT).show();
+                 }
+         queue.add(jsonObjectRequest);
+
+         )*/

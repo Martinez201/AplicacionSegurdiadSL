@@ -2,7 +2,7 @@ package com.example.proyectoampliacion.Fragmentos.Mantenimiento
 
 import android.app.ActionBar
 import android.os.Bundle
-import android.provider.ContactsContract
+import android.os.StrictMode
 import android.text.InputType
 import android.view.Gravity
 import android.view.LayoutInflater
@@ -11,18 +11,28 @@ import android.view.ViewGroup
 import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.isVisible
-import androidx.core.view.marginTop
 import androidx.fragment.app.Fragment
-import androidx.navigation.NavAction
 import androidx.navigation.Navigation
+import com.android.volley.AuthFailureError
 import com.android.volley.Request
 import com.android.volley.Response
+import com.android.volley.VolleyError
 import com.android.volley.toolbox.JsonObjectRequest
+import com.android.volley.toolbox.RequestFuture
+import com.android.volley.toolbox.StringRequest
 import com.android.volley.toolbox.Volley
 import com.example.proyectoampliacion.R
+import kotlinx.android.synthetic.main.activity_login.*
 import kotlinx.android.synthetic.main.fragment_altas.*
-import org.json.JSONArray
+import okhttp3.Call
+import okhttp3.MediaType
+import okhttp3.OkHttpClient
+import okhttp3.RequestBody
 import org.json.JSONObject
+import java.io.IOException
+import java.util.concurrent.ExecutionException
+import java.util.concurrent.TimeUnit
+import java.util.concurrent.TimeoutException
 
 
 class AltasFragment : Fragment(), AdapterView.OnItemSelectedListener{
@@ -34,6 +44,9 @@ class AltasFragment : Fragment(), AdapterView.OnItemSelectedListener{
 
         override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+            val policy = StrictMode.ThreadPolicy.Builder().permitAll().build()
+            StrictMode.setThreadPolicy(policy)
 
     }
 
@@ -1285,8 +1298,8 @@ class AltasFragment : Fragment(), AdapterView.OnItemSelectedListener{
 
     fun annadirDelegacion(identificacion:String,direccion:String,provincia:String,ciudad:String,postal:String,email:String,telefono:String){
 
-        val queue = Volley.newRequestQueue(this.context)
-        val url = "http://192.168.1.141/symfony/web/app.php/movil/buscar/delegacion"
+        var JSON:MediaType =  MediaType.get("application/json; charset=utf-8")
+
         val jsonObject= JSONObject();
 
         jsonObject.put("identificacion",identificacion);
@@ -1297,23 +1310,35 @@ class AltasFragment : Fragment(), AdapterView.OnItemSelectedListener{
         jsonObject.put("email",email);
         jsonObject.put("telefono",telefono);
 
-        val jsonObjectRequest = JsonObjectRequest(url,jsonObject,
+        val client = OkHttpClient()
 
-                { response ->
+        val body: RequestBody = RequestBody.create(JSON,jsonObject.toString())
 
-                    Toast.makeText(this.context,response.toString(),Toast.LENGTH_SHORT).show();
+        val request: okhttp3.Request = okhttp3.Request.Builder() //Create a request
+            .url("http://192.168.1.141/symfony/web/app.php/movil/alta/delegacion")
+            .post(body) //Indicated as get request
+            .header("Accept", "application/json")
+            .header("Content-Type", "application/json")
+            .build()
 
-                },
+        var llamada: Call = client.newCall(request)
 
-                {   it->
+        try {
 
-                    Toast.makeText(this.context,it.message.toString(),Toast.LENGTH_SHORT).show();
-                }
+            var response = llamada.execute()
 
-        )
+            val jsonArray = JSONObject(response.body()?.string())
 
-        queue.add(jsonObjectRequest);
+
+            Toast.makeText(this.context,jsonArray.toString(),Toast.LENGTH_SHORT).show()
+
+        }catch (e: IOException){
+
+            Toast.makeText(this.context,e.message.toString(),Toast.LENGTH_SHORT).show()
+
+        }
     }
+
     override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
 
         val opcion:String = parent?.getItemAtPosition(position).toString()
