@@ -1,5 +1,6 @@
 package com.example.proyectoampliacion
 
+import android.content.Intent
 import android.os.Bundle
 import android.os.StrictMode
 import android.os.StrictMode.ThreadPolicy
@@ -54,16 +55,24 @@ class LoginActivity : AppCompatActivity() {
         try {
 
             var response = llamada.execute()
+            var cuerpo = response.body()?.string().toString();
 
+            if(cuerpo.length > 2){
 
-            if(response.body()?.string().toString().length > 2){
+                 val provincia = cuerpo.split(":{")[1].split(',')[6].split(':')[1] ;
+                 val admin = cuerpo.split(":{")[1].split(',')[11].split(':')[1]
+                 val instalador =  cuerpo.split(":{")[1].split(',')[12].split(':')[1]
+                 val gestor = cuerpo.split(":{")[1].split(',')[13].split(':')[1]
+                 val comercial = cuerpo.split(":{")[1].split(',')[14].split(':')[1]
 
+                val intent:Intent = Intent(this,MainActivity::class.java)
+                intent.putExtra("provincia",provincia)
+                intent.putExtra("admin",admin)
+                intent.putExtra("instalador",instalador)
+                intent.putExtra("gestor",gestor)
+                intent.putExtra("comercial",comercial)
 
-                // val provincia = response.body()?.string().toString().split(":{")[1].split(',')[6].split(':')[1] ;
-                //val admin = response.body()?.string().toString().toString().split(":{")[1].split(',')[11].split(':')[1]
-                // val instalador =  response.body()?.string().toString().toString().split(":{")[1].split(',')[12].split(':')[1]
-                //val gestor = response.body()?.string().toString().toString().split(":{")[1].split(',')[13].split(':')[1]
-                //val comercial = response.body()?.string().toString().toString().split(":{")[1].split(',')[14].split(':')[1]
+                startActivity(intent)
 
             }
             else{
