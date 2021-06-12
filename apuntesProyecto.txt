@@ -1,0 +1,27 @@
+   val queue = Volley.newRequestQueue(applicationContext)
+        val url = "http://192.168.1.141/symfony/web/app.php/movil/login"
+        val jsonObject= JSONObject();
+        var respuesta:JSONObject = JSONObject()
+
+        jsonObject.put("usuario",txtUsuario.text.toString());
+        jsonObject.put("password",txtPassword.text.toString());
+
+
+        val future = RequestFuture.newFuture<JSONObject>()
+        val request = JsonObjectRequest(Request.Method.POST,url, JSONObject(), future, future)
+        queue.add(request);
+
+        try {
+           respuesta =  future.get()
+
+            Toast.makeText(applicationContext,respuesta.toString(),Toast.LENGTH_SHORT).show()
+
+        } catch (e: InterruptedException) {
+
+            Toast.makeText(applicationContext,e.message.toString(),Toast.LENGTH_SHORT).show()
+        } catch (e: ExecutionException) {
+            Toast.makeText(applicationContext,e.message.toString(),Toast.LENGTH_SHORT).show()
+        } catch (e: TimeoutException) {
+            Toast.makeText(applicationContext,e.message.toString(),Toast.LENGTH_SHORT).show()
+        }
+    }
