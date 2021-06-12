@@ -110,7 +110,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="44dp"
                     android:ems="10"
-                    android:hint="Contraseña:"
+                    android:hint="Dni:"
                     android:inputType="textPassword" />
 
                 <Space

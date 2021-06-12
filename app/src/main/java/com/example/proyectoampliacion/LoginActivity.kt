@@ -36,7 +36,7 @@ class LoginActivity : AppCompatActivity() {
         val jsonObject= JSONObject();
 
         jsonObject.put("usuario",txtUsuario.text.toString());
-        jsonObject.put("password",txtPassword.text.toString());
+        jsonObject.put("dni",txtPassword.text.toString());
 
         val client = OkHttpClient()
 
@@ -56,15 +56,26 @@ class LoginActivity : AppCompatActivity() {
             var response = llamada.execute()
 
 
+            if(response.body()?.string().toString().length > 2){
 
-            val jsonArray = JSONObject(response.body()?.string())
+
+                // val provincia = response.body()?.string().toString().split(":{")[1].split(',')[6].split(':')[1] ;
+                //val admin = response.body()?.string().toString().toString().split(":{")[1].split(',')[11].split(':')[1]
+                // val instalador =  response.body()?.string().toString().toString().split(":{")[1].split(',')[12].split(':')[1]
+                //val gestor = response.body()?.string().toString().toString().split(":{")[1].split(',')[13].split(':')[1]
+                //val comercial = response.body()?.string().toString().toString().split(":{")[1].split(',')[14].split(':')[1]
+
+            }
+            else{
+
+                Toast.makeText(applicationContext,"Error: Usuario o Dni incorrectos",Toast.LENGTH_LONG).show()
+            }
 
 
-            Toast.makeText(applicationContext,jsonArray.toString(),Toast.LENGTH_SHORT).show()
 
         }catch (e: IOException){
 
-            //Toast.makeText(applicationContext,e.message.toString(),Toast.LENGTH_SHORT).show()
+            Toast.makeText(applicationContext,e.message.toString(),Toast.LENGTH_SHORT).show()
 
         }
 
