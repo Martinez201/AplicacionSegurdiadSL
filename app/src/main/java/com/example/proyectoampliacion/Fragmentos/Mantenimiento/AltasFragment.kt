@@ -1330,8 +1330,6 @@ class AltasFragment : Fragment(), AdapterView.OnItemSelectedListener{
             val jsonArray = JSONObject(response.body()?.string())
 
 
-            Toast.makeText(this.context,jsonArray.toString(),Toast.LENGTH_SHORT).show()
-
         }catch (e: IOException){
 
             Toast.makeText(this.context,e.message.toString(),Toast.LENGTH_SHORT).show()
