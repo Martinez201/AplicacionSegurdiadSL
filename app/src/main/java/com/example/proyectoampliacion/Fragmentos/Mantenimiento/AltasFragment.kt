@@ -1,6 +1,7 @@
 package com.example.proyectoampliacion.Fragmentos.Mantenimiento
 
 import android.app.ActionBar
+import android.content.Intent
 import android.os.Bundle
 import android.os.StrictMode
 import android.text.InputType
@@ -49,12 +50,15 @@ class AltasFragment : Fragment(), AdapterView.OnItemSelectedListener{
 
     val URL_BASE:String = "http://192.168.1.141/symfony/web/app.php/"
 
+    var contenido:Bundle? = null
+
         override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
             val policy = StrictMode.ThreadPolicy.Builder().permitAll().build()
             StrictMode.setThreadPolicy(policy)
 
+            contenido = activity?.intent?.extras
     }
 
     override fun onCreateView(
@@ -1339,6 +1343,8 @@ class AltasFragment : Fragment(), AdapterView.OnItemSelectedListener{
         jsonObject.put("observaciones",observaciones);
         jsonObject.put("tipo",tipo);
         jsonObject.put("estado",estado);
+        jsonObject.put("delegacion",contenido?.getString("provincia"));  // datos del usuario logeado
+        jsonObject.put("empleado",contenido?.getString("empleado"));  // datos del usuario logeado
 
         val client = OkHttpClient()
 
