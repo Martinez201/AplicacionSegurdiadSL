@@ -409,7 +409,7 @@ class ListarFragment : Fragment() {
                                 datos[i].split(',')[7].split(':')[1]
                         )
                         personas.add(persona);
-                        //mostarPersonas(view,personas);
+                        mostarPersonas(view,personas);
                     }
                 },
                 { error ->
@@ -531,65 +531,61 @@ class ListarFragment : Fragment() {
 
         var llamada: Call = client.newCall(request)
 
-        //try {
+        try {
 
             var response = llamada.execute()
             var cuerpo = response.body()?.string().toString();
             val personas:MutableList<Cliente> = mutableListOf();
 
+            if(edtBuscar.text.toString().isNotEmpty()){
+
+                if(cuerpo.length > 2){
+
+                    var datos = cuerpo.split(":{")
 
 
-            if(cuerpo.length > 2){
+                    for (i in 1..datos.count() -1) {
 
-                var datos = cuerpo.split("[{")
+                        var persona = Cliente(
 
-                tvPrueba.text = datos[1]
+                            datos[i].split(',')[0].split(':')[1],
+                            datos[i].split(',')[1].split(':')[1],
+                            datos[i].split(',')[8].split(':')[1],
+                            datos[i].split(',')[2].split(':')[1],
+                            datos[i].split(',')[9].split(':')[1],
+                            datos[i].split(',')[6].split(':')[1],
+                            datos[i].split(',')[10].split(':')[1],
+                            datos[i].split(',')[11].split(':')[1].split('}')[0].toInt(),
+                            datos[i].split(',')[3].split(':')[1],
+                            datos[i].split(',')[5].split(':')[1],
+                            datos[i].split(',')[4].split(':')[1],
+                            datos[i].split(',')[7].split(':')[1]
+                        )
+                        personas.add(persona);
+                    }
 
+                    mostarPersonas(view,personas);
 
-                Toast.makeText(this.context,,Toast.LENGTH_LONG).show()
-
-               /* for (i in 1..datos.count() -1) {
-
-               id ==> datos[1].split(',')[0].split(':')[1]
-               nombre ==> datos[1].split(',')[1].split(':')[1]
-               apellidos ==> datos[1].split(',')[2].split(':')[1]
-               dni ==> datos[1].split(',')[3].split(':')[1]
-               fecha ==> datos[1].split(":{")[1].split(',')[0].split(' ')[0].split(':')[1].split('"')[1]
-
-
-                    var persona = Cliente(
-
-                        datos[i].split(',')[0].split(':')[1],
-                        datos[i].split(',')[1].split(':')[1],
-                        datos[i].split(',')[8].split(':')[1],
-                        datos[i].split(',')[2].split(':')[1],
-                        datos[i].split(',')[9].split(':')[1],
-                        datos[i].split(',')[6].split(':')[1],
-                        datos[i].split(',')[10].split(':')[1],
-                        datos[i].split(',')[11].split(':')[1].split('}')[0].toInt(),
-                        datos[i].split(',')[3].split(':')[1],
-                        datos[i].split(',')[5].split(':')[1],
-                        datos[i].split(',')[4].split(':')[1],
-                        datos[i].split(',')[7].split(':')[1]
-                    )
-                    personas.add(persona);
                 }
+                else{
 
-                mostarPersonas(view,personas);*/
+                    Toast.makeText(this.context,"Error: No hay resultados",Toast.LENGTH_LONG).show()
+
+                    obtenerDatosVolleyCliente(view)
+                }
 
             }
             else{
 
-                Toast.makeText(this.context,"Error: No hay resultados",Toast.LENGTH_LONG).show()
-
                 obtenerDatosVolleyCliente(view)
             }
 
-       // }catch (ex: Exception){
 
-          //  Toast.makeText(this.context,ex.message.toString(),Toast.LENGTH_LONG).show()
+        }catch (ex: Exception){
 
-        //}
+            Toast.makeText(this.context,ex.message.toString(),Toast.LENGTH_LONG).show()
+
+        }
 
     }
 
