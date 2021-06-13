@@ -31,13 +31,13 @@ import java.lang.Exception
 class ListarFragment : Fragment() {
 
     val URL_BASE:String = "http://192.168.1.141/symfony/web/app.php/"
-
     var tipo:Int = 0;
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         val policy = StrictMode.ThreadPolicy.Builder().permitAll().build()
         StrictMode.setThreadPolicy(policy)
+
 
     }
 
@@ -49,6 +49,8 @@ class ListarFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
 
+        val contenido = activity?.intent?.extras
+
         arguments?.let {
 
 
@@ -56,7 +58,7 @@ class ListarFragment : Fragment() {
             when(it.getInt("tipo")){
 
                 0->{
-                    (activity as AppCompatActivity?)!!.supportActionBar!!.title = "Listados Albaranes";
+                    (activity as AppCompatActivity?)!!.supportActionBar!!.title = "Listados Albaranes ";
                     obtenerDatosVolleyAlbaran(view);
                     tipo = 0;
                 }
