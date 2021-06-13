@@ -23,6 +23,7 @@ import org.json.JSONObject
 
 class ListarFragment : Fragment() {
 
+    val URL_BASE:String = "http://192.168.1.141/symfony/web/app.php/"
 
     var tipo:Int = 0;
 
@@ -101,7 +102,7 @@ class ListarFragment : Fragment() {
     fun obtenerDatosVolleyDelegaciones(view: View){
 
         val queue = Volley.newRequestQueue(this.context)
-        val url = "http://192.168.1.141/symfony/web/app.php/movil/delegaciones"
+        val url = URL_BASE+"movil/delegaciones"
         val delegaciones:MutableList<Delegacion> = mutableListOf();
 
         val jsObjectRequest = JsonObjectRequest(
@@ -142,7 +143,7 @@ class ListarFragment : Fragment() {
     fun obtenerDatosVolleyProductos(view: View){
 
         val queue = Volley.newRequestQueue(this.context)
-        val url = "http://192.168.1.141/symfony/web/app.php/movil/productos"
+        val url = URL_BASE+"movil/productos"
         val productos:MutableList<Almacen> = mutableListOf();
 
         val jsObjectRequest = JsonObjectRequest(
@@ -181,7 +182,7 @@ class ListarFragment : Fragment() {
     fun obtenerDatosVolleyPresupuestos(view: View){
 
         val queue = Volley.newRequestQueue(this.context)
-        val url = "http://192.168.1.141/symfony/web/app.php/movil/presupuestos"
+        val url = URL_BASE+"movil/presupuestos"
         val presupuestos:MutableList<Presupuesto> = mutableListOf();
 
         val jsObjectRequest = JsonObjectRequest(
@@ -242,7 +243,7 @@ class ListarFragment : Fragment() {
     fun obtenerDatosVolleyEmpleados(view: View){
 
         val queue = Volley.newRequestQueue(this.context)
-        val url = "http://192.168.1.141/symfony/web/app.php/movil/empleados"
+        val url = URL_BASE+"movil/empleados"
         val empleados:MutableList<Empleado> = mutableListOf();
 
         val jsObjectRequest = JsonObjectRequest(
@@ -291,7 +292,7 @@ class ListarFragment : Fragment() {
     fun obtenerDatosVolleyFactura(view: View){
 
         val queue = Volley.newRequestQueue(this.context)
-        val url = "http://192.168.1.141/symfony/web/app.php/movil/facturas"
+        val url = URL_BASE+"movil/facturas"
         val facturas:MutableList<Factura> = mutableListOf();
 
         val jsObjectRequest = JsonObjectRequest(
@@ -334,7 +335,7 @@ class ListarFragment : Fragment() {
     fun obtenerDatosVolleyAlbaran(view: View){
 
         val queue = Volley.newRequestQueue(this.context)
-        val url = "http://192.168.1.141/symfony/web/app.php/movil/albaranes"
+        val url = URL_BASE+"movil/albaranes"
         val albaranes:MutableList<Albaran> = mutableListOf();
 
         val jsObjectRequest = JsonObjectRequest(
@@ -370,7 +371,7 @@ class ListarFragment : Fragment() {
     fun obtenerDatosVolleyCliente(view: View){
 
         val queue = Volley.newRequestQueue(this.context)
-        val url = "http://192.168.1.141/symfony/web/app.php/movil/clientes"
+        val url = URL_BASE+"movil/clientes"
         val personas:MutableList<Cliente> = mutableListOf();
 
         val jsObjectRequest = JsonObjectRequest(
@@ -414,7 +415,7 @@ class ListarFragment : Fragment() {
     fun obtenerDatosVolleyPartes(view: View){
 
         val queue = Volley.newRequestQueue(this.context)
-        val url = "http://192.168.1.141/symfony/web/app.php/movil/partes"
+        val url = URL_BASE+"movil/partes"
         val partes:MutableList<Parte> = mutableListOf();
 
         val jsObjectRequest = JsonObjectRequest(
