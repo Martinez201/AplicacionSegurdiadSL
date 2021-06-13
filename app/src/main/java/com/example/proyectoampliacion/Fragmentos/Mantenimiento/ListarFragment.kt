@@ -101,7 +101,34 @@ class ListarFragment : Fragment() {
 
         btnBuscar.setOnClickListener { it ->
 
-            busquedaClientes(view)
+            when(tipo){
+
+                0->{
+                    busquedaAlbaranes(view)
+                }
+                1->{
+
+                }
+                2->{
+
+                    busquedaClientes(view)
+                }
+                3->{
+
+                }
+                4->{
+
+                }
+                5->{
+
+                }
+                6->{
+
+                }
+                7->{
+
+                }
+            }
 
         }
 
@@ -360,7 +387,7 @@ class ListarFragment : Fragment() {
                                 datos[i].split(":[")[0].split(',')[0].split(':')[1].toInt(),
                                 datos[i].split(":[")[1].split(']')[0],
                                 datos[i].split(":[")[0].split(',')[1].split(':')[1],
-                                datos[1].split(":[")[0].split(',')[2].split(':')[1]
+                                datos[i].split(":[")[0].split(',')[2].split(':')[1]
                         );
                         albaranes.add(albaran);
                         mostarAlbaranes(view,albaranes);
@@ -511,6 +538,71 @@ class ListarFragment : Fragment() {
 
     }
 
+    fun busquedaAlbaranes(view: View){
+
+        val JSON: MediaType =  MediaType.get("application/json; charset=utf-8")
+        val jsonObject= JSONObject();
+
+        jsonObject.put("busqueda",edtBuscar.text.toString());
+
+        val client = OkHttpClient()
+        val body: RequestBody = RequestBody.create(JSON,jsonObject.toString())
+
+        val request: okhttp3.Request = okhttp3.Request.Builder() //Create a request
+            .url(URL_BASE+"movil/albaranes/buscar")
+            .post(body)
+            .header("Accept", "application/json")
+            .header("Content-Type", "application/json")
+            .build()
+
+        var llamada: Call = client.newCall(request)
+
+        try {
+
+            var response = llamada.execute()
+            var cuerpo = response.body()?.string().toString();
+            val albaranes:MutableList<Albaran> = mutableListOf();
+
+            if(edtBuscar.text.toString().isNotEmpty()){
+
+                if (cuerpo.length > 2){
+
+                    var datos = cuerpo.toString().split(":{");
+
+                    for (i in 1..datos.count() - 1) {
+
+                        var albaran = Albaran(
+                            datos[i].split(":[")[0].split(',')[0].split(':')[1].toInt(),
+                            datos[i].split(":[")[1].split(']')[0],
+                            datos[i].split(":[")[0].split(',')[1].split(':')[1],
+                            datos[i].split(":[")[0].split(',')[2].split(':')[1]
+                        );
+
+                        albaranes.add(albaran);
+
+                    }
+                        mostarAlbaranes(view,albaranes);
+
+                }else{
+
+                    Toast.makeText(this.context,"Error: No hay resultados",Toast.LENGTH_LONG).show()
+                    obtenerDatosVolleyAlbaran(view)
+                }
+
+
+            }else{
+
+                obtenerDatosVolleyAlbaran(view)
+            }
+
+
+        }catch (ex:Exception){
+
+            Toast.makeText(this.context,ex.message.toString(),Toast.LENGTH_LONG).show()
+        }
+
+    }
+
 
     fun busquedaClientes(view: View){
 
@@ -523,7 +615,7 @@ class ListarFragment : Fragment() {
         val body: RequestBody = RequestBody.create(JSON,jsonObject.toString())
 
         val request: okhttp3.Request = okhttp3.Request.Builder() //Create a request
-            .url("http://192.168.1.141/symfony/web/app.php/movil/clientes/buscar")
+            .url(URL_BASE+"movil/clientes/buscar")
             .post(body)
             .header("Accept", "application/json")
             .header("Content-Type", "application/json")
