@@ -42,6 +42,8 @@ class AltasFragment : Fragment(), AdapterView.OnItemSelectedListener{
     var argumento2:String = "";
     var argumento3:String = "";
 
+    var estado:String = ""
+
         override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -1278,20 +1280,38 @@ class AltasFragment : Fragment(), AdapterView.OnItemSelectedListener{
         val botonLimpiar:Button = view.findViewById(eventoBotonLimpiar.cod)
 
         botonLimpiar.setOnClickListener {
-
+            txtCiudad.setText("");
+            txtDireccion.setText("");
+            txtEmail.setText("");
+            txtNacimiento.setText("");
+            txtProvincia.setText("");
+            txtTelefono.setText("");
+            txtcPostal.setText("");
+            txtApellidos.setText("");
+            txtDni.setText("");
+            txtNombre.setText("");
 
         }
         val botonGuardar:Button = view.findViewById(eventoBotonGuardar.cod)
 
         botonGuardar.setOnClickListener {
 
+            if (cbEstado.isChecked){
+
+                estado = "ALTA"
+            }
+            else{
+
+                estado = "BAJA"
+            }
+            annadirCliente(txtNombre.text.toString(),txtApellidos.text.toString(),txtDireccion.text.toString(),txtProvincia.text.toString(),txtCiudad.text.toString(),txtcPostal.text.toString(),txtEmail.text.toString(),txtTelefono.text.toString(),txtNacimiento.text.toString(),estado,txtDni.text.toString())
 
         }
         val botonCancelar:Button = view.findViewById(eventoBotonCancelar.cod)
 
         botonCancelar.setOnClickListener {
 
-
+            Navigation.findNavController(view).navigate(R.id.menuPrincipalFragment);
         }
     }
 
@@ -1337,11 +1357,57 @@ class AltasFragment : Fragment(), AdapterView.OnItemSelectedListener{
         }
     }
 
+    fun annadirCliente(nombre:String,apellidos:String,direccion:String,provincia:String,ciudad:String,postal:String,email:String,telefono:String, nacimiento:String, estado:String ,dni:String){
+
+        var JSON:MediaType =  MediaType.get("application/json; charset=utf-8")
+
+        val jsonObject= JSONObject();
+
+        jsonObject.put("nombre",nombre);
+        jsonObject.put("apellidos",apellidos);
+        jsonObject.put("direccion",direccion);
+        jsonObject.put("provincia",provincia);
+        jsonObject.put("nacimiento",nacimiento);
+        jsonObject.put("ciudad",ciudad);
+        jsonObject.put("cPostal",postal);
+        jsonObject.put("email",email);
+        jsonObject.put("telefono",telefono);
+        jsonObject.put("estado",estado);
+        jsonObject.put("dni",dni);
+
+
+        val client = OkHttpClient()
+
+        val body: RequestBody = RequestBody.create(JSON,jsonObject.toString())
+
+        val request: okhttp3.Request = okhttp3.Request.Builder() //Create a request
+            .url("http://192.168.1.141/symfony/web/app.php/movil/alta/cliente")
+            .post(body) //Indicated as get request
+            .header("Accept", "application/json")
+            .header("Content-Type", "application/json")
+            .build()
+
+        var llamada: Call = client.newCall(request)
+
+        try {
+
+            var response = llamada.execute()
+
+            //val jsonArray = JSONObject()
+
+            Toast.makeText(this.context,response.body()?.string().toString(),Toast.LENGTH_LONG).show()
+
+        }catch (e: IOException){
+
+            Toast.makeText(this.context,e.message.toString(),Toast.LENGTH_SHORT).show()
+
+        }
+    }
+
+
     override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
 
         val opcion:String = parent?.getItemAtPosition(position).toString()
-
-        Toast.makeText(this.context,opcion,Toast.LENGTH_LONG).show()
     }
 
     override fun onNothingSelected(parent: AdapterView<*>?) {
