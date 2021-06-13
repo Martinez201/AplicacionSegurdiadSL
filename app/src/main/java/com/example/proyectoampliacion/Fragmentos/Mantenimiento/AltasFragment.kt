@@ -42,7 +42,12 @@ class AltasFragment : Fragment(), AdapterView.OnItemSelectedListener{
     var argumento2:String = "";
     var argumento3:String = "";
 
+    var tipoParte:String = "";
+    var estadoParte:String = "";
+
     var estado:String = ""
+
+    val URL_BASE:String = "http://192.168.1.141/symfony/web/app.php/"
 
         override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -701,21 +706,44 @@ class AltasFragment : Fragment(), AdapterView.OnItemSelectedListener{
 
         val botonLimpiar:Button = view.findViewById(eventoBotonLimpiar.cod)
 
+
+        arguments?.let {
+
+
+
+            if (argumento1.equals("null")  || argumento2.equals("null")  || argumento3.equals("null") ){
+
+                txtCliente.setText(" ")
+                clienteSeleccionado = "";
+            }
+            else{
+
+                txtCliente.setText(argumento1 + " " +argumento2);
+                clienteSeleccionado = argumento3;
+
+            }
+
+        }
+
         botonLimpiar.setOnClickListener {
 
+            txtCliente.setText("");
+            txtDetalles.setText("");
+            txtFecha.setText("");
+            txtObservaciones.setText("");
 
         }
         val botonGuardar:Button = view.findViewById(eventoBotonGuardar.cod)
 
         botonGuardar.setOnClickListener {
 
-
+            annadirParte(clienteSeleccionado.toString(),txtFecha.text.toString(),txtDetalles.text.toString(),txtObservaciones.text.toString(),tipoParte,estadoParte)
         }
         val botonCancelar:Button = view.findViewById(eventoBotonCancelar.cod)
 
         botonCancelar.setOnClickListener {
 
-
+            Navigation.findNavController(view).navigate(R.id.menuPrincipalFragment);
         }
 
         val botonBuscar:Button = view.findViewById(eventoBotonBuscar.cod)
@@ -730,23 +758,7 @@ class AltasFragment : Fragment(), AdapterView.OnItemSelectedListener{
 
         }
 
-        arguments?.let {
 
-
-
-            if (argumento1.equals("null")  || argumento2.equals("null")  || argumento3.equals("null") ){
-
-                txtCliente.setText(" ")
-                clienteSeleccionado = "";
-            }
-            else{
-
-                txtCliente.setText(argumento1 + " " +argumento2);
-                clienteSeleccionado = argumento1 + " " +argumento2 + " " +argumento3;
-
-            }
-
-        }
 
 
         val adaptadorEstado:ArrayAdapter<String> = ArrayAdapter(view.context,android.R.layout.simple_spinner_item,listaOpcionesEstado)
@@ -1315,6 +1327,46 @@ class AltasFragment : Fragment(), AdapterView.OnItemSelectedListener{
         }
     }
 
+    fun annadirParte(cliente:String,fecha:String,detalles:String,observaciones:String,tipo:String,estado:String){
+
+        var JSON:MediaType =  MediaType.get("application/json; charset=utf-8")
+
+        val jsonObject= JSONObject();
+
+        jsonObject.put("cliente",cliente);
+        jsonObject.put("fecha",fecha);
+        jsonObject.put("detalle",detalles);
+        jsonObject.put("observaciones",observaciones);
+        jsonObject.put("tipo",tipo);
+        jsonObject.put("estado",estado);
+
+        val client = OkHttpClient()
+
+        val body: RequestBody = RequestBody.create(JSON,jsonObject.toString())
+
+        val request: okhttp3.Request = okhttp3.Request.Builder() //Create a request
+            .url(URL_BASE+"movil/alta/parte")
+            .post(body) //Indicated as get request
+            .header("Accept", "application/json")
+            .header("Content-Type", "application/json")
+            .build()
+
+        var llamada: Call = client.newCall(request)
+
+        try {
+
+            var response = llamada.execute()
+
+           // val jsonArray = JSONObject(response.body()?.string())
+
+            Toast.makeText(this.context,response.body()?.string().toString(),Toast.LENGTH_SHORT).show()
+
+        }catch (e: IOException){
+
+            Toast.makeText(this.context,e.message.toString(),Toast.LENGTH_SHORT).show()
+        }
+    }
+
 
     fun annadirDelegacion(identificacion:String,direccion:String,provincia:String,ciudad:String,postal:String,email:String,telefono:String){
 
@@ -1335,7 +1387,7 @@ class AltasFragment : Fragment(), AdapterView.OnItemSelectedListener{
         val body: RequestBody = RequestBody.create(JSON,jsonObject.toString())
 
         val request: okhttp3.Request = okhttp3.Request.Builder() //Create a request
-            .url("http://192.168.1.141/symfony/web/app.php/movil/alta/delegacion")
+            .url(URL_BASE+"movil/alta/delegacion")
             .post(body) //Indicated as get request
             .header("Accept", "application/json")
             .header("Content-Type", "application/json")
@@ -1381,7 +1433,7 @@ class AltasFragment : Fragment(), AdapterView.OnItemSelectedListener{
         val body: RequestBody = RequestBody.create(JSON,jsonObject.toString())
 
         val request: okhttp3.Request = okhttp3.Request.Builder() //Create a request
-            .url("http://192.168.1.141/symfony/web/app.php/movil/alta/cliente")
+            .url(URL_BASE+"movil/alta/cliente")
             .post(body) //Indicated as get request
             .header("Accept", "application/json")
             .header("Content-Type", "application/json")
@@ -1408,6 +1460,30 @@ class AltasFragment : Fragment(), AdapterView.OnItemSelectedListener{
     override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
 
         val opcion:String = parent?.getItemAtPosition(position).toString()
+
+        when(opcion){
+
+            "INSTALACIÓN" ->{
+
+                tipoParte = "INSTALACIÓN"
+
+            }
+            "MANTENIMIENTO" ->{
+
+                tipoParte = "MANTENIMIENTO"
+            }
+            "AVERIA"->{
+
+                tipoParte = "AVERIA"
+            }
+            "ABIERTO"->{
+
+                estadoParte = "ABIERTO"
+            }
+            "CERRADO"->{
+                estadoParte = "CERRADO"
+            }
+        }
     }
 
     override fun onNothingSelected(parent: AdapterView<*>?) {
