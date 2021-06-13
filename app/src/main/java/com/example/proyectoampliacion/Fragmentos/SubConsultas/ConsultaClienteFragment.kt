@@ -76,11 +76,12 @@ class ConsultaClienteFragment : Fragment() {
             var cuerpo = response.body()?.string().toString();
             val personas:MutableList<Persona> = mutableListOf();
 
+
             if(cuerpo.length > 2){
 
                 var datos = cuerpo.split("[{")
 
-                for (i in 1..datos.count() -1) {
+                for (i in 1..datos.count() - 1) {
 
                     var persona = Persona(
                         datos[i].split(',')[1].split(':')[1],
@@ -96,13 +97,13 @@ class ConsultaClienteFragment : Fragment() {
             else{
 
                 Toast.makeText(this.context,"Error: No hay resultados",Toast.LENGTH_LONG).show()
-
-                obtenerDatosVolleyCliente(view)
             }
+
+
 
         }catch (ex:Exception){
 
-            Toast.makeText(this.context,ex.message.toString(),Toast.LENGTH_LONG).show()
+           Toast.makeText(this.context,ex.message.toString(),Toast.LENGTH_LONG).show()
 
         }
 

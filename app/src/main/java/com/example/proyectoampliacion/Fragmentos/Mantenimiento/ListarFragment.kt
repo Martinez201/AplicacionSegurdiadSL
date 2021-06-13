@@ -1,6 +1,7 @@
 package com.example.proyectoampliacion.Fragmentos.Mantenimiento
 
 import android.os.Bundle
+import android.os.StrictMode
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -18,8 +19,14 @@ import com.example.proyectoampliacion.Classes_Auxiliares.*
 import com.example.proyectoampliacion.R
 import kotlinx.android.synthetic.main.fragment_altas.*
 import kotlinx.android.synthetic.main.fragment_bajas.*
+import kotlinx.android.synthetic.main.fragment_consulta_cliente.*
 import kotlinx.android.synthetic.main.fragment_listar.*
+import okhttp3.Call
+import okhttp3.MediaType
+import okhttp3.OkHttpClient
+import okhttp3.RequestBody
 import org.json.JSONObject
+import java.lang.Exception
 
 class ListarFragment : Fragment() {
 
@@ -29,6 +36,8 @@ class ListarFragment : Fragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        val policy = StrictMode.ThreadPolicy.Builder().permitAll().build()
+        StrictMode.setThreadPolicy(policy)
 
     }
 
@@ -92,6 +101,7 @@ class ListarFragment : Fragment() {
 
         btnBuscar.setOnClickListener { it ->
 
+            busquedaClientes(view)
 
         }
 
@@ -399,7 +409,7 @@ class ListarFragment : Fragment() {
                                 datos[i].split(',')[7].split(':')[1]
                         )
                         personas.add(persona);
-                        mostarPersonas(view,personas);
+                        //mostarPersonas(view,personas);
                     }
                 },
                 { error ->
@@ -500,6 +510,89 @@ class ListarFragment : Fragment() {
         queue.add(jsObjectRequest);
 
     }
+
+
+    fun busquedaClientes(view: View){
+
+        val JSON: MediaType =  MediaType.get("application/json; charset=utf-8")
+        val jsonObject= JSONObject();
+
+        jsonObject.put("busqueda",edtBuscar.text.toString());
+
+        val client = OkHttpClient()
+        val body: RequestBody = RequestBody.create(JSON,jsonObject.toString())
+
+        val request: okhttp3.Request = okhttp3.Request.Builder() //Create a request
+            .url("http://192.168.1.141/symfony/web/app.php/movil/clientes/buscar")
+            .post(body)
+            .header("Accept", "application/json")
+            .header("Content-Type", "application/json")
+            .build()
+
+        var llamada: Call = client.newCall(request)
+
+        //try {
+
+            var response = llamada.execute()
+            var cuerpo = response.body()?.string().toString();
+            val personas:MutableList<Cliente> = mutableListOf();
+
+
+
+            if(cuerpo.length > 2){
+
+                var datos = cuerpo.split("[{")
+
+                tvPrueba.text = datos[1]
+
+
+                Toast.makeText(this.context,,Toast.LENGTH_LONG).show()
+
+               /* for (i in 1..datos.count() -1) {
+
+               id ==> datos[1].split(',')[0].split(':')[1]
+               nombre ==> datos[1].split(',')[1].split(':')[1]
+               apellidos ==> datos[1].split(',')[2].split(':')[1]
+               dni ==> datos[1].split(',')[3].split(':')[1]
+               fecha ==> datos[1].split(":{")[1].split(',')[0].split(' ')[0].split(':')[1].split('"')[1]
+
+
+                    var persona = Cliente(
+
+                        datos[i].split(',')[0].split(':')[1],
+                        datos[i].split(',')[1].split(':')[1],
+                        datos[i].split(',')[8].split(':')[1],
+                        datos[i].split(',')[2].split(':')[1],
+                        datos[i].split(',')[9].split(':')[1],
+                        datos[i].split(',')[6].split(':')[1],
+                        datos[i].split(',')[10].split(':')[1],
+                        datos[i].split(',')[11].split(':')[1].split('}')[0].toInt(),
+                        datos[i].split(',')[3].split(':')[1],
+                        datos[i].split(',')[5].split(':')[1],
+                        datos[i].split(',')[4].split(':')[1],
+                        datos[i].split(',')[7].split(':')[1]
+                    )
+                    personas.add(persona);
+                }
+
+                mostarPersonas(view,personas);*/
+
+            }
+            else{
+
+                Toast.makeText(this.context,"Error: No hay resultados",Toast.LENGTH_LONG).show()
+
+                obtenerDatosVolleyCliente(view)
+            }
+
+       // }catch (ex: Exception){
+
+          //  Toast.makeText(this.context,ex.message.toString(),Toast.LENGTH_LONG).show()
+
+        //}
+
+    }
+
 
 
     fun mostarDelegaciones(view: View,delegaciones:MutableList<Delegacion> ){
