@@ -624,7 +624,7 @@ class AltasFragment : Fragment(), AdapterView.OnItemSelectedListener{
         val btnCancelar:Button = Button(this.context);
         val btnGuardar:Button = Button(this.context);
         val btnLimpiar:Button = Button(this.context);
-        val btnBuscar:Button = Button(this.context)
+        val btnBuscar:Button = Button(this.context);
 
         val listaOpcionesEstado:List<String> = listOf("<- Seleccione una opción ->","ABIERTO","CERRADO");
         val listaOpcionesTipo:List<String> = listOf("<- Seleccione una opción ->","INSTALACIÓN","MANTENIMIENTO","AVERIA");
@@ -969,6 +969,12 @@ class AltasFragment : Fragment(), AdapterView.OnItemSelectedListener{
         val cbAdministrador:CheckBox= CheckBox(this.context);
         val cbInstalador:CheckBox= CheckBox(this.context);
         val cbGestor:CheckBox= CheckBox(this.context);
+        val cbComercial:CheckBox = CheckBox(this.context)
+
+        var admin = "FALSE";
+        var gestor = "FALSE";
+        var comercial = "FALSE";
+        var instalador = "FALSE";
 
 
         val contenedorUsuario:LinearLayout = LinearLayout(this.context);
@@ -999,6 +1005,8 @@ class AltasFragment : Fragment(), AdapterView.OnItemSelectedListener{
         contenedorProvincia.orientation = LinearLayout.HORIZONTAL;
         val contenedorRol:LinearLayout = LinearLayout(this.context);
         contenedorRol.orientation = LinearLayout.HORIZONTAL;
+        val contenedorRol2:LinearLayout = LinearLayout(this.context);
+        contenedorRol2.orientation = LinearLayout.HORIZONTAL;
         val contenedorBotones:LinearLayout = LinearLayout(this.context);
         contenedorBotones.orientation = LinearLayout.HORIZONTAL;
 
@@ -1044,6 +1052,8 @@ class AltasFragment : Fragment(), AdapterView.OnItemSelectedListener{
         contenedorcPostal.orientation = LinearLayout.HORIZONTAL;
         contenedorRol.setLayoutParams(ActionBar.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
         contenedorRol.orientation = LinearLayout.HORIZONTAL;
+        contenedorRol2.setLayoutParams(ActionBar.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
+        contenedorRol2.orientation = LinearLayout.HORIZONTAL;
 
         txtUsuario.hint = "Introduzca Usuario"
         txtPassword.hint = "Introduzca Contraseña"
@@ -1106,6 +1116,7 @@ class AltasFragment : Fragment(), AdapterView.OnItemSelectedListener{
         cbAdministrador.text = "Administrador";
         cbGestor.text = "Gestor"
         cbInstalador.text = "Instalador"
+        cbComercial.text = "Comercial"
 
 
         contenedorBotones.gravity = Gravity.CENTER
@@ -1123,7 +1134,9 @@ class AltasFragment : Fragment(), AdapterView.OnItemSelectedListener{
         contenedorRol.gravity= Gravity.CENTER;
         contenedorRol.addView(cbAdministrador);
         contenedorRol.addView(cbGestor);
-        contenedorRol.addView(cbInstalador);
+        contenedorRol2.gravity= Gravity.CENTER;
+        contenedorRol2.addView(cbInstalador);
+        contenedorRol2.addView(cbComercial);
         contenedorNombre.gravity= Gravity.CENTER;
         contenedorNombre.addView(txtNombre);
         contenedorApellidos.gravity= Gravity.CENTER;
@@ -1149,6 +1162,7 @@ class AltasFragment : Fragment(), AdapterView.OnItemSelectedListener{
         contenedorSlDelegacion.setPadding(0,50,0,0);
         contenedorPassword.setPadding(0,50,0,0);
         contenedorRol.setPadding(0,150,0,0);
+        contenedorRol2.setPadding(0,150,0,0);
         contenedorNombre.setPadding(0,50,0,0);
         contenedorApellidos.setPadding(0,50,0,0);
         contenedorCiudad.setPadding(0,50,0,0);
@@ -1176,6 +1190,7 @@ class AltasFragment : Fragment(), AdapterView.OnItemSelectedListener{
         contenedor.addView(contenedorNacimiento);
         contenedor.addView(contenedorSlDelegacion);
         contenedor.addView(contenedorRol);
+        contenedor.addView(contenedorRol2);
         contenedor.addView(contenedorBotones);
 
 
@@ -1195,24 +1210,73 @@ class AltasFragment : Fragment(), AdapterView.OnItemSelectedListener{
 
         }
 
+        if (cbAdministrador.isChecked){
+
+            admin = "TRUE"
+        }
+
+        if (cbGestor.isChecked){
+
+            gestor = "TRUE"
+        }
+
+        if (cbComercial.isChecked){
+
+            comercial = "TRUE"
+        }
+        if (cbInstalador.isChecked){
+
+            instalador = "TRUE"
+        }
+
+
 
         val botonLimpiar:Button = view.findViewById(eventoBotonLimpiar.cod)
 
         botonLimpiar.setOnClickListener {
 
+            txtNacimiento.setText("")
+            txtApellidos.setText("")
+            txtCiudad.setText("")
+            txtDireccion.setText("")
+            txtEmail.setText("")
+            txtNombre.setText("")
+            txtPassword.setText("")
+            txtProvincia.setText("")
+            txtTelefono.setText("")
+            txtUsuario.setText("")
+            txtcPostal.setText("")
 
         }
         val botonGuardar:Button = view.findViewById(eventoBotonGuardar.cod)
 
         botonGuardar.setOnClickListener {
 
+            annadirEmpleado(txtUsuario.text.toString(),
+                txtPassword.text.toString(),
+                txtNombre.text.toString(),
+                txtApellidos.text.toString(),
+                txtDireccion.text.toString(),
+                txtProvincia.text.toString(),
+                txtCiudad.text.toString(),
+                txtcPostal.text.toString(),
+                txtEmail.text.toString(),
+                txtTelefono.text.toString(),
+                txtNacimiento.text.toString(),
+                estado,
+                txtDni.text.toString(),
+                instalador,
+                comercial,
+                gestor,
+                admin
+            )
 
         }
         val botonCancelar:Button = view.findViewById(eventoBotonCancelar.cod)
 
         botonCancelar.setOnClickListener {
 
-
+            Navigation.findNavController(it).navigate(R.id.menuPrincipalFragment);
         }
 
         val botonBuscar:Button = view.findViewById(eventoBotonBuscar.cod)
@@ -1226,6 +1290,7 @@ class AltasFragment : Fragment(), AdapterView.OnItemSelectedListener{
             Navigation.findNavController(vista).navigate(R.id.consultaDelegacionFragment,bundle);
 
         }
+
 
     }
 
@@ -1647,7 +1712,7 @@ class AltasFragment : Fragment(), AdapterView.OnItemSelectedListener{
     }
 
 
-    fun annadirEmpleado(usuario:String,password:String,nombre:String,apellidos:String,direccion:String,provincia:String,ciudad:String,postal:String,email:String,telefono:String, nacimiento:String, estado:String ,dni:String){
+    fun annadirEmpleado(usuario:String,password:String,nombre:String,apellidos:String,direccion:String,provincia:String,ciudad:String,postal:String,email:String,telefono:String, nacimiento:String, estado:String ,dni:String, instalador:String, comercial:String, gestor:String, admin:String){
 
         var JSON:MediaType =  MediaType.get("application/json; charset=utf-8")
 
@@ -1666,11 +1731,11 @@ class AltasFragment : Fragment(), AdapterView.OnItemSelectedListener{
         jsonObject.put("telefono",telefono);
         jsonObject.put("estado",estado);
         jsonObject.put("dni",dni);
-        jsonObject.put("delegacion",dni);
-        jsonObject.put("admin",dni);
-        jsonObject.put("instalador",dni);
-        jsonObject.put("gestor",dni);
-        jsonObject.put("comercial",dni);
+        jsonObject.put("delegacion",delegacionSeleccionada);
+        jsonObject.put("admin",admin);
+        jsonObject.put("instalador",instalador);
+        jsonObject.put("gestor",gestor);
+        jsonObject.put("comercial",comercial);
 
 
         val client = OkHttpClient()
