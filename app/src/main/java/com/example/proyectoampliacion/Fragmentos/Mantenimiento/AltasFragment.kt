@@ -878,6 +878,12 @@ class AltasFragment : Fragment(), AdapterView.OnItemSelectedListener{
         contenedorSpCliente.addView(txtCliente);
         contenedorSpCliente.addView(btnBuscar);
 
+        contenedorConcepto.setPadding(0,50,0,0);
+        contenedorFecha.setPadding(0,50,0,0);
+        contenedorPrecio.setPadding(0,50,0,0);
+        contenedorSpCliente.setPadding(0,50,0,0);
+        contenedorBotones.setPadding(0,200,0,100);
+
         contenedor.addView(contenedorSpCliente);
         contenedor.addView(contenedorFecha);
         contenedor.addView(contenedorPrecio);
@@ -903,6 +909,10 @@ class AltasFragment : Fragment(), AdapterView.OnItemSelectedListener{
 
         botonLimpiar.setOnClickListener {
 
+            txtCliente.setText("")
+            txtConcepto.setText("")
+            txtFecha.setText("")
+            txtPrecioSinIva.setText("")
 
         }
         val botonGuardar:Button = view.findViewById(eventoBotonGuardar.cod)
@@ -917,6 +927,7 @@ class AltasFragment : Fragment(), AdapterView.OnItemSelectedListener{
 
         botonCancelar.setOnClickListener {
 
+            Navigation.findNavController(view).navigate(R.id.menuPrincipalFragment);
 
         }
 
