@@ -52,6 +52,8 @@ class AltasFragment : Fragment(), AdapterView.OnItemSelectedListener{
 
     var estado:String = ""
 
+    var empleado = ""
+
     val URL_BASE:String = "http://192.168.1.141/symfony/web/app.php/"
 
     var contenido:Bundle? = null
@@ -74,6 +76,8 @@ class AltasFragment : Fragment(), AdapterView.OnItemSelectedListener{
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+
+        empleado = contenido?.getString("empleado").toString()
 
         arguments?.let {
 
@@ -240,6 +244,7 @@ class AltasFragment : Fragment(), AdapterView.OnItemSelectedListener{
         botonGuardar.setOnClickListener {
 
 
+
         }
         val botonCancelar:Button = view.findViewById(eventoBotonCancelar.cod)
 
@@ -305,11 +310,6 @@ class AltasFragment : Fragment(), AdapterView.OnItemSelectedListener{
         contenedorFecha.addView(txtFecha);
         contenedorProveedor.gravity= Gravity.CENTER;
         contenedorProveedor.addView(txtProveedor);
-
-
-
-
-
         contenedor.addView(contenedorFecha);
         contenedor.addView(contenedorProveedor);
         contenedor.addView(contenedorBotones)
@@ -324,6 +324,7 @@ class AltasFragment : Fragment(), AdapterView.OnItemSelectedListener{
 
         botonGuardar.setOnClickListener {
 
+            annadirAlbaran(txtFecha.text.toString(),txtProveedor.text.toString(),empleado)
 
         }
         val botonCancelar:Button = view.findViewById(eventoBotonCancelar.cod)
@@ -1497,6 +1498,44 @@ class AltasFragment : Fragment(), AdapterView.OnItemSelectedListener{
         botonCancelar.setOnClickListener {
 
             Navigation.findNavController(view).navigate(R.id.menuPrincipalFragment);
+        }
+    }
+
+    fun annadirAlbaran(fecha:String,proveedor:String,empleado:String){
+
+        var JSON:MediaType =  MediaType.get("application/json; charset=utf-8")
+
+        val jsonObject= JSONObject();
+
+        jsonObject.put("fecha",fecha);
+        jsonObject.put("proveedor",proveedor);
+        jsonObject.put("empleado",empleado);
+
+
+        val client = OkHttpClient()
+
+        val body: RequestBody = RequestBody.create(JSON,jsonObject.toString())
+
+        val request: okhttp3.Request = okhttp3.Request.Builder() //Create a request
+            .url(URL_BASE+"movil/alta/albaran")
+            .post(body) //Indicated as get request
+            .header("Accept", "application/json")
+            .header("Content-Type", "application/json")
+            .build()
+
+        var llamada: Call = client.newCall(request)
+
+        try {
+
+            var response = llamada.execute()
+
+            // val jsonArray = JSONObject(response.body()?.string())
+
+            Toast.makeText(this.context,response.body()?.string().toString(),Toast.LENGTH_SHORT).show()
+
+        }catch (e: IOException){
+
+            Toast.makeText(this.context,e.message.toString(),Toast.LENGTH_SHORT).show()
         }
     }
 
