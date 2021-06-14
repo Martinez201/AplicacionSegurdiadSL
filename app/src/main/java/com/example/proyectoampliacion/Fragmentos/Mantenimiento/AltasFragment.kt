@@ -242,19 +242,22 @@ class AltasFragment : Fragment(), AdapterView.OnItemSelectedListener{
 
         botonLimpiar.setOnClickListener {
 
+            txtDireccion.setText("")
+            txtFecha.setText("")
 
         }
         val botonGuardar:Button = view.findViewById(eventoBotonGuardar.cod)
 
         botonGuardar.setOnClickListener {
 
-
+            annadirPresupuesto(txtFecha.text.toString(),txtDireccion.text.toString(),estado,empleado)
 
         }
         val botonCancelar:Button = view.findViewById(eventoBotonCancelar.cod)
 
         botonCancelar.setOnClickListener {
 
+            Navigation.findNavController(view).navigate(R.id.menuPrincipalFragment);
 
         }
     }
@@ -329,6 +332,8 @@ class AltasFragment : Fragment(), AdapterView.OnItemSelectedListener{
 
         botonLimpiar.setOnClickListener {
 
+            txtFecha.setText("")
+            txtProveedor.setText("")
 
         }
         val botonGuardar:Button = view.findViewById(eventoBotonGuardar.cod)
@@ -342,6 +347,7 @@ class AltasFragment : Fragment(), AdapterView.OnItemSelectedListener{
 
         botonCancelar.setOnClickListener {
 
+            Navigation.findNavController(view).navigate(R.id.menuPrincipalFragment);
 
         }
     }
@@ -1553,6 +1559,46 @@ class AltasFragment : Fragment(), AdapterView.OnItemSelectedListener{
 
         val request: okhttp3.Request = okhttp3.Request.Builder() //Create a request
             .url(URL_BASE+"movil/alta/albaran")
+            .post(body) //Indicated as get request
+            .header("Accept", "application/json")
+            .header("Content-Type", "application/json")
+            .build()
+
+        var llamada: Call = client.newCall(request)
+
+        try {
+
+            var response = llamada.execute()
+
+            // val jsonArray = JSONObject(response.body()?.string())
+
+            Toast.makeText(this.context,response.body()?.string().toString(),Toast.LENGTH_SHORT).show()
+
+        }catch (e: IOException){
+
+            Toast.makeText(this.context,e.message.toString(),Toast.LENGTH_SHORT).show()
+        }
+    }
+
+
+    fun annadirPresupuesto(fecha:String,instalacion:String,estado:String,empleado:String?){
+
+        var JSON:MediaType =  MediaType.get("application/json; charset=utf-8")
+
+        val jsonObject= JSONObject();
+
+        jsonObject.put("instalacion",instalacion);
+        jsonObject.put("fecha",fecha);
+        jsonObject.put("estado",estado);
+        jsonObject.put("empleado",empleado);  // datos del usuario logeado
+
+
+        val client = OkHttpClient()
+
+        val body: RequestBody = RequestBody.create(JSON,jsonObject.toString())
+
+        val request: okhttp3.Request = okhttp3.Request.Builder() //Create a request
+            .url(URL_BASE+"movil/alta/presupuesto")
             .post(body) //Indicated as get request
             .header("Accept", "application/json")
             .header("Content-Type", "application/json")
