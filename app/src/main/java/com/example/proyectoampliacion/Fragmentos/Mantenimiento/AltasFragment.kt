@@ -1210,24 +1210,6 @@ class AltasFragment : Fragment(), AdapterView.OnItemSelectedListener{
 
         }
 
-        if (cbAdministrador.isChecked){
-
-            admin = "TRUE"
-        }
-
-        if (cbGestor.isChecked){
-
-            gestor = "TRUE"
-        }
-
-        if (cbComercial.isChecked){
-
-            comercial = "TRUE"
-        }
-        if (cbInstalador.isChecked){
-
-            instalador = "TRUE"
-        }
 
 
 
@@ -1251,6 +1233,26 @@ class AltasFragment : Fragment(), AdapterView.OnItemSelectedListener{
         val botonGuardar:Button = view.findViewById(eventoBotonGuardar.cod)
 
         botonGuardar.setOnClickListener {
+
+            if (cbAdministrador.isChecked){
+
+                admin = "TRUE"
+            }
+
+            if (cbGestor.isChecked){
+
+                gestor = "TRUE"
+            }
+
+            if (cbComercial.isChecked){
+
+                comercial = "TRUE"
+            }
+            if (cbInstalador.isChecked){
+
+                instalador = "TRUE"
+            }
+
 
             annadirEmpleado(txtUsuario.text.toString(),
                 txtPassword.text.toString(),
@@ -1718,7 +1720,7 @@ class AltasFragment : Fragment(), AdapterView.OnItemSelectedListener{
 
         val jsonObject= JSONObject();
 
-        jsonObject.put("usuario",nombre);
+        jsonObject.put("usuario",usuario);
         jsonObject.put("password",password);
         jsonObject.put("nombre",nombre);
         jsonObject.put("apellidos",apellidos);
