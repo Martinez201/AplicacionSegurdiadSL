@@ -46,6 +46,8 @@ class AltasFragment : Fragment(), AdapterView.OnItemSelectedListener{
     var tipoParte:String = "";
     var estadoParte:String = "";
 
+    var tipoProducto: String ="";
+
     var estado:String = ""
 
     val URL_BASE:String = "http://192.168.1.141/symfony/web/app.php/"
@@ -426,19 +428,22 @@ class AltasFragment : Fragment(), AdapterView.OnItemSelectedListener{
 
         botonLimpiar.setOnClickListener {
 
+            txtNombre.setText("");
+            txtPrecio.setText("");
+            txtStock.setText("");
 
         }
         val botonGuardar:Button = view.findViewById(eventoBotonGuardar.cod)
 
         botonGuardar.setOnClickListener {
 
-
+            annadirProducto(txtNombre.text.toString(),tipoProducto,txtPrecio.text.toString(),txtStock.text.toString())
         }
         val botonCancelar:Button = view.findViewById(eventoBotonCancelar.cod)
 
         botonCancelar.setOnClickListener {
 
-
+            Navigation.findNavController(view).navigate(R.id.menuPrincipalFragment);
         }
 
         val adaptadorTipo:ArrayAdapter<String> = ArrayAdapter(view.context,android.R.layout.simple_spinner_item,listaOpcionesTipo)
@@ -1344,6 +1349,46 @@ class AltasFragment : Fragment(), AdapterView.OnItemSelectedListener{
         }
     }
 
+    fun annadirProducto(nombre:String,tipo:String,precio:String,stock:String){
+
+        var JSON:MediaType =  MediaType.get("application/json; charset=utf-8")
+
+        val jsonObject= JSONObject();
+
+        jsonObject.put("nombre",nombre);
+        jsonObject.put("tipo",tipo);
+        jsonObject.put("precio",precio);
+        jsonObject.put("stock",stock);
+
+        val client = OkHttpClient()
+
+        val body: RequestBody = RequestBody.create(JSON,jsonObject.toString())
+
+        val request: okhttp3.Request = okhttp3.Request.Builder() //Create a request
+            .url(URL_BASE+"movil/alta/producto")
+            .post(body) //Indicated as get request
+            .header("Accept", "application/json")
+            .header("Content-Type", "application/json")
+            .build()
+
+        var llamada: Call = client.newCall(request)
+
+        try {
+
+            var response = llamada.execute()
+
+            // val jsonArray = JSONObject(response.body()?.string())
+
+            Toast.makeText(this.context,response.body()?.string().toString(),Toast.LENGTH_SHORT).show()
+
+        }catch (e: IOException){
+
+            Toast.makeText(this.context,e.message.toString(),Toast.LENGTH_SHORT).show()
+        }
+    }
+
+
+
     fun annadirParte(cliente:String,fecha:String,detalles:String,observaciones:String,tipo:String,estado:String){
 
         var JSON:MediaType =  MediaType.get("application/json; charset=utf-8")
@@ -1501,6 +1546,14 @@ class AltasFragment : Fragment(), AdapterView.OnItemSelectedListener{
             }
             "CERRADO"->{
                 estadoParte = "CERRADO"
+            }
+            "PRODUCTO"->{
+
+                tipoProducto = "PRODUCTO"
+            }
+            "SERVICIO"->{
+
+                tipoProducto = "SERVICIO"
             }
         }
     }
