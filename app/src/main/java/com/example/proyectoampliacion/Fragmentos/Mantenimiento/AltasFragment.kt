@@ -909,7 +909,8 @@ class AltasFragment : Fragment(), AdapterView.OnItemSelectedListener{
 
         botonGuardar.setOnClickListener {
 
-            clienteSeleccionado?.let { it1 -> annadirFactura(it1,txtFecha.text.toString(),txtConcepto.text.toString(),txtPrecioSinIva.text.toString()) }
+
+            clienteSeleccionado?.let { it1 -> annadirFactura(it1,txtFecha.text.toString(),txtConcepto.text.toString(),txtPrecioSinIva.text.toString(),contenido?.getString("empleado")) }
 
         }
         val botonCancelar:Button = view.findViewById(eventoBotonCancelar.cod)
@@ -1389,7 +1390,7 @@ class AltasFragment : Fragment(), AdapterView.OnItemSelectedListener{
     }
 
 
-    fun annadirFactura(cliente:String,fecha:String,concepto:String,precio:String){
+    fun annadirFactura(cliente:String,fecha:String,concepto:String,precio:String,empleado:String?){
 
         var JSON:MediaType =  MediaType.get("application/json; charset=utf-8")
 
@@ -1399,8 +1400,7 @@ class AltasFragment : Fragment(), AdapterView.OnItemSelectedListener{
         jsonObject.put("fecha",fecha);
         jsonObject.put("precio",precio);
         jsonObject.put("concepto",concepto);
-        jsonObject.put("delegacion",contenido?.getString("provincia"));  // datos del usuario logeado
-        jsonObject.put("empleado",contenido?.getString("empleado"));  // datos del usuario logeado
+        jsonObject.put("empleado",empleado);  // datos del usuario logeado
 
 
         val client = OkHttpClient()
