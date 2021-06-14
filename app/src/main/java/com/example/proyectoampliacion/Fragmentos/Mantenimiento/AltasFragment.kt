@@ -343,6 +343,8 @@ class AltasFragment : Fragment(), AdapterView.OnItemSelectedListener{
         var eventoBotonCancelar:ControlDinamico = ControlDinamico(2, "Cancelar")
         var eventoBotonGuardar:ControlDinamico = ControlDinamico(3, "Guardar")
 
+        val listaOpcionesTipo:List<String> = listOf("<- Seleccione una opción ->","PRODUCTO","SERVICIO");
+
         btnLimpiar.id = eventoBotonLimpiar.cod;
         btnLimpiar.text =  eventoBotonLimpiar.nombre;
         btnGuardar.id = eventoBotonGuardar.cod;
@@ -407,6 +409,13 @@ class AltasFragment : Fragment(), AdapterView.OnItemSelectedListener{
         contenedorStock.gravity= Gravity.CENTER;
         contenedorStock.addView(txtStock);
 
+        contenedorNombre.setPadding(0,50,0,0);
+        contenedorPrecio.setPadding(0,50,0,0);
+        contenedorStock.setPadding(0,50,0,0);
+        contenedorTipo.setPadding(0,50,0,0);
+        contenedorBotones.setPadding(0,200,0,100);
+
+
         contenedor.addView(contenedorNombre);
         contenedor.addView(contenedorTipo);
         contenedor.addView(contenedorPrecio);
@@ -431,6 +440,10 @@ class AltasFragment : Fragment(), AdapterView.OnItemSelectedListener{
 
 
         }
+
+        val adaptadorTipo:ArrayAdapter<String> = ArrayAdapter(view.context,android.R.layout.simple_spinner_item,listaOpcionesTipo)
+        spTipo.adapter = adaptadorTipo
+        spTipo.onItemSelectedListener = this
     }
 
     fun construirFormDelegacion(view: View){
