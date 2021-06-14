@@ -39,10 +39,11 @@ import java.util.concurrent.TimeoutException
 class AltasFragment : Fragment(), AdapterView.OnItemSelectedListener{
 
     var clienteSeleccionado:String? = null;
-    var clienteSeleccionado2:String? = null;
+    var delegacionSeleccionada:String? = null;
     var argumento1:String = "";
     var argumento2:String = "";
     var argumento3:String = "";
+    var argumento4:String = "";
 
     var tipoParte:String = "";
     var estadoParte:String = "";
@@ -79,6 +80,7 @@ class AltasFragment : Fragment(), AdapterView.OnItemSelectedListener{
              argumento1 = it.getString("nombre").toString()
              argumento2 = it.getString("apellidos").toString()
              argumento3= it.getString("id").toString()
+             argumento4 = it.getString("idDe").toString()
 
 
             when(it.getInt("tipo")){
@@ -1176,6 +1178,24 @@ class AltasFragment : Fragment(), AdapterView.OnItemSelectedListener{
         contenedor.addView(contenedorRol);
         contenedor.addView(contenedorBotones);
 
+
+        arguments?.let {
+
+            if (argumento1.equals("null")  || argumento2.equals("null")  || argumento4.equals("null") ){
+
+                slDelegacion.setText(" ")
+                delegacionSeleccionada = "";
+            }
+            else{
+
+                slDelegacion.setText(argumento1);
+                delegacionSeleccionada = argumento4;
+
+            }
+
+        }
+
+
         val botonLimpiar:Button = view.findViewById(eventoBotonLimpiar.cod)
 
         botonLimpiar.setOnClickListener {
@@ -1194,6 +1214,19 @@ class AltasFragment : Fragment(), AdapterView.OnItemSelectedListener{
 
 
         }
+
+        val botonBuscar:Button = view.findViewById(eventoBotonBuscar.cod)
+
+        botonBuscar.setOnClickListener(){  vista ->
+
+            var bundle:Bundle = Bundle()
+
+            bundle.putInt("tipo",5)
+
+            Navigation.findNavController(vista).navigate(R.id.consultaDelegacionFragment,bundle);
+
+        }
+
     }
 
     fun construirFormClientes(view: View){
