@@ -252,7 +252,7 @@ class AltasFragment : Fragment(), AdapterView.OnItemSelectedListener{
 
         botonGuardar.setOnClickListener {
 
-            annadirPresupuesto(txtFecha.text.toString(),txtDireccion.text.toString(),estado,empleado)
+            annadirPresupuesto(txtFecha.text.toString(),txtDireccion.text.toString(),estadoPrespuesto,empleado)
 
         }
         val botonCancelar:Button = view.findViewById(eventoBotonCancelar.cod)
