@@ -1389,7 +1389,7 @@ class AltasFragment : Fragment(), AdapterView.OnItemSelectedListener{
     }
 
 
-    fun annadirFactura(cliente:String,fecha:String,precio:String,stock:String){
+    fun annadirFactura(cliente:String,fecha:String,concepto:String,precio:String){
 
         var JSON:MediaType =  MediaType.get("application/json; charset=utf-8")
 
@@ -1398,7 +1398,10 @@ class AltasFragment : Fragment(), AdapterView.OnItemSelectedListener{
         jsonObject.put("cliente",cliente);
         jsonObject.put("fecha",fecha);
         jsonObject.put("precio",precio);
-        jsonObject.put("stock",stock);
+        jsonObject.put("concepto",concepto);
+        jsonObject.put("delegacion",contenido?.getString("provincia"));  // datos del usuario logeado
+        jsonObject.put("empleado",contenido?.getString("empleado"));  // datos del usuario logeado
+
 
         val client = OkHttpClient()
 
