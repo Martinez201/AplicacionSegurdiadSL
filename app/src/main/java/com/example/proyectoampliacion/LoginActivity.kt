@@ -64,7 +64,7 @@ class LoginActivity : AppCompatActivity() {
                  val instalador =  cuerpo.split(":{")[1].split(',')[12].split(':')[1]
                  val gestor = cuerpo.split(":{")[1].split(',')[13].split(':')[1]
                  val comercial = cuerpo.split(":{")[1].split(',')[14].split(':')[1]
-                 val empleado = cuerpo.split(":{")[1].split(',')[16].split(':')[1]
+                 val empleado = cuerpo.split(":{")[0].split(',')[0].split(':')[1]
 
                 val intent:Intent = Intent(this,MainActivity::class.java)
                 intent.putExtra("provincia",provincia)
