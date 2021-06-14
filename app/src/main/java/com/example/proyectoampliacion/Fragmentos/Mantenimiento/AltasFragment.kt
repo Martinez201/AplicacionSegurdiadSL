@@ -39,6 +39,7 @@ import java.util.concurrent.TimeoutException
 class AltasFragment : Fragment(), AdapterView.OnItemSelectedListener{
 
     var clienteSeleccionado:String? = null;
+    var clienteSeleccionado2:String? = null;
     var argumento1:String = "";
     var argumento2:String = "";
     var argumento3:String = "";
@@ -795,13 +796,14 @@ class AltasFragment : Fragment(), AdapterView.OnItemSelectedListener{
 
     fun cosntruirFormFactura(view: View){
 
-        val slCliente:Spinner = Spinner(this.context);
+        val txtCliente:EditText = EditText(this.context);
         val txtFecha:EditText = EditText(this.context);
         val txtPrecioSinIva:EditText = EditText(this.context);
         val txtConcepto:EditText = EditText(this.context);
         val btnCancelar:Button = Button(this.context);
         val btnGuardar:Button = Button(this.context);
         val btnLimpiar:Button = Button(this.context);
+        val btnBuscar:Button = Button(this.context)
 
         val contenedorSpCliente:LinearLayout = LinearLayout(this.context);
         contenedorSpCliente.orientation = LinearLayout.HORIZONTAL;
@@ -818,12 +820,16 @@ class AltasFragment : Fragment(), AdapterView.OnItemSelectedListener{
         val eventoBotonCancelar:ControlDinamico = ControlDinamico(2, "Cancelar")
         val eventoBotonGuardar:ControlDinamico = ControlDinamico(3, "Guardar")
 
+        val eventoBotonBuscar:ControlDinamico = ControlDinamico(4, "Buscar")
+
         btnLimpiar.id = eventoBotonLimpiar.cod;
         btnLimpiar.text =  eventoBotonLimpiar.nombre;
         btnGuardar.id = eventoBotonGuardar.cod;
         btnGuardar.text = eventoBotonGuardar.nombre;
         btnCancelar.id = eventoBotonCancelar.cod;
         btnCancelar.text = eventoBotonCancelar.nombre;
+        btnBuscar.text = eventoBotonBuscar.nombre
+        btnBuscar.id =  eventoBotonBuscar.cod
 
         contenedorSpCliente.setLayoutParams(ActionBar.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
         contenedorSpCliente.orientation = LinearLayout.HORIZONTAL;
@@ -853,7 +859,10 @@ class AltasFragment : Fragment(), AdapterView.OnItemSelectedListener{
         btnCancelar.text = "Cancelar"
         btnGuardar.text = "Guardar"
         btnLimpiar.text = "Limpiar"
-
+        txtCliente.width = 750;
+        txtCliente.maxLines = 1;
+        txtCliente.isEnabled = false;
+        txtCliente.hint = "Buscar Cliente ..."
 
         contenedorBotones.gravity = Gravity.CENTER
         contenedorBotones.addView(btnGuardar);
@@ -866,13 +875,29 @@ class AltasFragment : Fragment(), AdapterView.OnItemSelectedListener{
         contenedorConcepto.gravity= Gravity.CENTER;
         contenedorConcepto.addView(txtConcepto);
         contenedorSpCliente.gravity= Gravity.CENTER;
-        contenedorSpCliente.addView(slCliente);
+        contenedorSpCliente.addView(txtCliente);
+        contenedorSpCliente.addView(btnBuscar);
 
         contenedor.addView(contenedorSpCliente);
         contenedor.addView(contenedorFecha);
         contenedor.addView(contenedorPrecio);
         contenedor.addView(contenedorConcepto);
         contenedor.addView(contenedorBotones);
+
+        arguments?.let {
+
+
+            if (argumento1.equals("null") || argumento2.equals("null") || argumento3.equals("null")) {
+
+                txtCliente.setText(" ")
+                clienteSeleccionado = "";
+            } else {
+
+                txtCliente.setText(argumento1 + " " + argumento2);
+                clienteSeleccionado = argumento3;
+
+            }
+        }
 
         val botonLimpiar:Button = view.findViewById(eventoBotonLimpiar.cod)
 
@@ -884,6 +909,7 @@ class AltasFragment : Fragment(), AdapterView.OnItemSelectedListener{
 
         botonGuardar.setOnClickListener {
 
+            clienteSeleccionado?.let { it1 -> annadirFactura(it1,txtFecha.text.toString(),txtConcepto.text.toString(),txtPrecioSinIva.text.toString()) }
 
         }
         val botonCancelar:Button = view.findViewById(eventoBotonCancelar.cod)
@@ -892,6 +918,19 @@ class AltasFragment : Fragment(), AdapterView.OnItemSelectedListener{
 
 
         }
+
+        val botonBuscar:Button = view.findViewById(eventoBotonBuscar.cod)
+
+        botonBuscar.setOnClickListener(){  vista ->
+
+            var bundle:Bundle = Bundle()
+
+            bundle.putInt("tipo",5)
+
+            Navigation.findNavController(vista).navigate(R.id.consultaClienteFragment,bundle);
+
+        }
+
     }
 
     fun construirFormEmpleados(view: View){
@@ -1348,6 +1387,46 @@ class AltasFragment : Fragment(), AdapterView.OnItemSelectedListener{
             Navigation.findNavController(view).navigate(R.id.menuPrincipalFragment);
         }
     }
+
+
+    fun annadirFactura(cliente:String,fecha:String,precio:String,stock:String){
+
+        var JSON:MediaType =  MediaType.get("application/json; charset=utf-8")
+
+        val jsonObject= JSONObject();
+
+        jsonObject.put("cliente",cliente);
+        jsonObject.put("fecha",fecha);
+        jsonObject.put("precio",precio);
+        jsonObject.put("stock",stock);
+
+        val client = OkHttpClient()
+
+        val body: RequestBody = RequestBody.create(JSON,jsonObject.toString())
+
+        val request: okhttp3.Request = okhttp3.Request.Builder() //Create a request
+            .url(URL_BASE+"movil/alta/factura")
+            .post(body) //Indicated as get request
+            .header("Accept", "application/json")
+            .header("Content-Type", "application/json")
+            .build()
+
+        var llamada: Call = client.newCall(request)
+
+        try {
+
+            var response = llamada.execute()
+
+            // val jsonArray = JSONObject(response.body()?.string())
+
+            Toast.makeText(this.context,response.body()?.string().toString(),Toast.LENGTH_SHORT).show()
+
+        }catch (e: IOException){
+
+            Toast.makeText(this.context,e.message.toString(),Toast.LENGTH_SHORT).show()
+        }
+    }
+
 
     fun annadirProducto(nombre:String,tipo:String,precio:String,stock:String){
 

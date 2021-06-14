@@ -11,6 +11,7 @@ import androidx.fragment.app.Fragment
 import com.android.volley.Request
 import com.android.volley.toolbox.JsonObjectRequest
 import com.android.volley.toolbox.Volley
+import com.example.proyectoampliacion.Adaptadores.MIAdaptadorPersonas2
 import com.example.proyectoampliacion.Adaptadores.MiAdaptadorPersonas
 import com.example.proyectoampliacion.Classes_Auxiliares.Persona
 import com.example.proyectoampliacion.R
@@ -27,6 +28,7 @@ import java.lang.Exception
 
 class ConsultaClienteFragment : Fragment() {
 
+    var tipo = 0;
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
     }
@@ -42,11 +44,24 @@ class ConsultaClienteFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         //super.onViewCreated(view, savedInstanceState)
 
+        arguments.let {
+
+            tipo = it?.getInt("tipo")!!
+
+        }
+
         obtenerDatosVolleyCliente(view);
 
         btnBuscarPer.setOnClickListener() {
 
-            busquedaClientes(view)
+            if (txtBuscar.text.toString().isNotEmpty()){
+                busquedaClientes(view)
+            }
+            else{
+
+                obtenerDatosVolleyCliente(view);
+            }
+
 
         }
     }
@@ -79,14 +94,14 @@ class ConsultaClienteFragment : Fragment() {
 
             if(cuerpo.length > 2){
 
-                var datos = cuerpo.split("[{")
+                var datos = cuerpo.split(":{")
 
                 for (i in 1..datos.count() - 1) {
 
                     var persona = Persona(
+                        datos[i].split(',')[0].split(':')[1],
                         datos[i].split(',')[1].split(':')[1],
-                        datos[i].split(',')[2].split(':')[1],
-                        datos[i].split(',')[0].split(':')[1]
+                        datos[i].split(',')[11].split(':')[1].split('}')[0]
                     )
                     personas.add(persona);
                 }
@@ -152,8 +167,15 @@ class ConsultaClienteFragment : Fragment() {
     fun mostarPersonas(view: View,personas:MutableList<Persona> ){
 
         val adaptador = MiAdaptadorPersonas(view.context,personas)
+        val adaptador2 = MIAdaptadorPersonas2(view.context,personas)
 
-        lvPersonas.adapter = adaptador
+        if (tipo == 5){
+            lvPersonas.adapter = adaptador2
+
+        }else{
+            lvPersonas.adapter = adaptador
+
+        }
 
     }
 
