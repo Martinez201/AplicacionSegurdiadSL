@@ -28,6 +28,7 @@ import java.lang.Exception
 
 class ConsultaClienteFragment : Fragment() {
 
+    val URL_BASE:String = "http://192.168.1.141/symfony/web/app.php/"
     var tipo = 0;
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -77,7 +78,7 @@ class ConsultaClienteFragment : Fragment() {
         val body: RequestBody = RequestBody.create(JSON,jsonObject.toString())
 
         val request: okhttp3.Request = okhttp3.Request.Builder() //Create a request
-            .url("http://192.168.1.141/symfony/web/app.php/movil/clientes/buscar")
+            .url(URL_BASE+"movil/clientes/buscar")
             .post(body)
             .header("Accept", "application/json")
             .header("Content-Type", "application/json")
@@ -129,7 +130,7 @@ class ConsultaClienteFragment : Fragment() {
     fun obtenerDatosVolleyCliente(view: View){
 
         val queue = Volley.newRequestQueue(this.context)
-        val url = "http://192.168.1.141/symfony/web/app.php/movil/clientes"
+        val url = URL_BASE + "movil/clientes"
         val personas:MutableList<Persona> = mutableListOf();
 
         val jsObjectRequest = JsonObjectRequest(
