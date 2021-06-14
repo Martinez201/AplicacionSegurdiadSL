@@ -47,8 +47,8 @@ class AltasFragment : Fragment(), AdapterView.OnItemSelectedListener{
 
     var tipoParte:String = "";
     var estadoParte:String = "";
-
     var tipoProducto: String ="";
+    var estadoPrespuesto:String = "";
 
     var estado:String = ""
 
@@ -191,6 +191,8 @@ class AltasFragment : Fragment(), AdapterView.OnItemSelectedListener{
         val contenedorBotones:LinearLayout = LinearLayout(this.context);
         contenedorBotones.orientation = LinearLayout.HORIZONTAL;
 
+        val listaOpcionesTipo:List<String> = listOf("<- Seleccione una opción ->","EN TRAMITE","CERRADO");
+
         contenedorFecha.setLayoutParams(ActionBar.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
         contenedorFecha.orientation = LinearLayout.HORIZONTAL;
         contenedorDireccion.setLayoutParams(ActionBar.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
@@ -260,6 +262,12 @@ class AltasFragment : Fragment(), AdapterView.OnItemSelectedListener{
             Navigation.findNavController(view).navigate(R.id.menuPrincipalFragment);
 
         }
+
+        val adaptadorTipo:ArrayAdapter<String> = ArrayAdapter(view.context,android.R.layout.simple_spinner_item,listaOpcionesTipo)
+        spEstado.adapter = adaptadorTipo
+        spEstado.onItemSelectedListener = this
+
+
     }
 
 
@@ -1915,6 +1923,7 @@ class AltasFragment : Fragment(), AdapterView.OnItemSelectedListener{
             }
             "CERRADO"->{
                 estadoParte = "CERRADO"
+                estadoPrespuesto = "CERRADO"
             }
             "PRODUCTO"->{
 
@@ -1923,6 +1932,10 @@ class AltasFragment : Fragment(), AdapterView.OnItemSelectedListener{
             "SERVICIO"->{
 
                 tipoProducto = "SERVICIO"
+            }
+            "EN TRAMITE"->{
+
+                estadoPrespuesto = "EN TRAMITE"
             }
         }
     }
