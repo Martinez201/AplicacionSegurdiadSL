@@ -1614,6 +1614,62 @@ class AltasFragment : Fragment(), AdapterView.OnItemSelectedListener{
     }
 
 
+    fun annadirEmpleado(usuario:String,password:String,nombre:String,apellidos:String,direccion:String,provincia:String,ciudad:String,postal:String,email:String,telefono:String, nacimiento:String, estado:String ,dni:String){
+
+        var JSON:MediaType =  MediaType.get("application/json; charset=utf-8")
+
+        val jsonObject= JSONObject();
+
+        jsonObject.put("usuario",nombre);
+        jsonObject.put("password",password);
+        jsonObject.put("nombre",nombre);
+        jsonObject.put("apellidos",apellidos);
+        jsonObject.put("direccion",direccion);
+        jsonObject.put("provincia",provincia);
+        jsonObject.put("nacimiento",nacimiento);
+        jsonObject.put("ciudad",ciudad);
+        jsonObject.put("cPostal",postal);
+        jsonObject.put("email",email);
+        jsonObject.put("telefono",telefono);
+        jsonObject.put("estado",estado);
+        jsonObject.put("dni",dni);
+        jsonObject.put("delegacion",dni);
+        jsonObject.put("admin",dni);
+        jsonObject.put("instalador",dni);
+        jsonObject.put("gestor",dni);
+        jsonObject.put("comercial",dni);
+
+
+        val client = OkHttpClient()
+
+        val body: RequestBody = RequestBody.create(JSON,jsonObject.toString())
+
+        val request: okhttp3.Request = okhttp3.Request.Builder() //Create a request
+            .url(URL_BASE+"movil/alta/empleado")
+            .post(body) //Indicated as get request
+            .header("Accept", "application/json")
+            .header("Content-Type", "application/json")
+            .build()
+
+        var llamada: Call = client.newCall(request)
+
+        try {
+
+            var response = llamada.execute()
+
+            //val jsonArray = JSONObject()
+
+            Toast.makeText(this.context,response.body()?.string().toString(),Toast.LENGTH_LONG).show()
+
+        }catch (e: IOException){
+
+            Toast.makeText(this.context,e.message.toString(),Toast.LENGTH_SHORT).show()
+
+        }
+    }
+
+
+
     override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
 
         val opcion:String = parent?.getItemAtPosition(position).toString()
