@@ -201,12 +201,17 @@ class AltasFragment : Fragment(), AdapterView.OnItemSelectedListener{
 
         txtFecha.width = 800;
         txtFecha.maxLines = 1;
+        txtFecha.inputType = InputType.TYPE_CLASS_DATETIME
         txtFecha.setLayoutParams(ActionBar.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT));
         txtDireccion.width = 800;
         txtDireccion.maxLines = 1;
         txtDireccion.setLayoutParams(ActionBar.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT));
         spEstado.setLayoutParams(ActionBar.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT));
 
+        contenedorFecha.setPadding(0,50,0,0);
+        contenedorEstado.setPadding(0,50,0,0);
+        contenedorDireccion.setPadding(0,50,0,0);
+        contenedorBotones.setPadding(0,200,0,100);
 
         txtFecha.hint = "Introduzca Fecha";
         txtDireccion.hint = "Introduzca Dirección Instalación";
@@ -292,6 +297,7 @@ class AltasFragment : Fragment(), AdapterView.OnItemSelectedListener{
 
         txtFecha.width = 800;
         txtFecha.maxLines = 1;
+        txtFecha.inputType = InputType.TYPE_CLASS_DATETIME
         txtFecha.setLayoutParams(ActionBar.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT));
         txtProveedor.width = 800;
         txtProveedor.maxLines = 1;
@@ -310,6 +316,11 @@ class AltasFragment : Fragment(), AdapterView.OnItemSelectedListener{
         contenedorFecha.addView(txtFecha);
         contenedorProveedor.gravity= Gravity.CENTER;
         contenedorProveedor.addView(txtProveedor);
+
+        contenedorFecha.setPadding(0,50,0,0);
+        contenedorProveedor.setPadding(0,50,0,0);
+        contenedorBotones.setPadding(0,200,0,100);
+
         contenedor.addView(contenedorFecha);
         contenedor.addView(contenedorProveedor);
         contenedor.addView(contenedorBotones)
@@ -390,11 +401,11 @@ class AltasFragment : Fragment(), AdapterView.OnItemSelectedListener{
         txtPrecio.width = 800;
         txtPrecio.maxLines = 1;
         txtPrecio.setLayoutParams(ActionBar.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT));
-        txtPrecio.inputType = InputType.TYPE_NUMBER_FLAG_DECIMAL;
+        txtPrecio.inputType = InputType.TYPE_CLASS_NUMBER;
         txtStock.width = 800;
         txtStock.maxLines = 1;
         txtStock.setLayoutParams(ActionBar.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT));
-        txtStock.inputType = InputType.TYPE_NUMBER_FLAG_DECIMAL;
+        txtStock.inputType = InputType.TYPE_CLASS_NUMBER;
 
 
         btnCancelar.text = "Cancelar";
@@ -573,6 +584,14 @@ class AltasFragment : Fragment(), AdapterView.OnItemSelectedListener{
         contenedorTelefono.gravity= Gravity.CENTER;
         contenedorTelefono.addView(txtTelefono);
 
+        contenedorIdentificacion.setPadding(0,50,0,0);
+        contenedorDireccion.setPadding(0,50,0,0);
+        contenedorCiudad.setPadding(0,50,0,0);
+        contenedorProvincia.setPadding(0,50,0,0);
+        contenedorcPostal.setPadding(0,50,0,0);
+        contenedorTelefono.setPadding(0,50,0,0);
+        contenedorEmail.setPadding(0,50,0,0);
+        contenedorBotones.setPadding(0,200,0,100);
 
         contenedor.addView(contenedorIdentificacion);
         contenedor.addView(contenedorDireccion);
@@ -1421,6 +1440,22 @@ class AltasFragment : Fragment(), AdapterView.OnItemSelectedListener{
         btnCancelar.text = "Cancelar"
         btnGuardar.text = "Guardar"
         btnLimpiar.text = "Limpiar"
+
+
+        contenedorcPostal.setPadding(0,50,0,0);
+        contenedorTelefono.setPadding(0,50,0,0);
+        contenedorProvincia.setPadding(0,50,0,0);
+        contenedorNombre.setPadding(0,50,0,0);
+        contenedorNombre.setPadding(0,50,0,0);
+        contenedorNacimiento.setPadding(0,50,0,0);
+        contenedorEstado.setPadding(0,50,0,0);
+        contenedorEmail.setPadding(0,50,0,0);
+        contenedorDni.setPadding(0,50,0,0);
+        contenedorDireccion.setPadding(0,50,0,0);
+        contenedorCiudad.setPadding(0,50,0,0);
+        contenedorApellidos.setPadding(0,50,0,0);
+        contenedorDireccion.setPadding(0,50,0,0);
+        contenedorBotones.setPadding(0,200,0,100);
 
         contenedorBotones.gravity = Gravity.CENTER
         contenedorBotones.addView(btnGuardar);
