@@ -654,7 +654,7 @@ class ListaModificarFragment : Fragment() {
 
     fun mostarPartes(view: View,partes:MutableList<Parte> ){
 
-        val adaptador = MiAdaptadorPartes(view.context,partes)
+        val adaptador = AdaptadorPartesMOD(view.context,partes)
 
         lvModificaciones.adapter = adaptador
     }
@@ -675,14 +675,14 @@ class ListaModificarFragment : Fragment() {
 
     fun mostarFacturas(view: View,facturas:MutableList<Factura> ){
 
-        val adaptador = MiAdaptadorFactura(view.context,facturas)
+        val adaptador = AdaptadorFacturasMOD(view.context,facturas)
 
         lvModificaciones.adapter = adaptador
     }
 
     fun mostarEmpleados(view: View,empleados:MutableList<Empleado> ){
 
-        val adaptador = MiAdaptadorEmpleados(view.context,empleados)
+        val adaptador = AdaptadorEmpleadosMOD(view.context,empleados)
 
         lvModificaciones.adapter = adaptador
     }
