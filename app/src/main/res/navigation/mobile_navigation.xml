@@ -65,7 +65,11 @@
         android:name="com.example.proyectoampliacion.Fragmentos.Mantenimiento.ModificarFragment"
         android:label="fragment_modificar"
         tools:layout="@layout/fragment_modificar" >
-        <argument android:name="tipo_formulario" />
+        <argument android:name="tipo_formulario"
+            app:argType="integer" />
+        <argument
+            android:name="elemento"
+            app:argType="integer" />
     </fragment>
     <fragment
         android:id="@+id/menuOpcionesCategoriaFragment"

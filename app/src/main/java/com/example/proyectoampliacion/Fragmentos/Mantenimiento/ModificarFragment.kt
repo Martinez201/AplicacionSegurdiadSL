@@ -2,6 +2,7 @@ package com.example.proyectoampliacion.Fragmentos.Mantenimiento
 
 import android.app.ActionBar
 import android.os.Bundle
+import android.os.StrictMode
 import android.text.InputType
 import android.view.Gravity
 import androidx.fragment.app.Fragment
@@ -11,14 +12,32 @@ import android.view.ViewGroup
 import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.isVisible
+import com.android.volley.Request
+import com.android.volley.toolbox.JsonObjectRequest
+import com.android.volley.toolbox.Volley
+import com.example.proyectoampliacion.Classes_Auxiliares.*
 import com.example.proyectoampliacion.R
 import kotlinx.android.synthetic.main.fragment_altas.*
+import kotlinx.android.synthetic.main.fragment_listar.*
+import okhttp3.Call
+import okhttp3.MediaType
+import okhttp3.OkHttpClient
+import okhttp3.RequestBody
+import org.json.JSONObject
+import java.lang.Exception
 
 
 class ModificarFragment : Fragment() {
 
+    val URL_BASE:String = "http://192.168.1.141/symfony/web/app.php/"
+    var elemento:Int = 0
+    var delegacionSeleccionada:Int = 0
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        val policy = StrictMode.ThreadPolicy.Builder().permitAll().build()
+        StrictMode.setThreadPolicy(policy)
 
     }
 
@@ -34,9 +53,9 @@ class ModificarFragment : Fragment() {
 
         arguments?.let {
 
+            elemento = it.getInt("elemento")
 
-
-            when(it.getInt("tipo")){
+            when(it.getInt("tipo_formulario")){
 
                 0->{
                     tvTitulo.setText("Modificar Albaranes");
@@ -761,61 +780,76 @@ class ModificarFragment : Fragment() {
 
     fun construirFormEmpleados(view: View){
 
-        val txtUsuario: EditText = EditText(this.context);
-        val txtPassword: EditText = EditText(this.context);
-        val txtNombre: EditText = EditText(this.context);
-        val txtApellidos: EditText = EditText(this.context);
-        val txtCiudad: EditText = EditText(this.context);
-        val txtcPostal: EditText = EditText(this.context);
-        val txtDni: EditText = EditText(this.context);
-        val txtEmail: EditText = EditText(this.context);
-        val txtTelefono: EditText = EditText(this.context);
-        val txtNacimiento: EditText = EditText(this.context);
-        val txtDireccion: EditText = EditText(this.context);
-        val txtProvincia: EditText = EditText(this.context);
-        val btnCancelar: Button = Button(this.context);
-        val btnGuardar: Button = Button(this.context);
-        val btnLimpiar: Button = Button(this.context);
-        val slDelegacion: Spinner = Spinner(this.context);
-        val cbAdministrador: CheckBox = CheckBox(this.context);
-        val cbInstalador: CheckBox = CheckBox(this.context);
-        val cbGestor: CheckBox = CheckBox(this.context);
+       var empleado = obtenerDatosVolleyEmpleados(view,elemento)
 
 
-        val contenedorUsuario: LinearLayout = LinearLayout(this.context);
+        val txtUsuario:EditText = EditText(this.context);
+        val txtNombre:EditText = EditText(this.context);
+        val txtApellidos:EditText = EditText(this.context);
+        val txtCiudad:EditText = EditText(this.context);
+        val txtcPostal:EditText = EditText(this.context);
+        val txtDni:EditText = EditText(this.context);
+        val txtEmail:EditText = EditText(this.context);
+        val txtTelefono:EditText = EditText(this.context);
+        val txtNacimiento:EditText = EditText(this.context);
+        val txtDireccion:EditText = EditText(this.context);
+        val txtProvincia:EditText = EditText(this.context);
+        val btnCancelar:Button = Button(this.context);
+        val btnGuardar:Button = Button(this.context);
+        val btnLimpiar:Button = Button(this.context);
+        val btnBuscar:Button = Button(this.context)
+        val slDelegacion:EditText = EditText(this.context);
+        val cbAdministrador:CheckBox= CheckBox(this.context);
+        val cbInstalador:CheckBox= CheckBox(this.context);
+        val cbGestor:CheckBox= CheckBox(this.context);
+        val cbComercial:CheckBox = CheckBox(this.context)
+
+        var admin = "FALSE";
+        var gestor = "FALSE";
+        var comercial = "FALSE";
+        var instalador = "FALSE";
+
+
+        val contenedorUsuario:LinearLayout = LinearLayout(this.context);
         contenedorUsuario.orientation = LinearLayout.HORIZONTAL;
-        val contenedorPassword: LinearLayout = LinearLayout(this.context);
-        contenedorPassword.orientation = LinearLayout.HORIZONTAL;
-        val contenedorSlDelegacion: LinearLayout = LinearLayout(this.context);
+        val contenedorSlDelegacion:LinearLayout = LinearLayout(this.context);
         contenedorSlDelegacion.orientation = LinearLayout.HORIZONTAL;
-        val contenedorNombre: LinearLayout = LinearLayout(this.context);
+        val contenedorNombre:LinearLayout = LinearLayout(this.context);
         contenedorNombre.orientation = LinearLayout.HORIZONTAL;
-        val contenedorApellidos: LinearLayout = LinearLayout(this.context);
+        val contenedorApellidos:LinearLayout = LinearLayout(this.context);
         contenedorApellidos.orientation = LinearLayout.HORIZONTAL;
-        val contenedorCiudad: LinearLayout = LinearLayout(this.context);
+        val contenedorCiudad:LinearLayout = LinearLayout(this.context);
         contenedorCiudad.orientation = LinearLayout.HORIZONTAL;
-        val contenedorcPostal: LinearLayout = LinearLayout(this.context);
+        val contenedorcPostal:LinearLayout = LinearLayout(this.context);
         contenedorcPostal.orientation = LinearLayout.HORIZONTAL;
-        val contenedorDni: LinearLayout = LinearLayout(this.context);
+        val contenedorDni:LinearLayout = LinearLayout(this.context);
         contenedorDni.orientation = LinearLayout.HORIZONTAL;
-        val contenedorEmail: LinearLayout = LinearLayout(this.context);
+        val contenedorEmail:LinearLayout = LinearLayout(this.context);
         contenedorEmail.orientation = LinearLayout.HORIZONTAL;
-        val contenedorTelefono: LinearLayout = LinearLayout(this.context);
+        val contenedorTelefono:LinearLayout = LinearLayout(this.context);
         contenedorTelefono.orientation = LinearLayout.HORIZONTAL;
-        val contenedorNacimiento: LinearLayout = LinearLayout(this.context);
+        val contenedorNacimiento:LinearLayout = LinearLayout(this.context);
         contenedorNacimiento.orientation = LinearLayout.HORIZONTAL;
-        val contenedorDireccion: LinearLayout = LinearLayout(this.context)
+        val contenedorDireccion:LinearLayout = LinearLayout(this.context)
         contenedorDireccion.orientation = LinearLayout.HORIZONTAL;
-        val contenedorProvincia: LinearLayout = LinearLayout(this.context);
+        val contenedorProvincia:LinearLayout = LinearLayout(this.context);
         contenedorProvincia.orientation = LinearLayout.HORIZONTAL;
-        val contenedorRol: LinearLayout = LinearLayout(this.context);
+        val contenedorRol:LinearLayout = LinearLayout(this.context);
         contenedorRol.orientation = LinearLayout.HORIZONTAL;
-        val contenedorBotones: LinearLayout = LinearLayout(this.context);
+        val contenedorRol2:LinearLayout = LinearLayout(this.context);
+        contenedorRol2.orientation = LinearLayout.HORIZONTAL;
+        val contenedorBotones:LinearLayout = LinearLayout(this.context);
         contenedorBotones.orientation = LinearLayout.HORIZONTAL;
 
-        var eventoBotonLimpiar:ControlDinamico = ControlDinamico(1,"Limpiar")
-        var eventoBotonCancelar:ControlDinamico = ControlDinamico(2,"Cancelar")
-        var eventoBotonGuardar:ControlDinamico = ControlDinamico(3,"Guardar")
+        var eventoBotonLimpiar: AltasFragment.ControlDinamico =
+            AltasFragment.ControlDinamico(1, "Limpiar")
+        var eventoBotonCancelar: AltasFragment.ControlDinamico =
+            AltasFragment.ControlDinamico(2, "Cancelar")
+        var eventoBotonGuardar: AltasFragment.ControlDinamico =
+            AltasFragment.ControlDinamico(3, "Guardar")
+
+        var eventoBotonBuscar: AltasFragment.ControlDinamico =
+            AltasFragment.ControlDinamico(4, "Buscar")
 
         btnLimpiar.id = eventoBotonLimpiar.cod;
         btnLimpiar.text =  eventoBotonLimpiar.nombre;
@@ -824,35 +858,37 @@ class ModificarFragment : Fragment() {
         btnCancelar.id = eventoBotonCancelar.cod;
         btnCancelar.text = eventoBotonCancelar.nombre;
 
-        contenedorUsuario.setLayoutParams(ActionBar.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,ViewGroup.LayoutParams.MATCH_PARENT));
+        btnBuscar.text = eventoBotonBuscar.nombre
+        btnBuscar.id = eventoBotonBuscar.cod
+
+        contenedorUsuario.setLayoutParams(ActionBar.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
         contenedorUsuario.orientation = LinearLayout.HORIZONTAL;
-        contenedorPassword.setLayoutParams(ActionBar.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,ViewGroup.LayoutParams.MATCH_PARENT));
-        contenedorPassword.orientation = LinearLayout.HORIZONTAL;
-        contenedorSlDelegacion.setLayoutParams(ActionBar.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,ViewGroup.LayoutParams.MATCH_PARENT));
+        contenedorSlDelegacion.setLayoutParams(ActionBar.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
         contenedorSlDelegacion.orientation = LinearLayout.HORIZONTAL;
-        contenedorNombre.setLayoutParams(ActionBar.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,ViewGroup.LayoutParams.MATCH_PARENT));
+        contenedorNombre.setLayoutParams(ActionBar.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
         contenedorNombre.orientation = LinearLayout.HORIZONTAL;
-        contenedorApellidos.setLayoutParams(ActionBar.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,ViewGroup.LayoutParams.MATCH_PARENT));
+        contenedorApellidos.setLayoutParams(ActionBar.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
         contenedorApellidos.orientation = LinearLayout.HORIZONTAL;
-        contenedorCiudad.setLayoutParams(ActionBar.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,ViewGroup.LayoutParams.MATCH_PARENT));
+        contenedorCiudad.setLayoutParams(ActionBar.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
         contenedorCiudad.orientation = LinearLayout.HORIZONTAL;
-        contenedorDireccion.setLayoutParams(ActionBar.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,ViewGroup.LayoutParams.MATCH_PARENT));
+        contenedorDireccion.setLayoutParams(ActionBar.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
         contenedorDireccion.orientation = LinearLayout.HORIZONTAL;
-        contenedorDni.setLayoutParams(ActionBar.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,ViewGroup.LayoutParams.MATCH_PARENT));
+        contenedorDni.setLayoutParams(ActionBar.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
         contenedorDni.orientation = LinearLayout.HORIZONTAL;
-        contenedorEmail.setLayoutParams(ActionBar.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,ViewGroup.LayoutParams.MATCH_PARENT));
+        contenedorEmail.setLayoutParams(ActionBar.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
         contenedorEmail.orientation = LinearLayout.HORIZONTAL;
-        contenedorProvincia.setLayoutParams(ActionBar.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,ViewGroup.LayoutParams.MATCH_PARENT));
+        contenedorProvincia.setLayoutParams(ActionBar.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
         contenedorProvincia.orientation = LinearLayout.HORIZONTAL;
-        contenedorTelefono.setLayoutParams(ActionBar.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,ViewGroup.LayoutParams.MATCH_PARENT));
+        contenedorTelefono.setLayoutParams(ActionBar.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
         contenedorTelefono.orientation = LinearLayout.HORIZONTAL;
-        contenedorcPostal.setLayoutParams(ActionBar.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,ViewGroup.LayoutParams.MATCH_PARENT));
+        contenedorcPostal.setLayoutParams(ActionBar.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
         contenedorcPostal.orientation = LinearLayout.HORIZONTAL;
-        contenedorRol.setLayoutParams(ActionBar.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,ViewGroup.LayoutParams.MATCH_PARENT));
+        contenedorRol.setLayoutParams(ActionBar.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
         contenedorRol.orientation = LinearLayout.HORIZONTAL;
+        contenedorRol2.setLayoutParams(ActionBar.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
+        contenedorRol2.orientation = LinearLayout.HORIZONTAL;
 
         txtUsuario.hint = "Introduzca Usuario"
-        txtPassword.hint = "Introduzca Contraseña"
         txtNombre.hint = "Introduzca Nombre";
         txtApellidos.hint = "Introduzca Apellidos";
         txtcPostal.hint = "Introduzca Codigo Postal ";
@@ -864,52 +900,51 @@ class ModificarFragment : Fragment() {
         txtDni.hint = "Introduzca D.N.I";
         txtNacimiento.hint = "Introduza Fecha de Nacimiento";
 
-        txtPassword.width = 800;
-        txtPassword.maxLines = 1;
-        txtPassword.inputType = InputType.TYPE_TEXT_VARIATION_PASSWORD
-        txtPassword.setLayoutParams(ActionBar.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT,ViewGroup.LayoutParams.WRAP_CONTENT));
         txtUsuario.width = 800;
         txtUsuario.maxLines = 1;
-        txtUsuario.setLayoutParams(ActionBar.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT,ViewGroup.LayoutParams.WRAP_CONTENT));
+        txtUsuario.setLayoutParams(ActionBar.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT));
         txtNombre.width = 800;
         txtNombre.maxLines = 1;
-        txtNombre.setLayoutParams(ActionBar.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT,ViewGroup.LayoutParams.WRAP_CONTENT));
+        txtNombre.setLayoutParams(ActionBar.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT));
         txtApellidos.width= 800;
         txtApellidos.maxLines = 1
-        txtApellidos.setLayoutParams(ActionBar.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT,ViewGroup.LayoutParams.WRAP_CONTENT));
+        txtApellidos.setLayoutParams(ActionBar.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT));
         txtCiudad.width= 800;
         txtCiudad.maxLines = 1
-        txtCiudad.setLayoutParams(ActionBar.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT,ViewGroup.LayoutParams.WRAP_CONTENT));
+        txtCiudad.setLayoutParams(ActionBar.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT));
         txtDireccion.width= 800;
         txtDireccion.maxLines = 1
-        txtDireccion.setLayoutParams(ActionBar.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT,ViewGroup.LayoutParams.WRAP_CONTENT));
+        txtDireccion.setLayoutParams(ActionBar.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT));
         txtEmail.width= 800;
         txtEmail.maxLines = 1
-        txtEmail.setLayoutParams(ActionBar.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT,ViewGroup.LayoutParams.WRAP_CONTENT));
+        txtEmail.setLayoutParams(ActionBar.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT));
         txtProvincia.width= 800;
-        txtProvincia.setLayoutParams(ActionBar.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT,ViewGroup.LayoutParams.WRAP_CONTENT));
+        txtProvincia.setLayoutParams(ActionBar.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT));
         txtcPostal.width= 800;
         txtcPostal.maxLines = 1
         txtcPostal.inputType = InputType.TYPE_TEXT_VARIATION_POSTAL_ADDRESS;
-        txtcPostal.setLayoutParams(ActionBar.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT,ViewGroup.LayoutParams.WRAP_CONTENT));
+        txtcPostal.setLayoutParams(ActionBar.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT));
         txtTelefono.width= 800
         txtTelefono.maxLines = 1
         txtTelefono.inputType = InputType.TYPE_CLASS_PHONE
-        txtTelefono.setLayoutParams(ActionBar.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT,ViewGroup.LayoutParams.WRAP_CONTENT));
+        txtTelefono.setLayoutParams(ActionBar.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT));
         txtDni.width= 800;
-        txtDni.setLayoutParams(ActionBar.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT,ViewGroup.LayoutParams.WRAP_CONTENT));
+        txtDni.setLayoutParams(ActionBar.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT));
         txtNacimiento.width= 800;
         txtNacimiento.maxLines = 1
-        txtNacimiento.setLayoutParams(ActionBar.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT,ViewGroup.LayoutParams.WRAP_CONTENT));
+        txtNacimiento.setLayoutParams(ActionBar.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT));
         txtNacimiento.inputType = InputType.TYPE_CLASS_DATETIME;
+        slDelegacion.width = 750
+        slDelegacion.maxLines = 1
+        slDelegacion.isEnabled = false
+        slDelegacion.hint = "Buscar Delegación ..."
 
-        btnCancelar.text = "Cancelar"
-        btnGuardar.text = "Guardar"
-        btnLimpiar.text = "Limpiar"
+
 
         cbAdministrador.text = "Administrador";
         cbGestor.text = "Gestor"
         cbInstalador.text = "Instalador"
+        cbComercial.text = "Comercial"
 
 
         contenedorBotones.gravity = Gravity.CENTER
@@ -921,12 +956,13 @@ class ModificarFragment : Fragment() {
         contenedorUsuario.addView(txtUsuario);
         contenedorSlDelegacion.gravity= Gravity.CENTER;
         contenedorSlDelegacion.addView(slDelegacion);
-        contenedorPassword.gravity= Gravity.CENTER;
-        contenedorPassword.addView(txtPassword);
+        contenedorSlDelegacion.addView(btnBuscar);
         contenedorRol.gravity= Gravity.CENTER;
         contenedorRol.addView(cbAdministrador);
         contenedorRol.addView(cbGestor);
-        contenedorRol.addView(cbInstalador);
+        contenedorRol2.gravity= Gravity.CENTER;
+        contenedorRol2.addView(cbInstalador);
+        contenedorRol2.addView(cbComercial);
         contenedorNombre.gravity= Gravity.CENTER;
         contenedorNombre.addView(txtNombre);
         contenedorApellidos.gravity= Gravity.CENTER;
@@ -949,8 +985,25 @@ class ModificarFragment : Fragment() {
         contenedorNacimiento.addView(txtNacimiento);
 
 
+        contenedorUsuario.setPadding(0,50,0,0);
+        contenedorSlDelegacion.setPadding(0,50,0,0);
+        contenedorRol.setPadding(0,150,0,0);
+        contenedorRol2.setPadding(0,150,0,0);
+        contenedorNombre.setPadding(0,50,0,0);
+        contenedorApellidos.setPadding(0,50,0,0);
+        contenedorCiudad.setPadding(0,50,0,0);
+        contenedorDireccion.setPadding(0,50,0,0);
+        contenedorDni.setPadding(0,50,0,0);
+        contenedorEmail.setPadding(0,50,0,0);
+        contenedorProvincia.setPadding(0,50,0,0);
+        contenedorcPostal.setPadding(0,50,0,0);
+        contenedorTelefono.setPadding(0,50,0,0);
+        contenedorNacimiento.setPadding(0,50,0,0);
+        contenedorBotones.setPadding(0,200,0,100);
+
+
+
         contenedor.addView(contenedorUsuario);
-        contenedor.addView(contenedorPassword);
         contenedor.addView(contenedorNombre);
         contenedor.addView(contenedorApellidos);
         contenedor.addView(contenedorDireccion);
@@ -962,8 +1015,47 @@ class ModificarFragment : Fragment() {
         contenedor.addView(contenedorDni);
         contenedor.addView(contenedorNacimiento);
         contenedor.addView(contenedorRol);
+        contenedor.addView(contenedorRol2);
         contenedor.addView(contenedorSlDelegacion);
         contenedor.addView(contenedorBotones);
+
+
+        txtNacimiento.setText(empleado[0].edad)
+        txtApellidos.setText(empleado[0].apellidos)
+        txtCiudad.setText(empleado[0].ciudad)
+        txtDireccion.setText(empleado[0].direccion)
+        txtEmail.setText(empleado[0].email)
+        txtNombre.setText(empleado[0].nombre)
+        txtProvincia.setText(empleado[0].provincia)
+        txtTelefono.setText(empleado[0].telefono)
+        txtUsuario.setText(empleado[0].usuario)
+        txtcPostal.setText(empleado[0].cPostal)
+        txtDni.setText(empleado[0].dni)
+        slDelegacion.setText(empleado[0].delegacionNombre)
+
+        delegacionSeleccionada = empleado[0].delegacionId.toInt()
+
+        if (empleado[0].gestor.toString().equals("true")){
+
+            cbGestor.isChecked = true
+        }
+
+        if (empleado[0].admin.toString().equals("true")){
+
+            cbAdministrador.isChecked = true
+        }
+
+        if (empleado[0].comercial.toString().equals("true")){
+
+            cbComercial.isChecked = true
+        }
+
+        if (empleado[0].instalador.toString().equals("true")){
+
+            cbInstalador.isChecked = true
+        }
+
+
 
         val botonLimpiar: Button = view?.findViewById(eventoBotonLimpiar.cod)
 
@@ -1171,5 +1263,81 @@ class ModificarFragment : Fragment() {
         }
     }
 
+    fun obtenerDatosVolleyEmpleados(view: View, id:Int):MutableList<Empleado>{
 
+
+        val JSON: MediaType =  MediaType.get("application/json; charset=utf-8")
+        val jsonObject= JSONObject();
+
+        jsonObject.put("busqueda",id);
+
+        val client = OkHttpClient()
+        val body: RequestBody = RequestBody.create(JSON,jsonObject.toString())
+
+        val request: okhttp3.Request = okhttp3.Request.Builder() //Create a request
+            .url(URL_BASE+"movil/empleados/buscar/form")
+            .post(body)
+            .header("Accept", "application/json")
+            .header("Content-Type", "application/json")
+            .build()
+
+        var llamada: Call = client.newCall(request)
+        val empleados:MutableList<Empleado> = mutableListOf();
+
+        try {
+
+            var response = llamada.execute()
+            var cuerpo = response.body()?.string().toString();
+
+                if (cuerpo.length > 2){
+
+                    var datos = cuerpo.split(":{");
+
+
+                    //delegacion ==> datos[1].split(',')[14].split(":[")[1] + " " + datos[1].split(',')[18] +
+
+                    for (i in 1..datos.count() - 1){
+
+                        var empleado = Empleado(datos[i].split(',')[26].split('"')[2].replace(':',' ').replace('}',' ').trim().toInt()
+                            ,datos[i].split(',')[14].split('[')[1].toInt()
+                            ,datos[i].split(',')[0].split(':')[1]
+                            ,datos[i].split(',')[1].split(':')[1]
+                            ,datos[i].split(',')[2].split(':')[1]
+                            ,datos[i].split(',')[3].split(':')[1]
+                            ,datos[i].split(',')[4].split(':')[1]
+                            ,datos[i].split(',')[6].split(':')[1]
+                            ,datos[i].split(',')[9].split(':')[1]
+                            ,datos[i].split(',')[5].split(':')[1]
+                            ,datos[i].split(',')[21].split(':')[1].toBoolean()
+                            ,datos[i].split(',')[22].split(':')[1].toBoolean()
+                            ,datos[i].split(',')[23].split(':')[1].toBoolean()
+                            ,datos[i].split(',')[24].split(':')[1].toBoolean()
+                            ,datos[i].split(',')[25].split(':')[1]
+                            ,datos[i].split(',')[10].split(':')[1]
+                            ,datos[i].split(',')[8].split(':')[1]
+                            ,datos[i].split(',')[7].split(':')[1]
+                            ,datos[i].split(',')[18],
+                            datos[i].split(',')[14].split(":[")[1]
+                            );
+
+                        empleados.add(empleado);
+
+                    }
+
+
+
+                }else{
+
+                    Toast.makeText(this.context,"Error: No hay resultados",Toast.LENGTH_LONG).show()
+                }
+
+
+        }catch (ex:Exception){
+
+            Toast.makeText(this.context,ex.message.toString(),Toast.LENGTH_LONG).show()
+        }
+
+
+        return empleados
+    }
 }

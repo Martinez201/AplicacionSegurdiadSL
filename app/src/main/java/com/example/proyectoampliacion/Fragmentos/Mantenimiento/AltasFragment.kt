@@ -147,21 +147,6 @@ class AltasFragment : Fragment(), AdapterView.OnItemSelectedListener{
         }
     }
 
-    fun enviarDatosServidor(){
-
-        val progreso:ProgressBar = ProgressBar(this.context)
-        progreso.isVisible = false
-
-        val contenedorDialog:LinearLayout = LinearLayout(this.context);
-
-        contenedorDialog.setLayoutParams(ActionBar.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
-        contenedorDialog.orientation = LinearLayout.HORIZONTAL;
-
-        contenedorDialog.gravity= Gravity.CENTER;
-        contenedor.addView(contenedorDialog);
-
-    }
-
     fun construirFormPresupuestos(view: View){
 
         val txtFecha:EditText = EditText(this.context);

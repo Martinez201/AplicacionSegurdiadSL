@@ -195,8 +195,10 @@ class ListaModificarFragment : Fragment() {
                         false,
                         false,
                         "",
-                        ""
-                    );
+                        "",
+                        "",
+                        "",
+                    "","");
 
                     var presupuesto = Presupuesto(
 
@@ -254,7 +256,11 @@ class ListaModificarFragment : Fragment() {
                         ,datos[i].split(',')[23].split(':')[1].toBoolean()
                         ,datos[i].split(',')[24].split(':')[1].toBoolean()
                         ,datos[i].split(',')[25].split(':')[1]
-                        ,datos[i].split(',')[10].split(':')[1]);
+                        ,datos[i].split(',')[10].split(':')[1],
+                        datos[i].split(',')[8].split(':')[1]
+                        ,datos[i].split(',')[7].split(':')[1],
+                        datos[i].split(',')[18],
+                        datos[i].split(',')[14].split(":[")[1]);
                     empleados.add(empleado);
                     mostarEmpleados(view,empleados);
 
@@ -445,8 +451,9 @@ class ListaModificarFragment : Fragment() {
                         false,
                         false,
                         "",
-                        ""
-                    );
+                        "",
+                    "",
+                    "","","");
 
                     var delegacion = Delegacion(
 
