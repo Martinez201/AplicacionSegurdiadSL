@@ -357,6 +357,8 @@ class ModificarFragment : Fragment(), AdapterView.OnItemSelectedListener {
 
     fun construirFormAlmacen(view: View){
 
+        var producto = obtenerDatosVolleyProductos(view, elemento);
+
         val txtNombre: EditText = EditText(this.context);
         val spTipo: Spinner = Spinner(this.context);
         val txtPrecio: EditText = EditText(this.context);
@@ -368,6 +370,9 @@ class ModificarFragment : Fragment(), AdapterView.OnItemSelectedListener {
         var eventoBotonLimpiar:ControlDinamico = ControlDinamico(1,"Limpiar")
         var eventoBotonCancelar:ControlDinamico = ControlDinamico(2,"Cancelar")
         var eventoBotonGuardar:ControlDinamico = ControlDinamico(3,"Guardar")
+
+        val listaOpcionesTipo:List<String> = listOf("<- Seleccione una opción ->","PRODUCTO","SERVICIO");
+
 
         btnLimpiar.id = eventoBotonLimpiar.cod;
         btnLimpiar.text =  eventoBotonLimpiar.nombre;
@@ -414,11 +419,30 @@ class ModificarFragment : Fragment(), AdapterView.OnItemSelectedListener {
         txtStock.setLayoutParams(ActionBar.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT,ViewGroup.LayoutParams.WRAP_CONTENT));
         txtStock.inputType = InputType.TYPE_NUMBER_FLAG_DECIMAL;
 
+        contenedorNombre.setPadding(0,50,0,0);
+        contenedorPrecio.setPadding(0,50,0,0);
+        contenedorStock.setPadding(0,50,0,0);
+        contenedorTipo.setPadding(0,50,0,0);
+        contenedorBotones.setPadding(0,200,0,100);
 
         btnCancelar.text = "Cancelar";
         btnGuardar.text = "Guardar";
         btnLimpiar.text = "Limpiar";
 
+        txtNombre.setText(producto[0].nombre);
+        txtPrecio.setText(producto[0].precio.toString());
+        txtStock.setText(producto[0].cantidad.toString());
+
+        var idProducto = producto[0].id;
+
+        if (producto[0].tipo.equals("Producto")){
+
+            spTipo.setSelection(1)
+
+        }else{
+
+            spTipo.setSelection(2)
+        }
 
         contenedorBotones.gravity = Gravity.CENTER;
         contenedorBotones.addView(btnGuardar);
@@ -443,6 +467,9 @@ class ModificarFragment : Fragment(), AdapterView.OnItemSelectedListener {
 
         botonLimpiar.setOnClickListener {
 
+            txtNombre.setText("");
+            txtPrecio.setText("");
+            txtStock.setText("");
 
         }
         val botonGuardar: Button = view?.findViewById(eventoBotonGuardar.cod)
@@ -457,6 +484,11 @@ class ModificarFragment : Fragment(), AdapterView.OnItemSelectedListener {
 
 
         }
+
+        val adaptadorTipo:ArrayAdapter<String> = ArrayAdapter(view.context,android.R.layout.simple_spinner_item,listaOpcionesTipo)
+        spTipo.adapter = adaptadorTipo
+        spTipo.onItemSelectedListener = this
+
     }
 
     fun construirFormDelegacion(view: View){
@@ -721,6 +753,8 @@ class ModificarFragment : Fragment(), AdapterView.OnItemSelectedListener {
         txtDetalles.setText(parte[0].detalles);
         txtFecha.setText(parte[0].fecha);
         txtObservaciones.setText(parte[0].observaciones);
+
+        var idParte = parte[0].id
 
         if (parte[0].tipo.toInt() == 1 || parte[0].tipo.toInt() == 0){
 
@@ -1118,6 +1152,7 @@ class ModificarFragment : Fragment(), AdapterView.OnItemSelectedListener {
         contenedor.addView(contenedorSlDelegacion);
         contenedor.addView(contenedorBotones);
 
+        var empleadoId = empleado[0].id
 
         txtNacimiento.setText(empleado[0].edad)
         txtApellidos.setText(empleado[0].apellidos)
@@ -1408,6 +1443,65 @@ class ModificarFragment : Fragment(), AdapterView.OnItemSelectedListener {
         }
     }
 
+    fun obtenerDatosVolleyProductos(view: View, id:Int):MutableList<Almacen>{
+
+        val JSON: MediaType = MediaType.get("application/json; charset=utf-8")
+        val jsonObject = JSONObject();
+
+        val productos:MutableList<Almacen> = mutableListOf();
+
+        jsonObject.put("busqueda", id);
+
+        val client = OkHttpClient()
+        val body: RequestBody = RequestBody.create(JSON, jsonObject.toString())
+
+        val request: okhttp3.Request = okhttp3.Request.Builder() //Create a request
+            .url(URL_BASE + "movil/producto/buscar/form")
+            .post(body)
+            .header("Accept", "application/json")
+            .header("Content-Type", "application/json")
+            .build()
+
+        var llamada: Call = client.newCall(request)
+
+        try {
+
+            var response = llamada.execute()
+            var cuerpo = response.body()?.string().toString();
+
+            if (cuerpo.length > 2) {
+
+                var datos = cuerpo.split(":{");
+
+                for (i in 1..datos.count() - 1){
+
+                    var producto = Almacen(
+                        datos[1].split(',')[5].split(':')[1].split('}')[0].toInt(),
+                        datos[1].split(',')[0].split(':')[1],
+                        datos[1].split(',')[2].split(':')[1],
+                        datos[1].split(',')[3].split(':')[1].toDouble(),
+                        datos[1].split(',')[1].split(':')[1].toInt(),
+                        datos[1].split(',')[4].split(':')[1]
+                    );
+                    productos.add(producto);
+                }
+
+            }else{
+
+                Toast.makeText(this.context, "Error: No hay resultados", Toast.LENGTH_LONG).show()
+            }
+
+        }catch (ex:Exception){
+
+            Toast.makeText(this.context, ex.message.toString(), Toast.LENGTH_LONG).show()
+
+        }
+
+        return productos
+    }
+
+
+
     fun obtenerDatosVolleyAlbaran(view: View, id:Int):MutableList<Albaran>{
 
         val JSON: MediaType =  MediaType.get("application/json; charset=utf-8")
@@ -1439,7 +1533,6 @@ class ModificarFragment : Fragment(), AdapterView.OnItemSelectedListener {
 
                 var datos = cuerpo.split(":{");
 
-                Toast.makeText(this.context, datos[1], Toast.LENGTH_LONG).show()
 
                 for (i in 1..datos.count() - 1){
 

@@ -1,10 +1,12 @@
 package com.example.proyectoampliacion.Adaptadores
 
 import android.content.Context
+import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ArrayAdapter
+import androidx.navigation.Navigation
 import com.example.proyectoampliacion.Classes_Auxiliares.Almacen
 import com.example.proyectoampliacion.R
 import kotlinx.android.synthetic.main.vista_mod_productos.view.*
@@ -28,6 +30,12 @@ class AdaptadorAlmacenMOD (private val mContext: Context, private val listaProdu
 
         layout.btnEditarPROMOD.setOnClickListener(){
 
+            var bundle = Bundle();
+
+            bundle.putInt("elemento",elementoActual.id)
+            bundle.putInt("tipo_formulario",1)
+
+            Navigation.findNavController(it).navigate(R.id.modificarFragment,bundle)
 
         }
 

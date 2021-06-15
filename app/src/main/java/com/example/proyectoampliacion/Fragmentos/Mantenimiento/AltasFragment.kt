@@ -1912,11 +1912,11 @@ class AltasFragment : Fragment(), AdapterView.OnItemSelectedListener{
             }
             "PRODUCTO"->{
 
-                tipoProducto = "PRODUCTO"
+                tipoProducto = "Producto"
             }
             "SERVICIO"->{
 
-                tipoProducto = "SERVICIO"
+                tipoProducto = "Servicio"
             }
             "EN TRAMITE"->{
 
