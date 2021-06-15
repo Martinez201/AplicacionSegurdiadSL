@@ -45,6 +45,8 @@ class ModificarFragment : Fragment(), AdapterView.OnItemSelectedListener {
     var tipoProducto: String ="";
     var estadoPrespuesto:String = "";
 
+    var empleadoAlbaran = ""
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -261,6 +263,8 @@ class ModificarFragment : Fragment(), AdapterView.OnItemSelectedListener {
 
     fun construirFormAlbarán( view: View){
 
+        var albaran = obtenerDatosVolleyAlbaran(view,elemento)
+
         val txtFecha: EditText = EditText(this.context);
         val txtProveedor: EditText = EditText(this.context);
         val btnCancelar: Button = Button(this.context);
@@ -306,6 +310,10 @@ class ModificarFragment : Fragment(), AdapterView.OnItemSelectedListener {
         btnLimpiar.text = "Limpiar";
 
 
+        contenedorFecha.setPadding(0,50,0,0);
+        contenedorProveedor.setPadding(0,50,0,0);
+        contenedorBotones.setPadding(0,200,0,100);
+
         contenedorBotones.gravity = Gravity.CENTER;
         contenedorBotones.addView(btnGuardar);
         contenedorBotones.addView(btnCancelar);
@@ -315,18 +323,22 @@ class ModificarFragment : Fragment(), AdapterView.OnItemSelectedListener {
         contenedorProveedor.gravity= Gravity.CENTER;
         contenedorProveedor.addView(txtProveedor);
 
-
-
-
-
         contenedor.addView(contenedorFecha);
         contenedor.addView(contenedorProveedor);
         contenedor.addView(contenedorBotones)
+
+        txtProveedor.setText(albaran[0].proveedor)
+        txtFecha.setText(albaran[0].fecha)
+
+        empleadoAlbaran = albaran[0].empleado.split(',')[2]  // hace falta para luego las modificaciones
+
 
         val botonLimpiar: Button = view?.findViewById(eventoBotonLimpiar.cod)
 
         botonLimpiar.setOnClickListener {
 
+            txtFecha.setText("")
+            txtProveedor.setText("")
 
         }
         val botonGuardar: Button = view?.findViewById(eventoBotonGuardar.cod)
@@ -1396,6 +1408,69 @@ class ModificarFragment : Fragment(), AdapterView.OnItemSelectedListener {
         }
     }
 
+    fun obtenerDatosVolleyAlbaran(view: View, id:Int):MutableList<Albaran>{
+
+        val JSON: MediaType =  MediaType.get("application/json; charset=utf-8")
+        val jsonObject= JSONObject();
+
+        val albaranes:MutableList<Albaran> = mutableListOf();
+
+        jsonObject.put("busqueda",id);
+
+        val client = OkHttpClient()
+        val body: RequestBody = RequestBody.create(JSON,jsonObject.toString())
+
+        val request: okhttp3.Request = okhttp3.Request.Builder() //Create a request
+            .url(URL_BASE+"movil/albaran/buscar/form")
+            .post(body)
+            .header("Accept", "application/json")
+            .header("Content-Type", "application/json")
+            .build()
+
+
+        var llamada: Call = client.newCall(request)
+
+        try {
+
+            var response = llamada.execute()
+            var cuerpo = response.body()?.string().toString();
+
+            if (cuerpo.length > 2){
+
+                var datos = cuerpo.split(":{");
+
+                Toast.makeText(this.context, datos[1], Toast.LENGTH_LONG).show()
+
+                for (i in 1..datos.count() - 1){
+
+                    var albaran = Albaran(
+                        datos[i].split(":[")[0].split(',')[0].split(':')[1].toInt(),
+                        datos[i].split(":[")[1].split(']')[0],
+                        datos[i].split(":[")[0].split(',')[1].split(':')[1],
+                        datos[i].split(":[")[0].split(',')[2].split(':')[1]
+                    );
+
+                    albaranes.add(albaran);
+                }
+
+            }else{
+
+                Toast.makeText(this.context, "Error: No hay resultados", Toast.LENGTH_LONG).show()
+
+            }
+
+        }catch (ex:Exception){
+
+            Toast.makeText(this.context, ex.message.toString(), Toast.LENGTH_LONG).show()
+
+        }
+
+
+        return  albaranes
+    }
+
+
+
     fun obtenerDatosVolleyEmpleados(view: View, id:Int):MutableList<Empleado>{
 
 
@@ -1720,7 +1795,7 @@ class ModificarFragment : Fragment(), AdapterView.OnItemSelectedListener {
                         datos[i].split(":[")[2].split(']')[1].split(',')[3].split(':')[1],
                         datos[i].split(":[")[2].split(']')[1].split(',')[4].split(':')[1],
                         delegacion,
-                        datos[1].split(":[")[1].split(']')[1].split(',')[1].split(':')[1]
+                        datos[i].split(":[")[1].split(']')[1].split(',')[1].split(':')[1]
                     )
                     partes.add(parte);
                 }
