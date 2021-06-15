@@ -60,14 +60,6 @@
         app:layout_constraintStart_toEndOf="@+id/tvFechaPre"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <TextView
-        android:id="@+id/tvContrato"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="TextView"
-        tools:layout_editor_absoluteX="176dp"
-        tools:layout_editor_absoluteY="16dp" />
-
     <Button
         android:id="@+id/btnContratoPre"
         android:layout_width="wrap_content"

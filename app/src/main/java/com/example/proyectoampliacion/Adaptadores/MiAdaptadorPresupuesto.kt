@@ -24,7 +24,6 @@ class MiAdaptadorPresupuesto(private val mContext: Context, private val listaPre
         layout.tvEmpleadoPre.text = elementoActual.empleado.nombre + " " + elementoActual.empleado.apellidos;
         layout.tvFechaPre.text = elementoActual.fecha;
         layout.tvIntalacion.text = elementoActual.instalacion;
-        layout.tvContrato.text = elementoActual.contrato;
 
 
         if (elementoActual.estado.equals("true")){
