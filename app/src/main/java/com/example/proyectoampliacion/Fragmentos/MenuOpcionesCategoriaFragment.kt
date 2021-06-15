@@ -104,7 +104,7 @@ class MenuOpcionesCategoriaFragment : Fragment() {
                     2->{
 
                         bundle.putInt("tipo",tipo);
-                        Navigation.findNavController(view).navigate(R.id.modificarFragment,bundle);
+                        Navigation.findNavController(view).navigate(R.id.listaModificarFragment,bundle);
 
                     }
                     3->{

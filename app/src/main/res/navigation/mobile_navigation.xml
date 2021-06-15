@@ -97,4 +97,13 @@
             android:id="@+id/action_consultaDelegacionFragment_to_altasFragment"
             app:destination="@id/altasFragment" />
     </fragment>
+    <fragment
+        android:id="@+id/listaModificarFragment"
+        android:name="com.example.proyectoampliacion.Fragmentos.SubConsultas.ListaModificarFragment"
+        android:label="fragment_lista_modificar"
+        tools:layout="@layout/fragment_lista_modificar" >
+        <argument
+            android:name="Tipo"
+            app:argType="integer" />
+    </fragment>
 </navigation>
