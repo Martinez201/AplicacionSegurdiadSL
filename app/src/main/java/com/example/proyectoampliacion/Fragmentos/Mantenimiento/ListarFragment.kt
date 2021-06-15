@@ -473,7 +473,7 @@ class ListarFragment : Fragment() {
                     var datos = response.toString().split(":{");
 
 
-                    for (i in 1..datos.count() - 1){
+                   /* for (i in 1..datos.count() - 1){
 
                             var cliente = Cliente(
 
@@ -537,7 +537,7 @@ class ListarFragment : Fragment() {
                             )
                             partes.add(parte);
                             mostarPartes(view,partes);
-                    }
+                    }*/
                 },
                 { error ->
 

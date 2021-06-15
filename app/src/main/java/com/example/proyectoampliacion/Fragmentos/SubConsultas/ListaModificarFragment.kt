@@ -415,7 +415,8 @@ class ListaModificarFragment : Fragment() {
                 var datos = response.toString().split(":{");
 
 
-                for (i in 1..datos.count() - 1){
+
+               for (i in 1..datos.count() - 1){
 
                     var cliente = Cliente(
 
@@ -475,7 +476,8 @@ class ListaModificarFragment : Fragment() {
                         datos[i].split(":[")[2].split(']')[1].split(',')[2].split(':')[1],
                         datos[i].split(":[")[2].split(']')[1].split(',')[3].split(':')[1],
                         datos[i].split(":[")[2].split(']')[1].split(',')[4].split(':')[1],
-                        delegacion
+                        delegacion,
+                        datos[i].split(":[")[1].split(']')[1].split(',')[1].split(':')[1]
 
                     )
                     partes.add(parte);

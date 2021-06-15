@@ -220,10 +220,6 @@ class ModificarFragment : Fragment(), AdapterView.OnItemSelectedListener {
         txtDireccion.setText(presupuesto[0].instalacion)
 
 
-
-
-
-
         val botonLimpiar: Button = view?.findViewById(eventoBotonLimpiar.cod)
 
         botonLimpiar.setOnClickListener {
@@ -600,7 +596,9 @@ class ModificarFragment : Fragment(), AdapterView.OnItemSelectedListener {
 
     fun construirFormParte(view: View){
 
-        val slCliente: Spinner = Spinner(this.context);
+        var parte = obtenerDatosVolleyPartes(view,elemento)
+
+        val txtCliente:EditText = EditText(this.context);
         val txtFecha: EditText = EditText(this.context);
         val txtDetalles: EditText = EditText(this.context);
         val txtObservaciones: EditText = EditText(this.context);
@@ -625,6 +623,8 @@ class ModificarFragment : Fragment(), AdapterView.OnItemSelectedListener {
         val contenedorBotones: LinearLayout = LinearLayout(this.context);
         contenedorBotones.orientation = LinearLayout.HORIZONTAL;
 
+        val listaOpcionesEstado:List<String> = listOf("<- Seleccione una opción ->","ABIERTO","CERRADO");
+        val listaOpcionesTipo:List<String> = listOf("<- Seleccione una opción ->","INSTALACIÓN","MANTENIMIENTO","AVERIA");
 
         var eventoBotonLimpiar:ControlDinamico = ControlDinamico(1,"Limpiar")
         var eventoBotonCancelar:ControlDinamico = ControlDinamico(2,"Cancelar")
@@ -651,6 +651,14 @@ class ModificarFragment : Fragment(), AdapterView.OnItemSelectedListener {
         contenedorBotones.orientation = LinearLayout.HORIZONTAL;
         contenedorSpEstado.setLayoutParams(ActionBar.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,ViewGroup.LayoutParams.MATCH_PARENT));
         contenedorSpEstado.orientation = LinearLayout.HORIZONTAL;
+
+        contenedorSpTipo.setPadding(0,50,0,0);
+        contenedorDetalles.setPadding(0,50,0,0);
+        contenedorObservaciones.setPadding(0,50,0,0);
+        contenedorFecha.setPadding(0,50,0,0);
+        contenedorSpEstado.setPadding(0,50,0,0);
+        contenedorBotones.setPadding(0,200,0,100);
+
 
         txtFecha.hint = "Introduzca Fecha";
         txtDetalles.hint = "Introduzca los Detalles";
@@ -679,7 +687,7 @@ class ModificarFragment : Fragment(), AdapterView.OnItemSelectedListener {
         contenedorFecha.gravity= Gravity.CENTER;
         contenedorFecha.addView(txtFecha);
         contenedorSpCliente.gravity= Gravity.CENTER;
-        contenedorSpCliente.addView(slCliente);
+        contenedorSpCliente.addView(txtCliente);
         contenedorSpEstado.gravity= Gravity.CENTER;
         contenedorSpEstado.addView(slEstado);
         contenedorSpTipo.gravity= Gravity.CENTER;
@@ -697,10 +705,45 @@ class ModificarFragment : Fragment(), AdapterView.OnItemSelectedListener {
         contenedor.addView(contenedorSpEstado);
         contenedor.addView(contenedorBotones);
 
+        txtCliente.setText(parte[0].cliente.nombre + " " + parte[0].cliente.apellidos);
+        txtDetalles.setText(parte[0].detalles);
+        txtFecha.setText(parte[0].fecha);
+        txtObservaciones.setText(parte[0].observaciones);
+
+        if (parte[0].tipo.toInt() == 1 || parte[0].tipo.toInt() == 0){
+
+            slTipo.setSelection(1)
+
+        }else if (parte[0].tipo.toInt() == 2){
+
+            slTipo.setSelection(2)
+
+        }else{
+
+            slTipo.setSelection(3)
+        }
+
+        if (parte[0].estado.toBoolean()){
+
+            slEstado.setSelection(1)
+
+        }else{
+
+            slEstado.setSelection(2)
+
+        }
+
+
+
+
         val botonLimpiar: Button = view?.findViewById(eventoBotonLimpiar.cod)
 
         botonLimpiar.setOnClickListener {
 
+            txtCliente.setText("");
+            txtDetalles.setText("");
+            txtFecha.setText("");
+            txtObservaciones.setText("");
 
         }
         val botonGuardar: Button = view?.findViewById(eventoBotonGuardar.cod)
@@ -715,6 +758,15 @@ class ModificarFragment : Fragment(), AdapterView.OnItemSelectedListener {
 
 
         }
+
+        val adaptadorEstado:ArrayAdapter<String> = ArrayAdapter(view.context,android.R.layout.simple_spinner_item,listaOpcionesEstado)
+        slEstado.adapter = adaptadorEstado
+        slEstado.onItemSelectedListener = this
+
+        val adaptadorTipo:ArrayAdapter<String> = ArrayAdapter(view.context,android.R.layout.simple_spinner_item,listaOpcionesTipo)
+        slTipo.adapter = adaptadorTipo
+        slTipo.onItemSelectedListener = this
+
     }
 
     fun cosntruirFormFactura(view: View){
@@ -1575,6 +1627,119 @@ class ModificarFragment : Fragment(), AdapterView.OnItemSelectedListener {
 
         return presupuestos
     }
+
+
+    fun obtenerDatosVolleyPartes(view: View, id:Int): MutableList<Parte>{
+
+        val JSON: MediaType = MediaType.get("application/json; charset=utf-8")
+        val jsonObject = JSONObject();
+
+        val url = URL_BASE+"movil/partes"
+        val partes:MutableList<Parte> = mutableListOf();
+
+        jsonObject.put("busqueda", id);
+
+        val client = OkHttpClient()
+        val body: RequestBody = RequestBody.create(JSON, jsonObject.toString())
+
+        val request: okhttp3.Request = okhttp3.Request.Builder() //Create a request
+            .url(URL_BASE + "movil/parte/buscar/form")
+            .post(body)
+            .header("Accept", "application/json")
+            .header("Content-Type", "application/json")
+            .build()
+
+        var llamada: Call = client.newCall(request)
+
+        try {
+            var response = llamada.execute()
+            var cuerpo = response.body()?.string().toString();
+
+            if (cuerpo.length > 2) {
+
+                var datos = cuerpo.split(":{");
+
+                Toast.makeText(this.context, datos[1], Toast.LENGTH_LONG).show()
+                for (i in 1..datos.count() - 1){
+
+                    var cliente = Cliente(
+
+                        datos[i].split(":[")[1].split(']')[0].split(',')[0],
+                        datos[i].split(":[")[1].split(']')[0].split(',')[1],
+                        "",
+                        "",
+                        "",
+                        "",
+                        "",
+                        datos[i].split(":[")[1].split(']')[0].split(',')[2].toInt(),
+                        "",
+                        "",
+                        "",
+                        ""
+
+                    );
+
+                    var empleado = Empleado(
+
+                        datos[1].split(":[")[2].split(']')[0].split(',')[2].toInt(),
+                        0,
+                        datos[i].split(":[")[2].split(']')[0].split(',')[0],
+                        datos[i].split(":[")[2].split(']')[0].split(',')[1],
+                        "",
+                        "",
+                        "",
+                        "",
+                        "",
+                        "",
+                        false,
+                        false,
+                        false,
+                        false,
+                        "",
+                        "",
+                        "","","","");
+
+                    var delegacion = Delegacion(
+
+                        datos[i].split(":[")[3].split(',')[0].toInt(),
+                        datos[i].split(":[")[3].split(',')[4],
+                        datos[i].split(":[")[3].split(',')[1],
+                        datos[i].split(":[")[3].split(',')[3],
+                        "",
+                        "",
+                        ""
+                    );
+
+                    var parte = Parte(
+
+                        datos[i].split(":[")[3].split(']')[1].split(':')[1].split('}')[0].toInt(),
+                        cliente,
+                        empleado,
+                        datos[i].split(":[")[2].split(']')[1].split(',')[1].split(':')[1],
+                        datos[i].split(":[")[2].split(']')[1].split(',')[2].split(':')[1],
+                        datos[i].split(":[")[2].split(']')[1].split(',')[3].split(':')[1],
+                        datos[i].split(":[")[2].split(']')[1].split(',')[4].split(':')[1],
+                        delegacion,
+                        datos[1].split(":[")[1].split(']')[1].split(',')[1].split(':')[1]
+                    )
+                    partes.add(parte);
+                }
+
+            }else{
+
+                Toast.makeText(this.context, "Error: No hay resultados", Toast.LENGTH_LONG).show()
+            }
+
+
+        }catch (ex:Exception){
+
+            Toast.makeText(this.context, ex.message.toString(), Toast.LENGTH_LONG).show()
+        }
+
+
+        return partes
+    }
+
 
     override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
         val opcion:String = parent?.getItemAtPosition(position).toString()
