@@ -28,7 +28,7 @@ import org.json.JSONObject
 import java.lang.Exception
 
 
-class ModificarFragment : Fragment() {
+class ModificarFragment : Fragment(), AdapterView.OnItemSelectedListener {
 
     val URL_BASE:String = "http://192.168.1.141/symfony/web/app.php/"
     var elemento:Int = 0
@@ -40,6 +40,10 @@ class ModificarFragment : Fragment() {
     var argumento4:String = "";
     var argumento5:String = "";
 
+    var tipoParte:String = "";
+    var estadoParte:String = "";
+    var tipoProducto: String ="";
+    var estadoPrespuesto:String = "";
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -131,6 +135,8 @@ class ModificarFragment : Fragment() {
 
     fun construirFormPresupuestos(view: View){
 
+        var presupuesto = obtenerDatosVolleyPresupuestos(view,elemento)
+
         val txtFecha: EditText = EditText(this.context);
         val txtDireccion: EditText = EditText(this.context);
         val spEstado: Spinner = Spinner(this.context);
@@ -148,6 +154,8 @@ class ModificarFragment : Fragment() {
         btnGuardar.text = eventoBotonGuardar.nombre;
         btnCancelar.id = eventoBotonCancelar.cod;
         btnCancelar.text = eventoBotonCancelar.nombre;
+
+        val listaOpcionesTipo:List<String> = listOf("<- Seleccione una opción ->","EN TRAMITE","CERRADO");
 
         val contenedorFecha: LinearLayout = LinearLayout(this.context);
         contenedorFecha.orientation = LinearLayout.HORIZONTAL;
@@ -178,6 +186,13 @@ class ModificarFragment : Fragment() {
         txtFecha.hint = "Introduzca Fecha";
         txtDireccion.hint = "Introduzca Dirección Instalación";
 
+
+        contenedorFecha.setPadding(0,50,0,0);
+        contenedorEstado.setPadding(0,50,0,0);
+        contenedorDireccion.setPadding(0,50,0,0);
+        contenedorBotones.setPadding(0,200,0,100);
+
+
         btnCancelar.text = "Cancelar";
         btnGuardar.text = "Guardar";
         btnLimpiar.text = "Limpiar";
@@ -200,10 +215,22 @@ class ModificarFragment : Fragment() {
         contenedor.addView(contenedorEstado)
         contenedor.addView(contenedorBotones)
 
+
+        txtFecha.setText(presupuesto[0].fecha)
+        txtDireccion.setText(presupuesto[0].instalacion)
+
+
+
+
+
+
         val botonLimpiar: Button = view?.findViewById(eventoBotonLimpiar.cod)
 
         botonLimpiar.setOnClickListener {
 
+            txtFecha.setText("")
+            txtDireccion.setText("")
+            spEstado.setSelection(0)
 
         }
         val botonGuardar: Button = view?.findViewById(eventoBotonGuardar.cod)
@@ -218,6 +245,21 @@ class ModificarFragment : Fragment() {
 
 
         }
+
+        if (presupuesto[0].estado.toBoolean()){
+
+            spEstado.setSelection(1)
+
+        }else{
+
+            spEstado.setSelection(2)
+        }
+
+
+        val adaptadorTipo:ArrayAdapter<String> = ArrayAdapter(view.context,android.R.layout.simple_spinner_item,listaOpcionesTipo)
+        spEstado.adapter = adaptadorTipo
+        spEstado.onItemSelectedListener = this
+
     }
 
 
@@ -1443,5 +1485,141 @@ class ModificarFragment : Fragment() {
     }
 
 
-}
+    fun obtenerDatosVolleyPresupuestos(view: View, id:Int): MutableList<Presupuesto> {
 
+        val JSON: MediaType = MediaType.get("application/json; charset=utf-8")
+        val jsonObject = JSONObject();
+
+        jsonObject.put("busqueda", id);
+
+        val client = OkHttpClient()
+        val body: RequestBody = RequestBody.create(JSON, jsonObject.toString())
+
+
+        val presupuestos: MutableList<Presupuesto> = mutableListOf();
+
+
+        val request: okhttp3.Request = okhttp3.Request.Builder() //Create a request
+            .url(URL_BASE + "movil/presupuesto/buscar/form")
+            .post(body)
+            .header("Accept", "application/json")
+            .header("Content-Type", "application/json")
+            .build()
+
+
+        var llamada: Call = client.newCall(request)
+
+        try {
+
+            var response = llamada.execute()
+            var cuerpo = response.body()?.string().toString();
+
+            if (cuerpo.length > 2) {
+
+                var datos = cuerpo.split(":{");
+
+
+
+                for (i in 1..datos.count() - 1) {
+
+                     var empleado = Empleado(
+
+                         datos[i].split(":[")[1].split(']')[0].split(',')[2].toInt(),
+                         0,
+                         datos[i].split(":[")[1].split(']')[0].split(',')[0],
+                         datos[i].split(":[")[1].split(']')[0].split(',')[1],
+                         "",
+                         "",
+                         "",
+                         "",
+                         "",
+                         "",
+                         false,
+                         false,
+                         false,
+                         false,
+                         "",
+                         "",
+                         "",
+                         "",
+                         "",
+                         ""
+                     );
+
+                     var presupuesto = Presupuesto(
+
+                         datos[i].split(":[")[0].split(',')[0].split(':')[1].toInt(),
+                         empleado,
+                         datos[i].split(":[")[0].split(',')[1].split(':')[1],
+                         datos[i].split(":[")[1].split(']')[1].split(',')[1].split(':')[1],
+                         datos[i].split(":[")[1].split(']')[1].split(',')[2].split(':')[1],
+                         datos[i].split(":[")[1].split(']')[1].split(',')[3].split(':')[1].split('}')[0]
+
+                     );
+
+                     presupuestos.add(presupuesto);
+                 }
+
+            } else {
+
+                Toast.makeText(this.context, "Error: No hay resultados", Toast.LENGTH_LONG).show()
+            }
+
+
+        } catch (ex: Exception) {
+
+            Toast.makeText(this.context, ex.message.toString(), Toast.LENGTH_LONG).show()
+        }
+
+
+
+        return presupuestos
+    }
+
+    override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
+        val opcion:String = parent?.getItemAtPosition(position).toString()
+
+        when(opcion){
+
+            "INSTALACIÓN" ->{
+
+                tipoParte = "INSTALACIÓN"
+
+            }
+            "MANTENIMIENTO" ->{
+
+                tipoParte = "MANTENIMIENTO"
+            }
+            "AVERIA"->{
+
+                tipoParte = "AVERIA"
+            }
+            "ABIERTO"->{
+
+                estadoParte = "ABIERTO"
+            }
+            "CERRADO"->{
+                estadoParte = "CERRADO"
+                estadoPrespuesto = "CERRADO"
+            }
+            "PRODUCTO"->{
+
+                tipoProducto = "PRODUCTO"
+            }
+            "SERVICIO"->{
+
+                tipoProducto = "SERVICIO"
+            }
+            "EN TRAMITE"->{
+
+                estadoPrespuesto = "EN TRAMITE"
+            }
+        }
+    }
+
+    override fun onNothingSelected(parent: AdapterView<*>?) {
+        TODO("Not yet implemented")
+    }
+
+
+}
