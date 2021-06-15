@@ -5,17 +5,12 @@ import android.os.Bundle
 import android.os.StrictMode
 import android.text.InputType
 import android.view.Gravity
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.view.isVisible
-import androidx.navigation.Navigation
-import com.android.volley.Request
-import com.android.volley.toolbox.JsonObjectRequest
-import com.android.volley.toolbox.Volley
+import androidx.fragment.app.Fragment
 import com.example.proyectoampliacion.Classes_Auxiliares.*
 import com.example.proyectoampliacion.R
 import kotlinx.android.synthetic.main.fragment_altas.*
@@ -25,7 +20,6 @@ import okhttp3.MediaType
 import okhttp3.OkHttpClient
 import okhttp3.RequestBody
 import org.json.JSONObject
-import java.lang.Exception
 
 
 class ModificarFragment : Fragment(), AdapterView.OnItemSelectedListener {
@@ -847,7 +841,9 @@ class ModificarFragment : Fragment(), AdapterView.OnItemSelectedListener {
 
     fun cosntruirFormFactura(view: View){
 
-        val slCliente: Spinner = Spinner(this.context);
+        var factura = obtenerDatosVolleyFactura(view,elemento)
+
+        val txtCliente:EditText = EditText(this.context);
         val txtFecha: EditText = EditText(this.context);
         val txtPrecioSinIva: EditText = EditText(this.context);
         val txtConcepto: EditText = EditText(this.context);
@@ -902,6 +898,11 @@ class ModificarFragment : Fragment(), AdapterView.OnItemSelectedListener {
         txtConcepto.width = 800;
         txtConcepto.maxLines = 1;
         txtConcepto.setLayoutParams(ActionBar.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT,ViewGroup.LayoutParams.WRAP_CONTENT));
+        txtCliente.width = 800;
+        txtCliente.maxLines = 1;
+        txtCliente.isEnabled = false;
+        txtCliente.hint = "Buscar Cliente ..."
+
 
         btnCancelar.text = "Cancelar"
         btnGuardar.text = "Guardar"
@@ -919,13 +920,31 @@ class ModificarFragment : Fragment(), AdapterView.OnItemSelectedListener {
         contenedorConcepto.gravity= Gravity.CENTER;
         contenedorConcepto.addView(txtConcepto);
         contenedorSpCliente.gravity= Gravity.CENTER;
-        contenedorSpCliente.addView(slCliente);
+        contenedorSpCliente.addView(txtCliente);
+
+        contenedorConcepto.setPadding(0,50,0,0);
+        contenedorFecha.setPadding(0,50,0,0);
+        contenedorPrecio.setPadding(0,50,0,0);
+        contenedorSpCliente.setPadding(0,50,0,0);
+        contenedorBotones.setPadding(0,200,0,100);
+
+
 
         contenedor.addView(contenedorSpCliente);
         contenedor.addView(contenedorFecha);
         contenedor.addView(contenedorPrecio);
         contenedor.addView(contenedorConcepto);
         contenedor.addView(contenedorBotones);
+
+
+        txtCliente.setText(factura[0].cliente.split(',')[0] + factura[0].cliente.split(',')[1])
+        txtConcepto.setText(factura[0].concepto)
+        txtFecha.setText(factura[0].fecha)
+        txtPrecioSinIva.setText(factura[0].precioSIva.toString())
+
+        var facturaId = factura[0].id
+        var empleadoId = factura[0].empleado.split(',')[2]
+        var clienteId = factura[0].cliente.split(',')[2]
 
         val botonLimpiar: Button = view?.findViewById(eventoBotonLimpiar.cod)
 
@@ -1471,6 +1490,69 @@ class ModificarFragment : Fragment(), AdapterView.OnItemSelectedListener {
 
 
         }
+    }
+
+    fun obtenerDatosVolleyFactura(view: View, id:Int):MutableList<Factura> {
+
+        val JSON: MediaType = MediaType.get("application/json; charset=utf-8")
+
+        val jsonObject = JSONObject();
+
+        val facturas:MutableList<Factura> = mutableListOf();
+
+        jsonObject.put("busqueda", id);
+
+        val client = OkHttpClient()
+        val body: RequestBody = RequestBody.create(JSON, jsonObject.toString())
+
+
+        val request: okhttp3.Request = okhttp3.Request.Builder() //Create a request
+            .url(URL_BASE + "movil/factura/buscar/form")
+            .post(body)
+            .header("Accept", "application/json")
+            .header("Content-Type", "application/json; charset=utf-8")
+            .build()
+
+        var llamada: Call = client.newCall(request)
+
+        try {
+            Toast.makeText(this.context, "Error: No hay resultados", Toast.LENGTH_LONG).show()
+            var response = llamada.execute()
+            var cuerpo = response.body()?.string().toString();
+
+            if (cuerpo.length > 2) {
+
+                var datos = cuerpo.split(":{");
+
+                for (i in 1..datos.count() - 1){
+
+
+                    var factura = Factura(
+                        datos[i].split(":[")[2].split(']')[1].split(',')[5].split(':')[1].replace('}',' ').trim().toInt(),
+                        datos[i].split(":[")[2].split(']')[0],
+                        datos[i].split(":[")[1].split(']')[0],
+                        datos[i].split(":[")[2].split(']')[1].split(',')[1].split(':')[1],
+                        datos[i].split(":[")[2].split(']')[1].split(',')[2].split(':')[1].toDouble(),
+                        datos[i].split(":[")[2].split(']')[1].split(',')[3].split(':')[1].toDouble(),
+                        datos[1].split(":[")[2].split(']')[1].split(',')[4].split(':')[1]
+                    );
+
+                    facturas.add(factura);
+
+                }
+
+            }else{
+
+                Toast.makeText(this.context, "Error: No hay resultados", Toast.LENGTH_LONG).show()
+            }
+
+        }catch (ex:Exception){
+
+            Toast.makeText(this.context, ex.message.toString(), Toast.LENGTH_LONG).show()
+
+        }
+
+        return facturas
     }
 
 
