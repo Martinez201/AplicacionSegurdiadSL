@@ -70,6 +70,15 @@
         <argument
             android:name="elemento"
             app:argType="integer" />
+        <argument
+            android:name="Nombre"
+            app:argType="string" />
+        <argument
+            android:name="Apellidos"
+            app:argType="string" />
+        <argument
+            android:name="delegacionID"
+            app:argType="string" />
     </fragment>
     <fragment
         android:id="@+id/menuOpcionesCategoriaFragment"

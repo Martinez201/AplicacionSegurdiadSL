@@ -12,6 +12,7 @@ import android.view.ViewGroup
 import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.isVisible
+import androidx.navigation.Navigation
 import com.android.volley.Request
 import com.android.volley.toolbox.JsonObjectRequest
 import com.android.volley.toolbox.Volley
@@ -32,6 +33,13 @@ class ModificarFragment : Fragment() {
     val URL_BASE:String = "http://192.168.1.141/symfony/web/app.php/"
     var elemento:Int = 0
     var delegacionSeleccionada:Int = 0
+
+    var argumento1:String = "";
+    var argumento2:String = "";
+    var argumento3:String = "";
+    var argumento4:String = "";
+    var argumento5:String = "";
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -54,6 +62,12 @@ class ModificarFragment : Fragment() {
         arguments?.let {
 
             elemento = it.getInt("elemento")
+
+            argumento1 = it.getString("nombre").toString()
+            argumento2 = it.getString("apellidos").toString()
+            argumento3= it.getString("id").toString()
+            argumento4 = it.getString("idDe").toString()
+            argumento5 = it.getString("buffer").toString()
 
             when(it.getInt("tipo_formulario")){
 
@@ -113,21 +127,6 @@ class ModificarFragment : Fragment() {
             this.nombre = nombre
             this.cod = cod
         }
-    }
-
-    fun enviarDatosServidor(){
-
-        val progreso: ProgressBar = ProgressBar(this.context)
-        progreso.isVisible = false
-
-        val contenedorDialog: LinearLayout = LinearLayout(this.context);
-
-        contenedorDialog.setLayoutParams(ActionBar.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,ViewGroup.LayoutParams.MATCH_PARENT));
-        contenedorDialog.orientation = LinearLayout.HORIZONTAL;
-
-        contenedorDialog.gravity= Gravity.CENTER;
-        contenedor.addView(contenedorDialog);
-
     }
 
     fun construirFormPresupuestos(view: View){
@@ -797,7 +796,6 @@ class ModificarFragment : Fragment() {
         val btnCancelar:Button = Button(this.context);
         val btnGuardar:Button = Button(this.context);
         val btnLimpiar:Button = Button(this.context);
-        val btnBuscar:Button = Button(this.context)
         val slDelegacion:EditText = EditText(this.context);
         val cbAdministrador:CheckBox= CheckBox(this.context);
         val cbInstalador:CheckBox= CheckBox(this.context);
@@ -848,8 +846,6 @@ class ModificarFragment : Fragment() {
         var eventoBotonGuardar: AltasFragment.ControlDinamico =
             AltasFragment.ControlDinamico(3, "Guardar")
 
-        var eventoBotonBuscar: AltasFragment.ControlDinamico =
-            AltasFragment.ControlDinamico(4, "Buscar")
 
         btnLimpiar.id = eventoBotonLimpiar.cod;
         btnLimpiar.text =  eventoBotonLimpiar.nombre;
@@ -858,8 +854,6 @@ class ModificarFragment : Fragment() {
         btnCancelar.id = eventoBotonCancelar.cod;
         btnCancelar.text = eventoBotonCancelar.nombre;
 
-        btnBuscar.text = eventoBotonBuscar.nombre
-        btnBuscar.id = eventoBotonBuscar.cod
 
         contenedorUsuario.setLayoutParams(ActionBar.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
         contenedorUsuario.orientation = LinearLayout.HORIZONTAL;
@@ -934,7 +928,7 @@ class ModificarFragment : Fragment() {
         txtNacimiento.maxLines = 1
         txtNacimiento.setLayoutParams(ActionBar.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT));
         txtNacimiento.inputType = InputType.TYPE_CLASS_DATETIME;
-        slDelegacion.width = 750
+        slDelegacion.width = 800
         slDelegacion.maxLines = 1
         slDelegacion.isEnabled = false
         slDelegacion.hint = "Buscar Delegación ..."
@@ -956,7 +950,6 @@ class ModificarFragment : Fragment() {
         contenedorUsuario.addView(txtUsuario);
         contenedorSlDelegacion.gravity= Gravity.CENTER;
         contenedorSlDelegacion.addView(slDelegacion);
-        contenedorSlDelegacion.addView(btnBuscar);
         contenedorRol.gravity= Gravity.CENTER;
         contenedorRol.addView(cbAdministrador);
         contenedorRol.addView(cbGestor);
@@ -1292,9 +1285,6 @@ class ModificarFragment : Fragment() {
                 if (cuerpo.length > 2){
 
                     var datos = cuerpo.split(":{");
-
-
-                    //delegacion ==> datos[1].split(',')[14].split(":[")[1] + " " + datos[1].split(',')[18] +
 
                     for (i in 1..datos.count() - 1){
 
