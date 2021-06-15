@@ -1,10 +1,12 @@
 package com.example.proyectoampliacion.Adaptadores
 
 import android.content.Context
+import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ArrayAdapter
+import androidx.navigation.Navigation
 import com.example.proyectoampliacion.Classes_Auxiliares.Delegacion
 import com.example.proyectoampliacion.R
 import kotlinx.android.synthetic.main.vista_delegacion.view.*
@@ -29,6 +31,12 @@ class AdaptadorDelegacionMOD(private val mContext: Context, private val listaDel
 
         layout.btnEditarDMOD.setOnClickListener(){
 
+            var bundle = Bundle();
+
+            bundle.putInt("elemento",elementoActual.id)
+            bundle.putInt("tipo_formulario",3)
+
+            Navigation.findNavController(it).navigate(R.id.modificarFragment,bundle)
         }
 
         return layout;

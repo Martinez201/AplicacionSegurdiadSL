@@ -99,8 +99,9 @@ class ConsultaDelegacionFragment : Fragment() {
                         datos[i].split(',')[2].split(':')[1],
                         datos[i].split(',')[3].split(':')[1],
                         datos[i].split(',')[4].split(':')[1],
-                        datos[i].split(',')[5].split(':')[1],
-                        datos[i].split(',')[6].split(':')[1]
+                        datos[1].split(',')[5].split(':')[1],
+                        datos[1].split(',')[6].split(':')[1],
+                        datos[1].split(',')[7].split(':')[1].split('}')[0]
                     )
                     delegaciones.add(delegacion);
                 }
@@ -145,7 +146,8 @@ class ConsultaDelegacionFragment : Fragment() {
                         datos[i].split(',')[3].split(':')[1],
                         datos[i].split(',')[4].split(':')[1],
                         datos[1].split(',')[5].split(':')[1],
-                        datos[1].split(',')[6].split(':')[1].split('}')[0]
+                        datos[1].split(',')[6].split(':')[1],
+                        datos[1].split(',')[7].split(':')[1].split('}')[0]
                     );
                     delegaciones.add(delegacion);
                 }

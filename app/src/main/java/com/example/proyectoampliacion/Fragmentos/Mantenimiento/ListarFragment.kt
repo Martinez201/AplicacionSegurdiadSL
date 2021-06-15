@@ -155,13 +155,14 @@ class ListarFragment : Fragment() {
 
                         var delegacion = Delegacion(
 
-                                datos[i].split(',')[0].split(':')[1].toInt(),
-                                datos[i].split(',')[1].split(':')[1],
-                                datos[i].split(',')[2].split(':')[1],
-                                datos[i].split(',')[3].split(':')[1],
-                                datos[i].split(',')[4].split(':')[1],
-                                datos[1].split(',')[5].split(':')[1],
-                                datos[1].split(',')[6].split(':')[1].split('}')[0]
+                            datos[i].split(',')[0].split(':')[1].toInt(),
+                            datos[i].split(',')[1].split(':')[1],
+                            datos[i].split(',')[2].split(':')[1],
+                            datos[i].split(',')[3].split(':')[1],
+                            datos[i].split(',')[4].split(':')[1],
+                            datos[1].split(',')[5].split(':')[1],
+                            datos[1].split(',')[6].split(':')[1],
+                            datos[1].split(',')[7].split(':')[1].split('}')[0]
                         );
                         delegaciones.add(delegacion);
                     }
@@ -520,7 +521,8 @@ class ListarFragment : Fragment() {
                                     datos[i].split(":[")[3].split(',')[3],
                                     "",
                                     "",
-                                    ""
+                                    "",
+                                ""
                             );
 
                             var parte = Parte(

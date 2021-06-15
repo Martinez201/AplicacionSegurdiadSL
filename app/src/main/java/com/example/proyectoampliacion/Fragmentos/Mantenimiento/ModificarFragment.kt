@@ -493,6 +493,8 @@ class ModificarFragment : Fragment(), AdapterView.OnItemSelectedListener {
 
     fun construirFormDelegacion(view: View){
 
+        var delegacion = obtenerDatosVolleyDelegaciones(view,elemento)
+
         val txtIdentificacion: EditText = EditText(this.context);
         val txtDireccion: EditText = EditText(this.context);
         val txtProvincia: EditText = EditText(this.context);
@@ -585,6 +587,15 @@ class ModificarFragment : Fragment(), AdapterView.OnItemSelectedListener {
         txtProvincia.setLayoutParams(ActionBar.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT,ViewGroup.LayoutParams.WRAP_CONTENT));
 
 
+        contenedorIdentificacion.setPadding(0,50,0,0);
+        contenedorDireccion.setPadding(0,50,0,0);
+        contenedorCiudad.setPadding(0,50,0,0);
+        contenedorProvincia.setPadding(0,50,0,0);
+        contenedorcPostal.setPadding(0,50,0,0);
+        contenedorTelefono.setPadding(0,50,0,0);
+        contenedorEmail.setPadding(0,50,0,0);
+        contenedorBotones.setPadding(0,200,0,100);
+
         btnCancelar.text = "Cancelar";
         btnGuardar.text = "Guardar";
         btnLimpiar.text = "Limpiar";
@@ -618,10 +629,29 @@ class ModificarFragment : Fragment(), AdapterView.OnItemSelectedListener {
         contenedor.addView(contenedorEmail);
         contenedor.addView(contenedorBotones);
 
-        val botonLimpiar: Button = view?.findViewById(eventoBotonLimpiar.cod)
+
+        txtCiudad.setText(delegacion[0].ciudad);
+        txtDireccion.setText(delegacion[0].direccion);
+        txtEmail.setText(delegacion[0].email);
+        txtIdentificacion.setText(delegacion[0].nombre);
+        txtProvincia.setText(delegacion[0].provincia);
+        txtTelefono.setText(delegacion[0].telefono);
+        txtcPostal.setText(delegacion[0].cPostal);
+
+        var idDelegacion = delegacion[0].id;
+
+
+        val botonLimpiar: Button = view?.findViewById(eventoBotonLimpiar.cod);
 
         botonLimpiar.setOnClickListener {
 
+            txtCiudad.setText("");
+            txtDireccion.setText("");
+            txtEmail.setText("");
+            txtIdentificacion.setText("");
+            txtProvincia.setText("");
+            txtTelefono.setText("");
+            txtcPostal.setText("");
 
         }
         val botonGuardar: Button = view?.findViewById(eventoBotonGuardar.cod)
@@ -1443,6 +1473,71 @@ class ModificarFragment : Fragment(), AdapterView.OnItemSelectedListener {
         }
     }
 
+
+    fun obtenerDatosVolleyDelegaciones(view: View , id:Int):MutableList<Delegacion> {
+
+        val JSON: MediaType = MediaType.get("application/json; charset=utf-8")
+        val jsonObject = JSONObject();
+
+        jsonObject.put("busqueda", id);
+
+        val client = OkHttpClient()
+        val body: RequestBody = RequestBody.create(JSON, jsonObject.toString())
+
+        val delegaciones:MutableList<Delegacion> = mutableListOf();
+
+
+        val request: okhttp3.Request = okhttp3.Request.Builder() //Create a request
+            .url(URL_BASE + "movil/delegacion/buscar/form")
+            .post(body)
+            .header("Accept", "application/json")
+            .header("Content-Type", "application/json")
+            .build()
+
+        var llamada: Call = client.newCall(request)
+
+        try {
+            var response = llamada.execute()
+            var cuerpo = response.body()?.string().toString();
+
+            if (cuerpo.length > 2) {
+
+                var datos = cuerpo.split(":{");
+
+
+
+                for (i in 1..datos.count() - 1) {
+
+
+
+                    var delegacion = Delegacion(
+
+                        datos[i].split(',')[0].split(':')[1].toInt(),
+                        datos[i].split(',')[1].split(':')[1],
+                        datos[i].split(',')[2].split(':')[1],
+                        datos[i].split(',')[3].split(':')[1],
+                        datos[i].split(',')[4].split(':')[1],
+                        datos[1].split(',')[5].split(':')[1],
+                        datos[1].split(',')[6].split(':')[1],
+                        datos[1].split(',')[7].split(':')[1].split('}')[0]
+                    );
+                    delegaciones.add(delegacion);
+                }
+
+            }else{
+
+                Toast.makeText(this.context, "Error: No hay resultados", Toast.LENGTH_LONG).show()
+
+            }
+
+        }catch (ex:Exception){
+
+            Toast.makeText(this.context, "Error: No hay resultados", Toast.LENGTH_LONG).show()
+        }
+
+        return delegaciones
+    }
+
     fun obtenerDatosVolleyProductos(view: View, id:Int):MutableList<Almacen>{
 
         val JSON: MediaType = MediaType.get("application/json; charset=utf-8")
@@ -1873,6 +1968,7 @@ class ModificarFragment : Fragment(), AdapterView.OnItemSelectedListener {
                         datos[i].split(":[")[3].split(',')[4],
                         datos[i].split(":[")[3].split(',')[1],
                         datos[i].split(":[")[3].split(',')[3],
+                        "",
                         "",
                         "",
                         ""

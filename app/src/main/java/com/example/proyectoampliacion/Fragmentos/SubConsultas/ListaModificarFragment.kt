@@ -95,7 +95,6 @@ class ListaModificarFragment : Fragment() {
 
                 var datos = response.toString().split(":{");
 
-
                 for (i in 1..datos.count() - 1){
 
                     var delegacion = Delegacion(
@@ -106,7 +105,8 @@ class ListaModificarFragment : Fragment() {
                         datos[i].split(',')[3].split(':')[1],
                         datos[i].split(',')[4].split(':')[1],
                         datos[1].split(',')[5].split(':')[1],
-                        datos[1].split(',')[6].split(':')[1].split('}')[0]
+                        datos[1].split(',')[6].split(':')[1],
+                        datos[1].split(',')[7].split(':')[1].split('}')[0]
                     );
                     delegaciones.add(delegacion);
                 }
@@ -462,6 +462,7 @@ class ListaModificarFragment : Fragment() {
                         datos[i].split(":[")[3].split(',')[4],
                         datos[i].split(":[")[3].split(',')[1],
                         datos[i].split(":[")[3].split(',')[3],
+                        "",
                         "",
                         "",
                         ""
