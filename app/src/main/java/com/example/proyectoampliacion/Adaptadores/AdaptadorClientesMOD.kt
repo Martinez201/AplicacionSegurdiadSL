@@ -7,6 +7,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ArrayAdapter
+import androidx.navigation.Navigation
 import com.example.proyectoampliacion.Classes_Auxiliares.Cliente
 import com.example.proyectoampliacion.R
 import kotlinx.android.synthetic.main.vista_clientes.view.*
@@ -44,9 +45,12 @@ class AdaptadorClientesMOD(private val mContext: Context, private val listaClien
 
         layout.btnEditar.setOnClickListener(){
 
-            val bundle = Bundle();
+            var bundle = Bundle();
 
-            bundle.putInt("cliente",elementoActual.id);
+            bundle.putInt("elemento",elementoActual.id)
+            bundle.putInt("tipo_formulario",2)
+
+            Navigation.findNavController(it).navigate(R.id.modificarFragment,bundle)
 
         }
 

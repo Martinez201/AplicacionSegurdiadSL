@@ -1072,6 +1072,8 @@ class ModificarFragment : Fragment() {
 
     fun construirFormClientes(view: View){
 
+        var cliente = obtenerDatosVolleyCliente(view,elemento)
+
         val txtNombre: EditText = EditText(this.context);
         val txtApellidos: EditText = EditText(this.context);
         val txtCiudad: EditText = EditText(this.context);
@@ -1223,6 +1225,21 @@ class ModificarFragment : Fragment() {
         contenedorNacimiento.gravity= Gravity.CENTER;
         contenedorNacimiento.addView(txtNacimiento);
 
+        contenedorcPostal.setPadding(0,50,0,0);
+        contenedorTelefono.setPadding(0,50,0,0);
+        contenedorProvincia.setPadding(0,50,0,0);
+        contenedorNombre.setPadding(0,50,0,0);
+        contenedorNombre.setPadding(0,50,0,0);
+        contenedorNacimiento.setPadding(0,50,0,0);
+        contenedorEstado.setPadding(0,50,0,0);
+        contenedorEmail.setPadding(0,50,0,0);
+        contenedorDni.setPadding(0,50,0,0);
+        contenedorDireccion.setPadding(0,50,0,0);
+        contenedorCiudad.setPadding(0,50,0,0);
+        contenedorApellidos.setPadding(0,50,0,0);
+        contenedorDireccion.setPadding(0,50,0,0);
+        contenedorBotones.setPadding(0,200,0,100);
+
         contenedor.addView(contenedorNombre);
         contenedor.addView(contenedorApellidos);
         contenedor.addView(contenedorDireccion);
@@ -1236,10 +1253,39 @@ class ModificarFragment : Fragment() {
         contenedor.addView(contenedorEstado);
         contenedor.addView(contenedorBotones);
 
+        txtNombre.setText(cliente[0].nombre)
+        txtApellidos.setText(cliente[0].apellidos)
+        txtDireccion.setText(cliente[0].direccion)
+        txtCiudad.setText(cliente[0].ciudad)
+        txtProvincia.setText(cliente[0].provincia)
+        txtEmail.setText(cliente[0].email)
+        txtTelefono.setText(cliente[0].telefono)
+        txtcPostal.setText(cliente[0].cPostal)
+        txtDni.setText(cliente[0].dni)
+        txtNacimiento.setText(cliente[0].edad)
+
+        if (cliente[0].estado.toString().equals("true")){
+
+            cbEstado.isChecked = true
+        }
+
+
         val botonLimpiar: Button = view?.findViewById(eventoBotonLimpiar.cod)
 
         botonLimpiar.setOnClickListener {
 
+            txtNombre.setText("")
+            txtApellidos.setText("")
+            txtDireccion.setText("")
+            txtCiudad.setText("")
+            txtProvincia.setText("")
+            txtEmail.setText("")
+            txtTelefono.setText("")
+            txtcPostal.setText("")
+            txtDni.setText("")
+            txtNacimiento.setText("")
+
+            cbEstado.isChecked = false
 
         }
         val botonGuardar: Button = view?.findViewById(eventoBotonGuardar.cod)
@@ -1330,4 +1376,72 @@ class ModificarFragment : Fragment() {
 
         return empleados
     }
+
+    fun obtenerDatosVolleyCliente(view: View, id:Int):MutableList<Cliente>{
+
+        val JSON: MediaType =  MediaType.get("application/json; charset=utf-8")
+        val jsonObject= JSONObject();
+
+        jsonObject.put("busqueda",id);
+
+        val client = OkHttpClient()
+        val body: RequestBody = RequestBody.create(JSON,jsonObject.toString())
+
+        val personas:MutableList<Cliente> = mutableListOf();
+
+
+        val request: okhttp3.Request = okhttp3.Request.Builder() //Create a request
+            .url(URL_BASE+"movil/cliente/buscar/form")
+            .post(body)
+            .header("Accept", "application/json")
+            .header("Content-Type", "application/json")
+            .build()
+
+        var llamada: Call = client.newCall(request)
+
+        try {
+
+            var response = llamada.execute()
+            var cuerpo = response.body()?.string().toString();
+
+            if (cuerpo.length > 2){
+
+                var datos = cuerpo.split(":{");
+
+
+                for (i in 1..datos.count() - 1){
+
+                    var persona = Cliente(
+                        datos[i].split(',')[0].split(':')[1],
+                        datos[i].split(',')[1].split(':')[1],
+                        datos[i].split(',')[8].split(':')[1],
+                        datos[i].split(',')[2].split(':')[1],
+                        datos[i].split(',')[9].split(':')[1],
+                        datos[i].split(',')[6].split(':')[1],
+                        datos[i].split(',')[10].split(':')[1],
+                        datos[i].split(',')[11].split(':')[1].split('}')[0].toInt(),
+                        datos[i].split(',')[3].split(':')[1],
+                        datos[i].split(',')[5].split(':')[1],
+                        datos[i].split(',')[4].split(':')[1],
+                        datos[i].split(',')[7].split(':')[1]
+                    )
+                    personas.add(persona);
+                }
+
+            }else{
+
+                Toast.makeText(this.context,"Error: No hay resultados",Toast.LENGTH_LONG).show()
+            }
+
+
+        }catch (ex:Exception){
+
+            Toast.makeText(this.context,ex.message.toString(),Toast.LENGTH_LONG).show()
+        }
+
+        return personas
+    }
+
+
 }
+
