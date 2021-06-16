@@ -1264,22 +1264,22 @@ class ModificarFragment : Fragment(), AdapterView.OnItemSelectedListener {
 
         delegacionSeleccionada = empleado[0].delegacionId.toInt()
 
-        if (empleado[0].gestor.toString().equals("true")){
+        if (empleado[0].gestor){
 
             cbGestor.isChecked = true
         }
 
-        if (empleado[0].admin.toString().equals("true")){
+        if (empleado[0].admin){
 
             cbAdministrador.isChecked = true
         }
 
-        if (empleado[0].comercial.toString().equals("true")){
+        if (empleado[0].comercial){
 
             cbComercial.isChecked = true
         }
 
-        if (empleado[0].instalador.toString().equals("true")){
+        if (empleado[0].instalador){
 
             cbInstalador.isChecked = true
         }
@@ -1880,9 +1880,9 @@ class ModificarFragment : Fragment(), AdapterView.OnItemSelectedListener {
                             ,datos[i].split(',')[9].split(':')[1]
                             ,datos[i].split(',')[5].split(':')[1]
                             ,datos[i].split(',')[21].split(':')[1].toBoolean()
+                            ,datos[i].split(',')[24].split(':')[1].toBoolean()
                             ,datos[i].split(',')[22].split(':')[1].toBoolean()
                             ,datos[i].split(',')[23].split(':')[1].toBoolean()
-                            ,datos[i].split(',')[24].split(':')[1].toBoolean()
                             ,datos[i].split(',')[25].split(':')[1]
                             ,datos[i].split(',')[10].split(':')[1]
                             ,datos[i].split(',')[8].split(':')[1]

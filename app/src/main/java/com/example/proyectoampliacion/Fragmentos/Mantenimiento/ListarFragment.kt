@@ -120,6 +120,7 @@ class ListarFragment : Fragment() {
                 }
                 4->{
 
+                  //  busquedaEmpleados(view)
                 }
                 5->{
 
@@ -296,30 +297,31 @@ class ListarFragment : Fragment() {
 
                     var datos = response.toString().split(":{");
 
+                    //Toast.makeText(view.context,datos[1].split(',')[26].split(':')[1].split('}')[0],Toast.LENGTH_LONG).show();
 
                   for (i in 1..datos.count() - 1){
 
-                        var empleado = Empleado(datos[i].split(',')[26].split('"')[2].replace(':',' ').replace('}',' ').trim().toInt()
-                        ,datos[i].split(',')[14].split('[')[1].toInt()
-                        ,datos[i].split(',')[0].split(':')[1]
-                        ,datos[i].split(',')[1].split(':')[1]
-                        ,datos[i].split(',')[2].split(':')[1]
-                        ,datos[i].split(',')[3].split(':')[1]
-                        ,datos[i].split(',')[4].split(':')[1]
-                        ,datos[i].split(',')[6].split(':')[1]
-                        ,datos[i].split(',')[9].split(':')[1]
-                        ,datos[i].split(',')[5].split(':')[1]
-                        ,datos[i].split(',')[21].split(':')[1].toBoolean()
-                        ,datos[i].split(',')[22].split(':')[1].toBoolean()
-                        ,datos[i].split(',')[23].split(':')[1].toBoolean()
-                        ,datos[i].split(',')[24].split(':')[1].toBoolean()
-                                ,datos[i].split(',')[25].split(':')[1]
-                                ,datos[i].split(',')[10].split(':')[1],
-                            datos[i].split(',')[8].split(':')[1],
-                            datos[i].split(',')[7].split(':')[1]
-                            ,datos[i].split(',')[18],
-                            datos[i].split(',')[14].split(":[")[1]
-                        );
+                      var empleado = Empleado(datos[i].split(',')[26].split('"')[2].replace(':',' ').replace('}',' ').trim().toInt()
+                          ,datos[i].split(',')[14].split('[')[1].toInt()
+                          ,datos[i].split(',')[0].split(':')[1]
+                          ,datos[i].split(',')[1].split(':')[1]
+                          ,datos[i].split(',')[2].split(':')[1]
+                          ,datos[i].split(',')[3].split(':')[1]
+                          ,datos[i].split(',')[4].split(':')[1]
+                          ,datos[i].split(',')[6].split(':')[1]
+                          ,datos[i].split(',')[9].split(':')[1]
+                          ,datos[i].split(',')[5].split(':')[1]
+                          ,datos[i].split(',')[21].split(':')[1].toBoolean()
+                          ,datos[i].split(',')[24].split(':')[1].toBoolean()
+                          ,datos[i].split(',')[22].split(':')[1].toBoolean()
+                          ,datos[i].split(',')[23].split(':')[1].toBoolean()
+                          ,datos[i].split(',')[25].split(':')[1]
+                          ,datos[i].split(',')[10].split(':')[1]
+                          ,datos[i].split(',')[8].split(':')[1]
+                          ,datos[i].split(',')[7].split(':')[1]
+                          ,datos[i].split(',')[18],
+                          datos[i].split(',')[14].split(":[")[1]
+                      );
                         empleados.add(empleado);
                         mostarEmpleados(view,empleados);
 
@@ -549,6 +551,85 @@ class ListarFragment : Fragment() {
         )
 
         queue.add(jsObjectRequest);
+
+    }
+
+    fun busquedaEmpleados(view: View){
+
+        val JSON: MediaType =  MediaType.get("application/json; charset=utf-8")
+        val jsonObject= JSONObject();
+
+        jsonObject.put("busqueda",edtBuscar.text.toString());
+
+        val client = OkHttpClient()
+        val body: RequestBody = RequestBody.create(JSON,jsonObject.toString())
+
+        val request: okhttp3.Request = okhttp3.Request.Builder() //Create a request
+            .url(URL_BASE+"movil/empleados/buscar")
+            .post(body)
+            .header("Accept", "application/json")
+            .header("Content-Type", "application/json")
+            .build()
+
+        var llamada: Call = client.newCall(request)
+
+        try {
+
+            var response = llamada.execute()
+            var cuerpo = response.body()?.string().toString();
+            val empleados:MutableList<Empleado> = mutableListOf();
+
+            if(edtBuscar.text.toString().isNotEmpty()){
+
+                if (cuerpo.length > 2){
+
+                    var datos = cuerpo.toString().split(":{");
+
+                    for (i in 1..datos.count() - 1){
+
+                        var empleado = Empleado(datos[i].split(',')[26].split('"')[2].replace(':',' ').replace('}',' ').trim().toInt()
+                            ,datos[i].split(',')[14].split('[')[1].toInt()
+                            ,datos[i].split(',')[0].split(':')[1]
+                            ,datos[i].split(',')[1].split(':')[1]
+                            ,datos[i].split(',')[2].split(':')[1]
+                            ,datos[i].split(',')[3].split(':')[1]
+                            ,datos[i].split(',')[4].split(':')[1]
+                            ,datos[i].split(',')[6].split(':')[1]
+                            ,datos[i].split(',')[9].split(':')[1]
+                            ,datos[i].split(',')[5].split(':')[1]
+                            ,datos[i].split(',')[21].split(':')[1].toBoolean()
+                            ,datos[i].split(',')[22].split(':')[1].toBoolean()
+                            ,datos[i].split(',')[23].split(':')[1].toBoolean()
+                            ,datos[i].split(',')[24].split(':')[1].toBoolean()
+                            ,datos[i].split(',')[25].split(':')[1]
+                            ,datos[i].split(',')[10].split(':')[1],
+                            datos[i].split(',')[8].split(':')[1],
+                            datos[i].split(',')[7].split(':')[1]
+                            ,datos[i].split(',')[18],
+                            datos[i].split(',')[14].split(":[")[1]
+                        );
+                        empleados.add(empleado);
+                        mostarEmpleados(view,empleados);
+
+                    }
+
+                }else{
+
+                    Toast.makeText(this.context,"Error: No hay resultados",Toast.LENGTH_LONG).show()
+                    obtenerDatosVolleyAlbaran(view)
+                }
+
+
+            }else{
+
+                obtenerDatosVolleyAlbaran(view)
+            }
+
+
+        }catch (ex:Exception){
+
+            Toast.makeText(this.context,ex.message.toString(),Toast.LENGTH_LONG).show()
+        }
 
     }
 

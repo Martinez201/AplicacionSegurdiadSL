@@ -252,15 +252,16 @@ class ListaModificarFragment : Fragment() {
                         ,datos[i].split(',')[9].split(':')[1]
                         ,datos[i].split(',')[5].split(':')[1]
                         ,datos[i].split(',')[21].split(':')[1].toBoolean()
+                        ,datos[i].split(',')[24].split(':')[1].toBoolean()
                         ,datos[i].split(',')[22].split(':')[1].toBoolean()
                         ,datos[i].split(',')[23].split(':')[1].toBoolean()
-                        ,datos[i].split(',')[24].split(':')[1].toBoolean()
                         ,datos[i].split(',')[25].split(':')[1]
-                        ,datos[i].split(',')[10].split(':')[1],
-                        datos[i].split(',')[8].split(':')[1]
-                        ,datos[i].split(',')[7].split(':')[1],
-                        datos[i].split(',')[18],
-                        datos[i].split(',')[14].split(":[")[1]);
+                        ,datos[i].split(',')[10].split(':')[1]
+                        ,datos[i].split(',')[8].split(':')[1]
+                        ,datos[i].split(',')[7].split(':')[1]
+                        ,datos[i].split(',')[18],
+                        datos[i].split(',')[14].split(":[")[1]
+                    );
                     empleados.add(empleado);
                     mostarEmpleados(view,empleados);
 
