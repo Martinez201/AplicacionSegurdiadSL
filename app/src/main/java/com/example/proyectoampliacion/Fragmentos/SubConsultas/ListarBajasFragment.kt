@@ -804,14 +804,14 @@ class ListarBajasFragment : Fragment() {
 
     fun mostarProductos(view: View,productos:MutableList<Almacen> ){
 
-        val adaptador = AdaptadorAlmacenMOD(view.context,productos)
+        val adaptador = AdaptadorAlmacenBAJ(view.context,productos)
 
         lvBajas.adapter = adaptador
     }
 
     fun mostarPresupuestos(view: View,presupuestos:MutableList<Presupuesto> ){
 
-        val adaptador = AdaptadorPresupuestoMOD(view.context,presupuestos)
+        val adaptador = AdaptadorPrespuestoBAJ(view.context,presupuestos)
 
         lvBajas.adapter = adaptador
     }
