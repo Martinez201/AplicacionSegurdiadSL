@@ -99,14 +99,14 @@ class ListarFragment : Fragment() {
                 6->{
                     (activity as AppCompatActivity?)!!.supportActionBar!!.title = "Listados Partes";
                     obtenerDatosVolleyPartes(view);
-                    edtBuscar.hint = "Por Apellidos Cliente"
+                    edtBuscar.hint = "Por observaciones"
 
                     tipo = 6;
                 }
                 7->{
                     (activity as AppCompatActivity?)!!.supportActionBar!!.title = "Listados Presupuestos";
                     obtenerDatosVolleyPresupuestos(view);
-                    edtBuscar.hint = "Por Apellidos Empleado"
+                    edtBuscar.hint = "Por dirección instalación"
                     tipo = 7;
                 }
             }
