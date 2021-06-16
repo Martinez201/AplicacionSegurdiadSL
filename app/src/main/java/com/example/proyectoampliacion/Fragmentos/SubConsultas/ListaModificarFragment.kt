@@ -25,7 +25,7 @@ import java.lang.Exception
 class ListaModificarFragment : Fragment() {
 
     val URL_BASE:String = "http://192.168.1.141/symfony/web/app.php/"
-
+    var tipo:Int = 0;
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -48,38 +48,96 @@ class ListaModificarFragment : Fragment() {
             when(it?.getInt("tipo")){
 
                 0->{
-                    (activity as AppCompatActivity?)!!.supportActionBar!!.title = "Modificar Albaranes ";
+                    (activity as AppCompatActivity?)!!.supportActionBar!!.title = "Listados Albaranes ";
                     obtenerDatosVolleyAlbaran(view);
+                    tipo = 0;
+                    edtBuscarMOD.hint = "Por Proveedor"
                 }
                 1->{
-                    (activity as AppCompatActivity?)!!.supportActionBar!!.title = "Modificar Almacén";
+                    (activity as AppCompatActivity?)!!.supportActionBar!!.title = "Listados Almacén";
                     obtenerDatosVolleyProductos(view);
+                    tipo = 1;
+                    edtBuscarMOD.hint = "Por Producto"
                 }
                 2->{
-                    (activity as AppCompatActivity?)!!.supportActionBar!!.title = "Modificar Clientes";
+                    (activity as AppCompatActivity?)!!.supportActionBar!!.title = "Listados Clientes";
                     obtenerDatosVolleyCliente(view);
+                    tipo = 2;
+                    edtBuscarMOD.hint = "Por Apellidos"
                 }
                 3->{
-                    (activity as AppCompatActivity?)!!.supportActionBar!!.title = "Modificar Delegación";
+                    (activity as AppCompatActivity?)!!.supportActionBar!!.title = "Listados Delegación";
                     obtenerDatosVolleyDelegaciones(view);
+                    tipo = 3;
+                    edtBuscarMOD.hint = "Por Nombre"
                 }
                 4->{
-                    (activity as AppCompatActivity?)!!.supportActionBar!!.title = "Modificar Empleados";
+                    (activity as AppCompatActivity?)!!.supportActionBar!!.title = "Listados Empleados";
                     obtenerDatosVolleyEmpleados(view);
+                    tipo = 4;
+                    edtBuscarMOD.hint = "Por Apellidos"
                 }
                 5->{
-                    (activity as AppCompatActivity?)!!.supportActionBar!!.title = "Modificar Facturas";
+                    (activity as AppCompatActivity?)!!.supportActionBar!!.title = "Listados Facturas";
                     obtenerDatosVolleyFactura(view);
+                    edtBuscarMOD.hint = "Por Concepto"
+
+                    tipo = 5;
                 }
                 6->{
-                    (activity as AppCompatActivity?)!!.supportActionBar!!.title = "Modificar Partes";
+                    (activity as AppCompatActivity?)!!.supportActionBar!!.title = "Listados Partes";
                     obtenerDatosVolleyPartes(view);
+                    edtBuscarMOD.hint = "Por observaciones"
+
+                    tipo = 6;
                 }
                 7->{
-                    (activity as AppCompatActivity?)!!.supportActionBar!!.title = "Modificar Presupuestos";
+                    (activity as AppCompatActivity?)!!.supportActionBar!!.title = "Listados Presupuestos";
                     obtenerDatosVolleyPresupuestos(view);
+                    edtBuscarMOD.hint = "Por dirección instalación"
+                    tipo = 7;
                 }
             }
+        }
+
+        btnBuscarMOD.setOnClickListener { it ->
+
+            when(tipo){
+
+                0->{
+                    busquedaAlbaranes(view)
+                }
+                1->{
+                    busquedaAlmacen(view)
+                }
+                2->{
+
+                    busquedaClientes(view)
+                }
+                3->{
+
+                    busquedaDelegaciones(view)
+
+                }
+                4->{
+
+                    busquedaEmpleados(view)
+                }
+                5->{
+
+                    busquedaFacturas(view)
+
+                }
+                6->{
+                    busquedaPartes(view)
+                }
+                7->{
+
+                    busquedaPresupuestos(view)
+
+                }
+            }
+
         }
     }
 
@@ -496,12 +554,512 @@ class ListaModificarFragment : Fragment() {
 
     }
 
+    fun busquedaPresupuestos(view: View){
+
+        val JSON: MediaType =  MediaType.get("application/json; charset=utf-8")
+        val jsonObject= JSONObject();
+
+        jsonObject.put("busqueda",edtBuscarMOD.text.toString());
+
+        val client = OkHttpClient()
+        val body: RequestBody = RequestBody.create(JSON,jsonObject.toString())
+
+        val request: okhttp3.Request = okhttp3.Request.Builder() //Create a request
+            .url(URL_BASE+"movil/presupuestos/buscar")
+            .post(body)
+            .header("Accept", "application/json")
+            .header("Content-Type", "application/json")
+            .build()
+
+        var llamada: Call = client.newCall(request)
+
+        try {
+
+            var response = llamada.execute()
+            var cuerpo = response.body()?.string().toString();
+            val presupuestos:MutableList<Presupuesto> = mutableListOf();
+
+            if(edtBuscarMOD.text.toString().isNotEmpty()){
+
+                if (cuerpo.length > 2){
+
+                    var datos = cuerpo.toString().split(":{");
+
+                    for (i in 1..datos.count() - 1){
+
+                        var empleado = Empleado(
+
+                            datos[i].split(":[")[1].split(']')[0].split(',')[2].toInt(),
+                            0,
+                            datos[i].split(":[")[1].split(']')[0].split(',')[0],
+                            datos[i].split(":[")[1].split(']')[0].split(',')[1],
+                            "",
+                            "",
+                            "",
+                            "",
+                            "",
+                            "",
+                            false,
+                            false,
+                            false,
+                            false,
+                            "",
+                            "",
+                            "",
+                            "",
+                            "",
+                            ""
+                        );
+
+                        var presupuesto = Presupuesto(
+
+                            datos[i].split(":[")[0].split(',')[0].split(':')[1].toInt(),
+                            empleado,
+                            datos[i].split(":[")[0].split(',')[1].split(':')[1],
+                            datos[i].split(":[")[1].split(']')[1].split(',')[1].split(':')[1],
+                            datos[i].split(":[")[1].split(']')[1].split(',')[2].split(':')[1],
+                            datos[i].split(":[")[1].split(']')[1].split(',')[3].split(':')[1].split('}')[0]
+
+                        );
+                        presupuestos.add(presupuesto);
+                        mostarPresupuestos(view,presupuestos);
+                    }
+
+
+                }else{
+
+                    Toast.makeText(this.context,"Error: No hay resultados",Toast.LENGTH_LONG).show()
+                    obtenerDatosVolleyPresupuestos(view)
+                }
+
+
+            }else{
+
+                obtenerDatosVolleyPresupuestos(view)
+            }
+
+
+        }catch (ex:Exception){
+
+            Toast.makeText(this.context,ex.message.toString(),Toast.LENGTH_LONG).show()
+        }
+
+    }
+
+    fun busquedaPartes(view: View){
+
+        val JSON: MediaType =  MediaType.get("application/json; charset=utf-8")
+        val jsonObject= JSONObject();
+
+        jsonObject.put("busqueda",edtBuscarMOD.text.toString());
+
+        val client = OkHttpClient()
+        val body: RequestBody = RequestBody.create(JSON,jsonObject.toString())
+
+        val request: okhttp3.Request = okhttp3.Request.Builder() //Create a request
+            .url(URL_BASE+"movil/partes/buscar")
+            .post(body)
+            .header("Accept", "application/json")
+            .header("Content-Type", "application/json")
+            .build()
+
+        var llamada: Call = client.newCall(request)
+
+        try {
+
+            var response = llamada.execute()
+            var cuerpo = response.body()?.string().toString();
+            val partes:MutableList<Parte> = mutableListOf();
+
+            if(edtBuscarMOD.text.toString().isNotEmpty()){
+
+                if (cuerpo.length > 2){
+
+                    var datos = cuerpo.toString().split(":{");
+
+                    for (i in 1..datos.count() - 1){
+
+                        var cliente = Cliente(
+
+                            datos[i].split(":[")[1].split(']')[0].split(',')[0],
+                            datos[i].split(":[")[1].split(']')[0].split(',')[1],
+                            "",
+                            "",
+                            "",
+                            "",
+                            "",
+                            datos[i].split(":[")[1].split(']')[0].split(',')[2].toInt(),
+                            "",
+                            "",
+                            "",
+                            ""
+
+                        );
+
+                        var empleado = Empleado(
+
+                            datos[1].split(":[")[2].split(']')[0].split(',')[2].toInt(),
+                            0,
+                            datos[i].split(":[")[2].split(']')[0].split(',')[0],
+                            datos[i].split(":[")[2].split(']')[0].split(',')[1],
+                            "",
+                            "",
+                            "",
+                            "",
+                            "",
+                            "",
+                            false,
+                            false,
+                            false,
+                            false,
+                            "",
+                            "",
+                            "","","","");
+
+                        var delegacion = Delegacion(
+
+                            datos[i].split(":[")[3].split(',')[0].toInt(),
+                            datos[i].split(":[")[3].split(',')[4],
+                            datos[i].split(":[")[3].split(',')[1],
+                            datos[i].split(":[")[3].split(',')[3],
+                            "",
+                            "",
+                            "",
+                            ""
+                        );
+
+                        var parte = Parte(
+
+                            datos[i].split(":[")[3].split(']')[1].split(':')[1].split('}')[0].toInt(),
+                            cliente,
+                            empleado,
+                            datos[i].split(":[")[2].split(']')[1].split(',')[1].split(':')[1],
+                            datos[i].split(":[")[2].split(']')[1].split(',')[2].split(':')[1],
+                            datos[i].split(":[")[2].split(']')[1].split(',')[3].split(':')[1],
+                            datos[i].split(":[")[2].split(']')[1].split(',')[4].split(':')[1],
+                            delegacion,
+                            datos[i].split(":[")[1].split(']')[1].split(',')[1].split(':')[1]
+
+                        )
+                        partes.add(parte);
+                        mostarPartes(view,partes);
+                    }
+
+
+                }else{
+
+                    Toast.makeText(this.context,"Error: No hay resultados",Toast.LENGTH_LONG).show()
+                    obtenerDatosVolleyPartes(view)
+                }
+
+
+            }else{
+
+                obtenerDatosVolleyPartes(view)
+            }
+
+
+        }catch (ex:Exception){
+
+            Toast.makeText(this.context,ex.message.toString(),Toast.LENGTH_LONG).show()
+        }
+
+    }
+
+
+    fun busquedaFacturas(view: View){
+
+        val JSON: MediaType =  MediaType.get("application/json; charset=utf-8")
+        val jsonObject= JSONObject();
+
+        jsonObject.put("busqueda",edtBuscarMOD.text.toString());
+
+        val client = OkHttpClient()
+        val body: RequestBody = RequestBody.create(JSON,jsonObject.toString())
+
+        val request: okhttp3.Request = okhttp3.Request.Builder() //Create a request
+            .url(URL_BASE+"movil/facturas/buscar")
+            .post(body)
+            .header("Accept", "application/json")
+            .header("Content-Type", "application/json")
+            .build()
+
+        var llamada: Call = client.newCall(request)
+
+        try {
+
+            var response = llamada.execute()
+            var cuerpo = response.body()?.string().toString();
+            val facturas:MutableList<Factura> = mutableListOf();
+
+            if(edtBuscarMOD.text.toString().isNotEmpty()){
+
+                if (cuerpo.length > 2){
+
+                    var datos = cuerpo.toString().split(":{");
+
+
+                    for (i in 1..datos.count() - 1){
+
+
+                        var factura = Factura(
+                            datos[i].split(":[")[2].split(']')[1].split(',')[5].split(':')[1].replace('}',' ').trim().toInt(),
+                            datos[i].split(":[")[2].split(']')[0],
+                            datos[i].split(":[")[1].split(']')[0],
+                            datos[i].split(":[")[2].split(']')[1].split(',')[1].split(':')[1],
+                            datos[i].split(":[")[2].split(']')[1].split(',')[2].split(':')[1].toDouble(),
+                            datos[i].split(":[")[2].split(']')[1].split(',')[3].split(':')[1].toDouble(),
+                            datos[i].split(":[")[2].split(']')[1].split(',')[4].split(':')[1]
+                        );
+
+                        facturas.add(factura);
+                        mostarFacturas(view,facturas);
+
+                    }
+
+                }else{
+
+                    Toast.makeText(this.context,"Error: No hay resultados",Toast.LENGTH_LONG).show()
+                    obtenerDatosVolleyFactura(view)
+                }
+
+
+            }else{
+
+                obtenerDatosVolleyFactura(view)
+            }
+
+
+        }catch (ex:Exception){
+
+            Toast.makeText(this.context,ex.message.toString(),Toast.LENGTH_LONG).show()
+        }
+
+    }
+
+    fun busquedaAlmacen(view: View){
+
+        val JSON: MediaType =  MediaType.get("application/json; charset=utf-8")
+        val jsonObject= JSONObject();
+
+        jsonObject.put("busqueda",edtBuscarMOD.text.toString());
+
+        val client = OkHttpClient()
+        val body: RequestBody = RequestBody.create(JSON,jsonObject.toString())
+
+        val request: okhttp3.Request = okhttp3.Request.Builder() //Create a request
+            .url(URL_BASE+"movil/productos/buscar")
+            .post(body)
+            .header("Accept", "application/json")
+            .header("Content-Type", "application/json")
+            .build()
+
+        var llamada: Call = client.newCall(request)
+
+        try {
+
+            var response = llamada.execute()
+            var cuerpo = response.body()?.string().toString();
+            val productos:MutableList<Almacen> = mutableListOf();
+
+            if(edtBuscarMOD.text.toString().isNotEmpty()){
+
+                if (cuerpo.length > 2){
+
+                    var datos = cuerpo.toString().split(":{");
+
+                    for (i in 1..datos.count() - 1){
+
+                        var producto = Almacen(
+                            datos[i].split(',')[5].split(':')[1].split('}')[0].toInt(),
+                            datos[i].split(',')[0].split(':')[1],
+                            datos[i].split(',')[2].split(':')[1],
+                            datos[i].split(',')[3].split(':')[1].toDouble(),
+                            datos[i].split(',')[1].split(':')[1].toInt(),
+                            datos[i].split(',')[4].split(':')[1]
+                        );
+                        productos.add(producto);
+                        mostarProductos(view,productos);
+                    }
+
+
+                }else{
+
+                    Toast.makeText(this.context,"Error: No hay resultados",Toast.LENGTH_LONG).show()
+                    obtenerDatosVolleyProductos(view)
+                }
+
+
+            }else{
+
+                obtenerDatosVolleyProductos(view)
+            }
+
+
+        }catch (ex:Exception){
+
+            Toast.makeText(this.context,ex.message.toString(),Toast.LENGTH_LONG).show()
+        }
+
+    }
+
+    fun busquedaEmpleados(view: View){
+
+        val JSON: MediaType =  MediaType.get("application/json; charset=utf-8")
+        val jsonObject= JSONObject();
+
+        jsonObject.put("busqueda",edtBuscarMOD.text.toString());
+
+        val client = OkHttpClient()
+        val body: RequestBody = RequestBody.create(JSON,jsonObject.toString())
+
+        val request: okhttp3.Request = okhttp3.Request.Builder() //Create a request
+            .url(URL_BASE+"movil/empleados/buscar")
+            .post(body)
+            .header("Accept", "application/json")
+            .header("Content-Type", "application/json")
+            .build()
+
+        var llamada: Call = client.newCall(request)
+
+        try {
+
+            var response = llamada.execute()
+            var cuerpo = response.body()?.string().toString();
+            val empleados:MutableList<Empleado> = mutableListOf();
+
+            if(edtBuscarMOD.text.toString().isNotEmpty()){
+
+                if (cuerpo.length > 2){
+
+                    var datos = cuerpo.toString().split(":{");
+
+                    for (i in 1..datos.count() - 1){
+
+
+
+                        var empleado = Empleado(datos[i].split(',')[26].split('"')[2].replace(':',' ').replace('}',' ').trim().toInt()
+                            ,datos[i].split(',')[14].split('[')[1].toInt()
+                            ,datos[i].split(',')[0].split(':')[1]
+                            ,datos[i].split(',')[1].split(':')[1]
+                            ,datos[i].split(',')[2].split(':')[1]
+                            ,datos[i].split(',')[3].split(':')[1]
+                            ,datos[i].split(',')[4].split(':')[1]
+                            ,datos[i].split(',')[6].split(':')[1]
+                            ,datos[i].split(',')[9].split(':')[1]
+                            ,datos[i].split(',')[5].split(':')[1]
+                            ,datos[i].split(',')[21].split(':')[1].toBoolean()
+                            ,datos[i].split(',')[22].split(':')[1].toBoolean()
+                            ,datos[i].split(',')[23].split(':')[1].toBoolean()
+                            ,datos[i].split(',')[24].split(':')[1].toBoolean()
+                            ,datos[i].split(',')[25].split(':')[1]
+                            ,datos[i].split(',')[10].split(':')[1],
+                            datos[i].split(',')[8].split(':')[1],
+                            datos[i].split(',')[7].split(':')[1]
+                            ,datos[i].split(',')[18],
+                            datos[i].split(',')[14].split(":[")[1]
+                        );
+                        empleados.add(empleado);
+                        mostarEmpleados(view,empleados);
+
+                    }
+
+                }else{
+
+                    Toast.makeText(this.context,"Error: No hay resultados",Toast.LENGTH_LONG).show()
+                    obtenerDatosVolleyEmpleados(view)
+                }
+
+
+            }else{
+
+                obtenerDatosVolleyEmpleados(view)
+            }
+
+
+        }catch (ex:Exception){
+
+            Toast.makeText(this.context,ex.message.toString(),Toast.LENGTH_LONG).show()
+        }
+
+    }
+
+    fun busquedaDelegaciones(view: View){
+
+        val JSON: MediaType =  MediaType.get("application/json; charset=utf-8")
+        val jsonObject= JSONObject();
+
+        jsonObject.put("busqueda",edtBuscarMOD.text.toString());
+
+        val client = OkHttpClient()
+        val body: RequestBody = RequestBody.create(JSON,jsonObject.toString())
+
+        val request: okhttp3.Request = okhttp3.Request.Builder() //Create a request
+            .url(URL_BASE+"movil/delegaciones/buscar")
+            .post(body)
+            .header("Accept", "application/json")
+            .header("Content-Type", "application/json")
+            .build()
+
+        var llamada: Call = client.newCall(request)
+
+        try {
+
+            var response = llamada.execute()
+            var cuerpo = response.body()?.string().toString();
+            val delegaciones:MutableList<Delegacion> = mutableListOf();
+
+            if(edtBuscarMOD.text.toString().isNotEmpty()){
+
+                if (cuerpo.length > 2){
+
+                    var datos = cuerpo.toString().split(":{");
+
+                    for (i in 1..datos.count() - 1){
+
+                        var delegacion = Delegacion(
+
+                            datos[i].split(',')[0].split(':')[1].toInt(),
+                            datos[i].split(',')[1].split(':')[1],
+                            datos[i].split(',')[2].split(':')[1],
+                            datos[i].split(',')[3].split(':')[1],
+                            datos[i].split(',')[4].split(':')[1],
+                            datos[i].split(',')[5].split(':')[1],
+                            datos[i].split(',')[6].split(':')[1],
+                            datos[i].split(',')[7].split(':')[1].split('}')[0]
+                        );
+                        delegaciones.add(delegacion);
+                    }
+
+                    mostarDelegaciones(view,delegaciones);
+
+                }else{
+
+                    Toast.makeText(this.context,"Error: No hay resultados",Toast.LENGTH_LONG).show()
+                    obtenerDatosVolleyDelegaciones(view)
+                }
+
+
+            }else{
+
+                obtenerDatosVolleyDelegaciones(view)
+            }
+
+
+        }catch (ex:Exception){
+
+            Toast.makeText(this.context,ex.message.toString(),Toast.LENGTH_LONG).show()
+        }
+
+    }
+
+
     fun busquedaAlbaranes(view: View){
 
         val JSON: MediaType =  MediaType.get("application/json; charset=utf-8")
         val jsonObject= JSONObject();
 
-        jsonObject.put("busqueda",edtBuscar.text.toString());
+        jsonObject.put("busqueda",edtBuscarMOD.text.toString());
 
         val client = OkHttpClient()
         val body: RequestBody = RequestBody.create(JSON,jsonObject.toString())
@@ -521,7 +1079,7 @@ class ListaModificarFragment : Fragment() {
             var cuerpo = response.body()?.string().toString();
             val albaranes:MutableList<Albaran> = mutableListOf();
 
-            if(edtBuscar.text.toString().isNotEmpty()){
+            if(edtBuscarMOD.text.toString().isNotEmpty()){
 
                 if (cuerpo.length > 2){
 
@@ -543,7 +1101,7 @@ class ListaModificarFragment : Fragment() {
 
                 }else{
 
-                    Toast.makeText(this.context,"Error: No hay resultados", Toast.LENGTH_LONG).show()
+                    Toast.makeText(this.context,"Error: No hay resultados",Toast.LENGTH_LONG).show()
                     obtenerDatosVolleyAlbaran(view)
                 }
 
@@ -554,9 +1112,9 @@ class ListaModificarFragment : Fragment() {
             }
 
 
-        }catch (ex: Exception){
+        }catch (ex:Exception){
 
-            Toast.makeText(this.context,ex.message.toString(), Toast.LENGTH_LONG).show()
+            Toast.makeText(this.context,ex.message.toString(),Toast.LENGTH_LONG).show()
         }
 
     }
@@ -567,7 +1125,7 @@ class ListaModificarFragment : Fragment() {
         val JSON: MediaType =  MediaType.get("application/json; charset=utf-8")
         val jsonObject= JSONObject();
 
-        jsonObject.put("busqueda",edtBuscar.text.toString());
+        jsonObject.put("busqueda",edtBuscarMOD.text.toString());
 
         val client = OkHttpClient()
         val body: RequestBody = RequestBody.create(JSON,jsonObject.toString())
@@ -587,7 +1145,7 @@ class ListaModificarFragment : Fragment() {
             var cuerpo = response.body()?.string().toString();
             val personas:MutableList<Cliente> = mutableListOf();
 
-            if(edtBuscar.text.toString().isNotEmpty()){
+            if(edtBuscarMOD.text.toString().isNotEmpty()){
 
                 if(cuerpo.length > 2){
 
@@ -619,7 +1177,7 @@ class ListaModificarFragment : Fragment() {
                 }
                 else{
 
-                    Toast.makeText(this.context,"Error: No hay resultados", Toast.LENGTH_LONG).show()
+                    Toast.makeText(this.context,"Error: No hay resultados",Toast.LENGTH_LONG).show()
 
                     obtenerDatosVolleyCliente(view)
                 }
@@ -633,11 +1191,12 @@ class ListaModificarFragment : Fragment() {
 
         }catch (ex: Exception){
 
-            Toast.makeText(this.context,ex.message.toString(), Toast.LENGTH_LONG).show()
+            Toast.makeText(this.context,ex.message.toString(),Toast.LENGTH_LONG).show()
 
         }
 
     }
+
 
 
 
