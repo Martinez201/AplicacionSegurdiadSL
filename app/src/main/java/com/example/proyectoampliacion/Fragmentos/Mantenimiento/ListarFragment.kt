@@ -140,6 +140,8 @@ class ListarFragment : Fragment() {
                 }
                 5->{
 
+                    busquedaFacturas(view)
+
                 }
                 6->{
 
@@ -567,6 +569,76 @@ class ListarFragment : Fragment() {
         )
 
         queue.add(jsObjectRequest);
+
+    }
+
+    fun busquedaFacturas(view: View){
+
+        val JSON: MediaType =  MediaType.get("application/json; charset=utf-8")
+        val jsonObject= JSONObject();
+
+        jsonObject.put("busqueda",edtBuscar.text.toString());
+
+        val client = OkHttpClient()
+        val body: RequestBody = RequestBody.create(JSON,jsonObject.toString())
+
+        val request: okhttp3.Request = okhttp3.Request.Builder() //Create a request
+            .url(URL_BASE+"movil/facturas/buscar")
+            .post(body)
+            .header("Accept", "application/json")
+            .header("Content-Type", "application/json")
+            .build()
+
+        var llamada: Call = client.newCall(request)
+
+        try {
+
+            var response = llamada.execute()
+            var cuerpo = response.body()?.string().toString();
+            val facturas:MutableList<Factura> = mutableListOf();
+
+            if(edtBuscar.text.toString().isNotEmpty()){
+
+                if (cuerpo.length > 2){
+
+                    var datos = cuerpo.toString().split(":{");
+
+
+                    for (i in 1..datos.count() - 1){
+
+
+                        var factura = Factura(
+                            datos[i].split(":[")[2].split(']')[1].split(',')[5].split(':')[1].replace('}',' ').trim().toInt(),
+                            datos[i].split(":[")[2].split(']')[0],
+                            datos[i].split(":[")[1].split(']')[0],
+                            datos[i].split(":[")[2].split(']')[1].split(',')[1].split(':')[1],
+                            datos[i].split(":[")[2].split(']')[1].split(',')[2].split(':')[1].toDouble(),
+                            datos[i].split(":[")[2].split(']')[1].split(',')[3].split(':')[1].toDouble(),
+                            datos[1].split(":[")[2].split(']')[1].split(',')[4].split(':')[1]
+                        );
+
+                        facturas.add(factura);
+                        mostarFacturas(view,facturas);
+
+                    }
+
+                }else{
+
+                    Toast.makeText(this.context,"Error: No hay resultados",Toast.LENGTH_LONG).show()
+                    obtenerDatosVolleyFactura(view)
+                }
+
+
+            }else{
+
+                obtenerDatosVolleyFactura(view)
+            }
+
+
+        }catch (ex:Exception){
+
+            Toast.makeText(this.context,ex.message.toString(),Toast.LENGTH_LONG).show()
+        }
 
     }
 
