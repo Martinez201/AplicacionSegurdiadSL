@@ -43,7 +43,7 @@ class ModificarFragment : Fragment(), AdapterView.OnItemSelectedListener {
     var tipoParte:Int = 1;
     var estadoParte:Boolean = false;
     var tipoProducto: String ="";
-    var estadoPrespuesto:String = "";
+    var estadoPrespuesto:Boolean = false;
 
     var empleadoAlbaran = ""
 
@@ -235,12 +235,14 @@ class ModificarFragment : Fragment(), AdapterView.OnItemSelectedListener {
 
         botonGuardar.setOnClickListener {
 
+            modificarPresupuesto(presupuesto[0].id,txtFecha.text.toString(),txtDireccion.text.toString(),estadoPrespuesto)
 
         }
         val botonCancelar: Button = view?.findViewById(eventoBotonCancelar.cod)
 
         botonCancelar.setOnClickListener {
 
+            Navigation.findNavController(view).navigate(R.id.menuPrincipalFragment);
 
         }
 
@@ -472,6 +474,7 @@ class ModificarFragment : Fragment(), AdapterView.OnItemSelectedListener {
             txtNombre.setText("");
             txtPrecio.setText("");
             txtStock.setText("");
+            spTipo.setSelection(0)
 
         }
         val botonGuardar: Button = view?.findViewById(eventoBotonGuardar.cod)
@@ -683,6 +686,7 @@ class ModificarFragment : Fragment(), AdapterView.OnItemSelectedListener {
 
         botonCancelar.setOnClickListener {
 
+            Navigation.findNavController(view).navigate(R.id.menuPrincipalFragment);
 
         }
     }
@@ -861,6 +865,7 @@ class ModificarFragment : Fragment(), AdapterView.OnItemSelectedListener {
 
         botonCancelar.setOnClickListener {
 
+            Navigation.findNavController(view).navigate(R.id.menuPrincipalFragment);
 
         }
 
@@ -2202,7 +2207,7 @@ class ModificarFragment : Fragment(), AdapterView.OnItemSelectedListener {
             }
             "CERRADO"->{
                 estadoParte = false
-                estadoPrespuesto = "CERRADO"
+                estadoPrespuesto = true
             }
             "PRODUCTO"->{
 
@@ -2214,13 +2219,56 @@ class ModificarFragment : Fragment(), AdapterView.OnItemSelectedListener {
             }
             "EN TRAMITE"->{
 
-                estadoPrespuesto = "EN TRAMITE"
+                estadoPrespuesto = false
             }
         }
     }
 
     override fun onNothingSelected(parent: AdapterView<*>?) {
         TODO("Not yet implemented")
+    }
+
+    fun modificarPresupuesto(id:Int
+                            ,fecha:String,
+                            direccion:String,
+                            estado: Boolean
+    ) {
+
+        var JSON:MediaType =  MediaType.get("application/json; charset=utf-8")
+
+        val jsonObject= JSONObject();
+
+        jsonObject.put("fecha",fecha);
+        jsonObject.put("estado",estado);
+        jsonObject.put("direccion",direccion);
+        jsonObject.put("id",id);
+
+
+        val client = OkHttpClient()
+
+        val body: RequestBody = RequestBody.create(JSON,jsonObject.toString())
+
+        val request: okhttp3.Request = okhttp3.Request.Builder() //Create a request
+            .url(URL_BASE+"movil/presupuesto/modificar")
+            .post(body) //Indicated as get request
+            .header("Accept", "application/json")
+            .header("Content-Type", "application/json;charset=utf-8")
+            .build()
+
+        var llamada: Call = client.newCall(request)
+
+        try {
+
+            var response = llamada.execute()
+
+            // val jsonArray = JSONObject(response.body()?.string())
+
+            Toast.makeText(this.context,response.body()?.string().toString(),Toast.LENGTH_SHORT).show()
+
+        }catch (e: IOException){
+
+            Toast.makeText(this.context,e.message.toString(),Toast.LENGTH_SHORT).show()
+        }
     }
 
     fun modificarDelegacion(id:Int
