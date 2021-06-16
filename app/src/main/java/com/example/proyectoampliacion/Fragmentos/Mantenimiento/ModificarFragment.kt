@@ -345,12 +345,14 @@ class ModificarFragment : Fragment(), AdapterView.OnItemSelectedListener {
 
         botonGuardar.setOnClickListener {
 
+            modificarAlbaran(albaran[0].id,txtFecha.text.toString(),txtProveedor.text.toString())
 
         }
         val botonCancelar: Button = view?.findViewById(eventoBotonCancelar.cod)
 
         botonCancelar.setOnClickListener {
 
+            Navigation.findNavController(view).navigate(R.id.menuPrincipalFragment);
 
         }
     }
@@ -2318,6 +2320,44 @@ class ModificarFragment : Fragment(), AdapterView.OnItemSelectedListener {
 
         val request: okhttp3.Request = okhttp3.Request.Builder() //Create a request
             .url(URL_BASE+"movil/factura/modificar")
+            .post(body) //Indicated as get request
+            .header("Accept", "application/json")
+            .header("Content-Type", "application/json;charset=utf-8")
+            .build()
+
+        var llamada: Call = client.newCall(request)
+
+        try {
+
+            var response = llamada.execute()
+
+            // val jsonArray = JSONObject(response.body()?.string())
+
+            Toast.makeText(this.context,response.body()?.string().toString(),Toast.LENGTH_SHORT).show()
+
+        }catch (e: IOException){
+
+            Toast.makeText(this.context,e.message.toString(),Toast.LENGTH_SHORT).show()
+        }
+    }
+
+    fun modificarAlbaran(id:Int,fecha:String,proveedor:String){
+
+        var JSON:MediaType =  MediaType.get("application/json; charset=utf-8")
+
+        val jsonObject= JSONObject();
+
+        jsonObject.put("fecha",fecha);
+        jsonObject.put("proveedor",proveedor);
+        jsonObject.put("id",id);
+
+
+        val client = OkHttpClient()
+
+        val body: RequestBody = RequestBody.create(JSON,jsonObject.toString())
+
+        val request: okhttp3.Request = okhttp3.Request.Builder() //Create a request
+            .url(URL_BASE+"movil/albaran/modificar")
             .post(body) //Indicated as get request
             .header("Accept", "application/json")
             .header("Content-Type", "application/json;charset=utf-8")
