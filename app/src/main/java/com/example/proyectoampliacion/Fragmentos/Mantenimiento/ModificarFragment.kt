@@ -41,7 +41,7 @@ class ModificarFragment : Fragment(), AdapterView.OnItemSelectedListener {
     var argumento5:String = "";
 
     var tipoParte:Int = 1;
-    var estadoParte:String = "";
+    var estadoParte:Boolean = false;
     var tipoProducto: String ="";
     var estadoPrespuesto:String = "";
 
@@ -849,6 +849,12 @@ class ModificarFragment : Fragment(), AdapterView.OnItemSelectedListener {
 
         botonGuardar.setOnClickListener {
 
+            modificarParte(
+                idParte,
+                txtDetalles.text.toString(),
+                txtFecha.text.toString(),
+                txtObservaciones.text.toString()
+            )
 
         }
         val botonCancelar: Button = view?.findViewById(eventoBotonCancelar.cod)
@@ -2192,10 +2198,10 @@ class ModificarFragment : Fragment(), AdapterView.OnItemSelectedListener {
             }
             "ABIERTO"->{
 
-                estadoParte = "ABIERTO"
+                estadoParte = true
             }
             "CERRADO"->{
-                estadoParte = "CERRADO"
+                estadoParte = false
                 estadoPrespuesto = "CERRADO"
             }
             "PRODUCTO"->{
@@ -2500,6 +2506,52 @@ class ModificarFragment : Fragment(), AdapterView.OnItemSelectedListener {
 
         val request: okhttp3.Request = okhttp3.Request.Builder() //Create a request
             .url(URL_BASE+"movil/albaran/modificar")
+            .post(body) //Indicated as get request
+            .header("Accept", "application/json")
+            .header("Content-Type", "application/json;charset=utf-8")
+            .build()
+
+        var llamada: Call = client.newCall(request)
+
+        try {
+
+            var response = llamada.execute()
+
+            // val jsonArray = JSONObject(response.body()?.string())
+
+            Toast.makeText(this.context,response.body()?.string().toString(),Toast.LENGTH_SHORT).show()
+
+        }catch (e: IOException){
+
+            Toast.makeText(this.context,e.message.toString(),Toast.LENGTH_SHORT).show()
+        }
+    }
+
+    fun modificarParte(
+        id:Int,
+        detalles:String,
+        fecha:String,
+        observaciones:String
+    ){
+
+        var JSON:MediaType =  MediaType.get("application/json; charset=utf-8")
+
+        val jsonObject= JSONObject();
+
+        jsonObject.put("detalles",detalles);
+        jsonObject.put("estado",estadoParte);
+        jsonObject.put("tipo",tipoParte);
+        jsonObject.put("fecha",fecha);
+        jsonObject.put("observaciones",observaciones);
+        jsonObject.put("id",id);
+
+
+        val client = OkHttpClient()
+
+        val body: RequestBody = RequestBody.create(JSON,jsonObject.toString())
+
+        val request: okhttp3.Request = okhttp3.Request.Builder() //Create a request
+            .url(URL_BASE+"movil/parte/modificar")
             .post(body) //Indicated as get request
             .header("Accept", "application/json")
             .header("Content-Type", "application/json;charset=utf-8")
