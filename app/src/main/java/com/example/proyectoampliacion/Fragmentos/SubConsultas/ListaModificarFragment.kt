@@ -104,9 +104,9 @@ class ListaModificarFragment : Fragment() {
                         datos[i].split(',')[2].split(':')[1],
                         datos[i].split(',')[3].split(':')[1],
                         datos[i].split(',')[4].split(':')[1],
-                        datos[1].split(',')[5].split(':')[1],
-                        datos[1].split(',')[6].split(':')[1],
-                        datos[1].split(',')[7].split(':')[1].split('}')[0]
+                        datos[i].split(',')[5].split(':')[1],
+                        datos[i].split(',')[6].split(':')[1],
+                        datos[i].split(',')[7].split(':')[1].split('}')[0]
                     );
                     delegaciones.add(delegacion);
                 }
@@ -141,12 +141,12 @@ class ListaModificarFragment : Fragment() {
                 for (i in 1..datos.count() - 1){
 
                     var producto = Almacen(
-                        datos[1].split(',')[5].split(':')[1].split('}')[0].toInt(),
-                        datos[1].split(',')[0].split(':')[1],
-                        datos[1].split(',')[2].split(':')[1],
-                        datos[1].split(',')[3].split(':')[1].toDouble(),
-                        datos[1].split(',')[1].split(':')[1].toInt(),
-                        datos[1].split(',')[4].split(':')[1]
+                        datos[i].split(',')[5].split(':')[1].split('}')[0].toInt(),
+                        datos[i].split(',')[0].split(':')[1],
+                        datos[i].split(',')[2].split(':')[1],
+                        datos[i].split(',')[3].split(':')[1].toDouble(),
+                        datos[i].split(',')[1].split(':')[1].toInt(),
+                        datos[i].split(',')[4].split(':')[1]
                     );
                     productos.add(producto);
                     mostarProductos(view,productos);
@@ -303,7 +303,7 @@ class ListaModificarFragment : Fragment() {
                         datos[i].split(":[")[2].split(']')[1].split(',')[1].split(':')[1],
                         datos[i].split(":[")[2].split(']')[1].split(',')[2].split(':')[1].toDouble(),
                         datos[i].split(":[")[2].split(']')[1].split(',')[3].split(':')[1].toDouble(),
-                        datos[1].split(":[")[2].split(']')[1].split(',')[4].split(':')[1]
+                        datos[i].split(":[")[2].split(']')[1].split(',')[4].split(':')[1]
                     );
 
                     facturas.add(factura);
@@ -438,7 +438,7 @@ class ListaModificarFragment : Fragment() {
 
                     var empleado = Empleado(
 
-                        datos[1].split(":[")[2].split(']')[0].split(',')[2].toInt(),
+                        datos[i].split(":[")[2].split(']')[0].split(',')[2].toInt(),
                         0,
                         datos[i].split(":[")[2].split(']')[0].split(',')[0],
                         datos[i].split(":[")[2].split(']')[0].split(',')[1],
