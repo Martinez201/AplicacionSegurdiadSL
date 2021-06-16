@@ -40,7 +40,7 @@ class ModificarFragment : Fragment(), AdapterView.OnItemSelectedListener {
     var argumento4:String = "";
     var argumento5:String = "";
 
-    var tipoParte:String = "";
+    var tipoParte:Int = 1;
     var estadoParte:String = "";
     var tipoProducto: String ="";
     var estadoPrespuesto:String = "";
@@ -667,6 +667,16 @@ class ModificarFragment : Fragment(), AdapterView.OnItemSelectedListener {
 
         botonGuardar.setOnClickListener {
 
+            modificarDelegacion(
+                idDelegacion,
+                txtIdentificacion.text.toString(),
+                txtDireccion.text.toString(),
+                txtCiudad.text.toString(),
+                txtProvincia.text.toString(),
+                txtEmail.text.toString(),
+                txtTelefono.text.toString(),
+                txtcPostal.text.toString()
+            )
 
         }
         val botonCancelar: Button = view?.findViewById(eventoBotonCancelar.cod)
@@ -757,6 +767,10 @@ class ModificarFragment : Fragment(), AdapterView.OnItemSelectedListener {
         txtObservaciones.width = 800;
         txtObservaciones.maxLines = 6;
         txtObservaciones.setLayoutParams(ActionBar.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT,ViewGroup.LayoutParams.WRAP_CONTENT));
+        txtCliente.width = 800;
+        txtCliente.maxLines = 1;
+        txtCliente.isEnabled = false;
+        txtCliente.hint = "Cliente"
 
         btnCancelar.text = "Cancelar";
         btnGuardar.text = "Guardar";
@@ -916,7 +930,7 @@ class ModificarFragment : Fragment(), AdapterView.OnItemSelectedListener {
         txtCliente.width = 800;
         txtCliente.maxLines = 1;
         txtCliente.isEnabled = false;
-        txtCliente.hint = "Buscar Cliente ..."
+        txtCliente.hint = "Cliente"
 
 
         btnCancelar.text = "Cancelar"
@@ -1558,7 +1572,7 @@ class ModificarFragment : Fragment(), AdapterView.OnItemSelectedListener {
 
         botonCancelar.setOnClickListener {
 
-
+            Navigation.findNavController(view).navigate(R.id.menuPrincipalFragment);
         }
     }
 
@@ -2165,16 +2179,16 @@ class ModificarFragment : Fragment(), AdapterView.OnItemSelectedListener {
 
             "INSTALACIÓN" ->{
 
-                tipoParte = "INSTALACIÓN"
+                tipoParte = 1
 
             }
             "MANTENIMIENTO" ->{
 
-                tipoParte = "MANTENIMIENTO"
+                tipoParte = 2
             }
             "AVERIA"->{
 
-                tipoParte = "AVERIA"
+                tipoParte = 3
             }
             "ABIERTO"->{
 
@@ -2202,6 +2216,58 @@ class ModificarFragment : Fragment(), AdapterView.OnItemSelectedListener {
     override fun onNothingSelected(parent: AdapterView<*>?) {
         TODO("Not yet implemented")
     }
+
+    fun modificarDelegacion(id:Int
+                         ,identificacion:String,
+                         direccion:String,
+                         ciudad:String,
+                         provincia:String,
+                         email:String,
+                         telefono:String,
+                         cPostal:String
+    ) {
+
+        var JSON:MediaType =  MediaType.get("application/json; charset=utf-8")
+
+        val jsonObject= JSONObject();
+
+        jsonObject.put("identificacion",identificacion);
+        jsonObject.put("direccion",direccion);
+        jsonObject.put("ciudad",ciudad);
+        jsonObject.put("provincia",provincia);
+        jsonObject.put("email",email);
+        jsonObject.put("telefono",telefono);
+        jsonObject.put("cPostal",cPostal);
+        jsonObject.put("id",id);
+
+
+        val client = OkHttpClient()
+
+        val body: RequestBody = RequestBody.create(JSON,jsonObject.toString())
+
+        val request: okhttp3.Request = okhttp3.Request.Builder() //Create a request
+            .url(URL_BASE+"movil/delegacion/modificar")
+            .post(body) //Indicated as get request
+            .header("Accept", "application/json")
+            .header("Content-Type", "application/json;charset=utf-8")
+            .build()
+
+        var llamada: Call = client.newCall(request)
+
+        try {
+
+            var response = llamada.execute()
+
+            // val jsonArray = JSONObject(response.body()?.string())
+
+            Toast.makeText(this.context,response.body()?.string().toString(),Toast.LENGTH_SHORT).show()
+
+        }catch (e: IOException){
+
+            Toast.makeText(this.context,e.message.toString(),Toast.LENGTH_SHORT).show()
+        }
+    }
+
 
     fun modificarCliente(id:Int
                           ,nombre:String,
