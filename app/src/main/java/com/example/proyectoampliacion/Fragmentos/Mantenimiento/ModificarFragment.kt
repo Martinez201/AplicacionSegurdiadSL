@@ -476,13 +476,20 @@ class ModificarFragment : Fragment(), AdapterView.OnItemSelectedListener {
 
         botonGuardar.setOnClickListener {
 
+            modificarProducto(
+                idProducto.toString(),
+                txtNombre.text.toString(),
+                tipoProducto,
+                txtPrecio.text.toString(),
+                txtStock.text.toString()
+            )
 
         }
         val botonCancelar: Button = view?.findViewById(eventoBotonCancelar.cod)
 
         botonCancelar.setOnClickListener {
 
-
+            Navigation.findNavController(view).navigate(R.id.menuPrincipalFragment);
         }
 
         val adaptadorTipo:ArrayAdapter<String> = ArrayAdapter(view.context,android.R.layout.simple_spinner_item,listaOpcionesTipo)
@@ -2128,11 +2135,11 @@ class ModificarFragment : Fragment(), AdapterView.OnItemSelectedListener {
             }
             "PRODUCTO"->{
 
-                tipoProducto = "PRODUCTO"
+                tipoProducto = "Producto"
             }
             "SERVICIO"->{
 
-                tipoProducto = "SERVICIO"
+                tipoProducto = "Servicio"
             }
             "EN TRAMITE"->{
 
@@ -2145,6 +2152,46 @@ class ModificarFragment : Fragment(), AdapterView.OnItemSelectedListener {
         TODO("Not yet implemented")
     }
 
+
+    fun modificarProducto(id:String,nombre:String,tipo:String,precio:String,stock:String){
+
+        var JSON:MediaType =  MediaType.get("application/json; charset=utf-8")
+
+        val jsonObject= JSONObject();
+
+        jsonObject.put("nombre",nombre);
+        jsonObject.put("tipo",tipo);
+        jsonObject.put("stock",stock);
+        jsonObject.put("precio",precio);
+        jsonObject.put("productoId",id);
+
+
+        val client = OkHttpClient()
+
+        val body: RequestBody = RequestBody.create(JSON,jsonObject.toString())
+
+        val request: okhttp3.Request = okhttp3.Request.Builder() //Create a request
+            .url(URL_BASE+"movil/producto/modificar")
+            .post(body) //Indicated as get request
+            .header("Accept", "application/json")
+            .header("Content-Type", "application/json;charset=utf-8")
+            .build()
+
+        var llamada: Call = client.newCall(request)
+
+        try {
+
+            var response = llamada.execute()
+
+            // val jsonArray = JSONObject(response.body()?.string())
+
+            Toast.makeText(this.context,response.body()?.string().toString(),Toast.LENGTH_SHORT).show()
+
+        }catch (e: IOException){
+
+            Toast.makeText(this.context,e.message.toString(),Toast.LENGTH_SHORT).show()
+        }
+    }
 
     fun modificarFactura(id:String,empleado:String,cliente:String,fecha:String,precioS:Double, precio:Double, concepto:String){
 
