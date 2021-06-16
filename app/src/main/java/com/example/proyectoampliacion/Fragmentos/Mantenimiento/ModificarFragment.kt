@@ -11,6 +11,10 @@ import android.view.ViewGroup
 import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
+import androidx.navigation.Navigation
+import com.android.volley.toolbox.JsonObjectRequest
+import com.android.volley.toolbox.RequestFuture
+import com.android.volley.toolbox.Volley
 import com.example.proyectoampliacion.Classes_Auxiliares.*
 import com.example.proyectoampliacion.R
 import kotlinx.android.synthetic.main.fragment_altas.*
@@ -20,6 +24,8 @@ import okhttp3.MediaType
 import okhttp3.OkHttpClient
 import okhttp3.RequestBody
 import org.json.JSONObject
+import java.io.IOException
+import java.util.concurrent.ExecutionException
 
 
 class ModificarFragment : Fragment(), AdapterView.OnItemSelectedListener {
@@ -942,7 +948,7 @@ class ModificarFragment : Fragment(), AdapterView.OnItemSelectedListener {
         txtFecha.setText(factura[0].fecha)
         txtPrecioSinIva.setText(factura[0].precioSIva.toString())
 
-        var facturaId = factura[0].id
+        var facturaId = factura[0].id.toString()
         var empleadoId = factura[0].empleado.split(',')[2]
         var clienteId = factura[0].cliente.split(',')[2]
 
@@ -950,18 +956,24 @@ class ModificarFragment : Fragment(), AdapterView.OnItemSelectedListener {
 
         botonLimpiar.setOnClickListener {
 
+            txtCliente.setText("")
+            txtConcepto.setText("")
+            txtFecha.setText("")
+            txtPrecioSinIva.setText("")
 
         }
         val botonGuardar: Button = view?.findViewById(eventoBotonGuardar.cod)
 
         botonGuardar.setOnClickListener {
 
+            modificarFactura(facturaId,empleadoId,clienteId,txtFecha.text.toString(),txtPrecioSinIva.text.toString().toDouble(),txtPrecioSinIva.text.toString().toDouble(),txtConcepto.text.toString())
 
         }
         val botonCancelar: Button = view?.findViewById(eventoBotonCancelar.cod)
 
         botonCancelar.setOnClickListener {
 
+            Navigation.findNavController(view).navigate(R.id.menuPrincipalFragment);
 
         }
     }
@@ -1516,7 +1528,8 @@ class ModificarFragment : Fragment(), AdapterView.OnItemSelectedListener {
         var llamada: Call = client.newCall(request)
 
         try {
-            Toast.makeText(this.context, "Error: No hay resultados", Toast.LENGTH_LONG).show()
+
+
             var response = llamada.execute()
             var cuerpo = response.body()?.string().toString();
 
@@ -2133,4 +2146,47 @@ class ModificarFragment : Fragment(), AdapterView.OnItemSelectedListener {
     }
 
 
+    fun modificarFactura(id:String,empleado:String,cliente:String,fecha:String,precioS:Double, precio:Double, concepto:String){
+
+        var JSON:MediaType =  MediaType.get("application/json; charset=utf-8")
+
+        val jsonObject= JSONObject();
+
+        jsonObject.put("cliente",cliente);
+        jsonObject.put("fecha",fecha);
+        jsonObject.put("precio",precio);
+        jsonObject.put("precioC",precioS);
+        jsonObject.put("concepto",concepto);
+        jsonObject.put("empleado",empleado);
+        jsonObject.put("facturaId",id);
+
+
+        val client = OkHttpClient()
+
+        val body: RequestBody = RequestBody.create(JSON,jsonObject.toString())
+
+        val request: okhttp3.Request = okhttp3.Request.Builder() //Create a request
+            .url(URL_BASE+"movil/factura/modificar")
+            .post(body) //Indicated as get request
+            .header("Accept", "application/json")
+            .header("Content-Type", "application/json;charset=utf-8")
+            .build()
+
+        var llamada: Call = client.newCall(request)
+
+        try {
+
+            var response = llamada.execute()
+
+            // val jsonArray = JSONObject(response.body()?.string())
+
+            Toast.makeText(this.context,response.body()?.string().toString(),Toast.LENGTH_SHORT).show()
+
+        }catch (e: IOException){
+
+            Toast.makeText(this.context,e.message.toString(),Toast.LENGTH_SHORT).show()
+        }
+    }
+
+    
 }
