@@ -75,9 +75,6 @@ class MenuOpcionesCategoriaFragment : Fragment() {
 
             setSingleEvent(menu,view,tipoMenu)
 
-            if (tipoMenu == 4 || tipoMenu == 3 || tipoMenu == 2){
-                prueba.visibility = View.INVISIBLE
-            }
         }
 
 
@@ -117,10 +114,10 @@ class MenuOpcionesCategoriaFragment : Fragment() {
                     3->{
 
                         bundle.putInt("tipo",tipo);
-                        if (tipo != 4 && tipo != 3 && tipo != 2){
+
 
                             Navigation.findNavController(view).navigate(R.id.listarBajasFragment,bundle);
-                        }
+
 
 
                     }
