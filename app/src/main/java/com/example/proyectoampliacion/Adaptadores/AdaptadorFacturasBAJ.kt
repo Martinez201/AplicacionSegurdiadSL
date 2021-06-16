@@ -1,5 +1,6 @@
 package com.example.proyectoampliacion.Adaptadores
 
+import android.app.AlertDialog
 import android.content.Context
 import android.graphics.Color
 import android.os.Bundle
@@ -37,11 +38,32 @@ class AdaptadorFacturasBAJ (private val mContext: Context, private val listaFact
 
             bundle.putInt("elemento", elementoActual.id)
 
-            Navigation.findNavController(it).navigate(R.id.modificarFragment, bundle)
+
+            dialogoBorrar()
 
         }
 
 
         return layout;
     }
+
+    fun dialogoBorrar(){
+
+        val builder = AlertDialog.Builder(this.context)
+        builder.setTitle("Atención")
+        builder.setMessage("¿Está seguro de que quiere borrar el registro?")
+
+
+        builder.setPositiveButton("SI") { dialog, which ->
+
+        }
+
+        builder.setNegativeButton("NO") { dialog, which ->
+
+        }
+
+        builder.show()
+
+    }
+
 }
