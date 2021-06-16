@@ -11,7 +11,9 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.cardview.widget.CardView
 import androidx.navigation.Navigation
 import com.example.proyectoampliacion.R
+import kotlinx.android.synthetic.main.fragment_menu_opciones_categoria.*
 import kotlinx.android.synthetic.main.fragment_menu_principal.*
+import kotlinx.android.synthetic.main.fragment_menu_principal.titulo
 
 class MenuOpcionesCategoriaFragment : Fragment() {
 
@@ -72,7 +74,12 @@ class MenuOpcionesCategoriaFragment : Fragment() {
             }
 
             setSingleEvent(menu,view,tipoMenu)
+
+            if (tipoMenu == 4 || tipoMenu == 3 || tipoMenu == 2){
+                prueba.visibility = View.INVISIBLE
+            }
         }
+
 
 
 
@@ -110,7 +117,11 @@ class MenuOpcionesCategoriaFragment : Fragment() {
                     3->{
 
                         bundle.putInt("tipo",tipo);
-                        Navigation.findNavController(view).navigate(R.id.listarBajasFragment,bundle);
+                        if (tipo != 4 && tipo != 3 && tipo != 2){
+
+                            Navigation.findNavController(view).navigate(R.id.listarBajasFragment,bundle);
+                        }
+
 
                     }
                     4->{

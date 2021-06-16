@@ -60,24 +60,6 @@ class ListarBajasFragment : Fragment() {
                     tipo = 1;
                     edtBuscarBAJ.hint = "Por Producto"
                 }
-                2->{
-                    (activity as AppCompatActivity?)!!.supportActionBar!!.title = "Bajas Clientes";
-                    obtenerDatosVolleyCliente(view);
-                    tipo = 2;
-                    edtBuscarBAJ.hint = "Por Apellidos"
-                }
-                3->{
-                    (activity as AppCompatActivity?)!!.supportActionBar!!.title = "Bajas Delegación";
-                    obtenerDatosVolleyDelegaciones(view);
-                    tipo = 3;
-                    edtBuscarBAJ.hint = "Por Nombre"
-                }
-                4->{
-                    (activity as AppCompatActivity?)!!.supportActionBar!!.title = "Bajas Empleados";
-                    obtenerDatosVolleyEmpleados(view);
-                    tipo = 4;
-                    edtBuscarBAJ.hint = "Por Apellidos"
-                }
                 5->{
                     (activity as AppCompatActivity?)!!.supportActionBar!!.title = "Bajas Facturas";
                     obtenerDatosVolleyFactura(view);
@@ -111,19 +93,6 @@ class ListarBajasFragment : Fragment() {
                 1->{
                     busquedaAlmacen(view)
                 }
-                2->{
-
-                    busquedaClientes(view)
-                }
-                3->{
-
-                    busquedaDelegaciones(view)
-
-                }
-                4->{
-
-                    busquedaEmpleados(view)
-                }
                 5->{
 
                     busquedaFacturas(view)
@@ -142,46 +111,6 @@ class ListarBajasFragment : Fragment() {
         }
     }
 
-    fun obtenerDatosVolleyDelegaciones(view: View){
-
-        val queue = Volley.newRequestQueue(this.context)
-        val url = URL_BASE+"movil/delegaciones"
-        val delegaciones:MutableList<Delegacion> = mutableListOf();
-
-        val jsObjectRequest = JsonObjectRequest(
-            Request.Method.GET, url, null,
-            { response ->
-
-                var datos = response.toString().split(":{");
-
-                for (i in 1..datos.count() - 1){
-
-                    var delegacion = Delegacion(
-
-                        datos[i].split(',')[0].split(':')[1].toInt(),
-                        datos[i].split(',')[1].split(':')[1],
-                        datos[i].split(',')[2].split(':')[1],
-                        datos[i].split(',')[3].split(':')[1],
-                        datos[i].split(',')[4].split(':')[1],
-                        datos[i].split(',')[5].split(':')[1],
-                        datos[i].split(',')[6].split(':')[1],
-                        datos[i].split(',')[7].split(':')[1].split('}')[0]
-                    );
-                    delegaciones.add(delegacion);
-                }
-
-                mostarDelegaciones(view,delegaciones);
-
-            },
-            { error ->
-
-                Toast.makeText(view.context,error.message.toString(), Toast.LENGTH_SHORT).show();
-            }
-        )
-
-        queue.add(jsObjectRequest);
-
-    }
 
     fun obtenerDatosVolleyProductos(view: View){
 
@@ -285,60 +214,6 @@ class ListarBajasFragment : Fragment() {
     }
 
 
-    fun obtenerDatosVolleyEmpleados(view: View){
-
-        val queue = Volley.newRequestQueue(this.context)
-        val url = URL_BASE+"movil/empleados"
-        val empleados:MutableList<Empleado> = mutableListOf();
-
-        val jsObjectRequest = JsonObjectRequest(
-            Request.Method.GET, url, null,
-            { response ->
-
-                var datos = response.toString().split(":{");
-
-
-                for (i in 1..datos.count() - 1){
-
-                    var empleado = Empleado(datos[i].split(',')[26].split('"')[2].replace(':',' ').replace('}',' ').trim().toInt()
-                        ,datos[i].split(',')[14].split('[')[1].toInt()
-                        ,datos[i].split(',')[0].split(':')[1]
-                        ,datos[i].split(',')[1].split(':')[1]
-                        ,datos[i].split(',')[2].split(':')[1]
-                        ,datos[i].split(',')[3].split(':')[1]
-                        ,datos[i].split(',')[4].split(':')[1]
-                        ,datos[i].split(',')[6].split(':')[1]
-                        ,datos[i].split(',')[9].split(':')[1]
-                        ,datos[i].split(',')[5].split(':')[1]
-                        ,datos[i].split(',')[21].split(':')[1].toBoolean()
-                        ,datos[i].split(',')[24].split(':')[1].toBoolean()
-                        ,datos[i].split(',')[22].split(':')[1].toBoolean()
-                        ,datos[i].split(',')[23].split(':')[1].toBoolean()
-                        ,datos[i].split(',')[25].split(':')[1]
-                        ,datos[i].split(',')[10].split(':')[1]
-                        ,datos[i].split(',')[8].split(':')[1]
-                        ,datos[i].split(',')[7].split(':')[1]
-                        ,datos[i].split(',')[18],
-                        datos[i].split(',')[14].split(":[")[1]
-                    );
-                    empleados.add(empleado);
-                    mostarEmpleados(view,empleados);
-
-                }
-
-            },
-            { error ->
-
-                Toast.makeText(view.context,error.message.toString(), Toast.LENGTH_SHORT).show();
-            }
-        )
-
-        queue.add(jsObjectRequest);
-
-    }
-
-
-
     fun obtenerDatosVolleyFactura(view: View){
 
         val queue = Volley.newRequestQueue(this.context)
@@ -406,51 +281,6 @@ class ListarBajasFragment : Fragment() {
                     mostarAlbaranes(view,albaranes);
                 }
 
-            },
-            { error ->
-
-                Toast.makeText(view.context,error.message.toString(), Toast.LENGTH_SHORT).show();
-            }
-        )
-
-        queue.add(jsObjectRequest);
-
-    }
-
-
-    fun obtenerDatosVolleyCliente(view: View){
-
-        val queue = Volley.newRequestQueue(this.context)
-        val url = URL_BASE+"movil/clientes"
-        val personas:MutableList<Cliente> = mutableListOf();
-
-        val jsObjectRequest = JsonObjectRequest(
-            Request.Method.GET, url, null,
-            { response ->
-
-                var datos = response.toString().split(":{");
-
-                for (i in 1..datos.count() - 1){
-
-
-
-                    var persona = Cliente(
-                        datos[i].split(',')[0].split(':')[1],
-                        datos[i].split(',')[1].split(':')[1],
-                        datos[i].split(',')[8].split(':')[1],
-                        datos[i].split(',')[2].split(':')[1],
-                        datos[i].split(',')[9].split(':')[1],
-                        datos[i].split(',')[6].split(':')[1],
-                        datos[i].split(',')[10].split(':')[1],
-                        datos[i].split(',')[11].split(':')[1].split('}')[0].toInt(),
-                        datos[i].split(',')[3].split(':')[1],
-                        datos[i].split(',')[5].split(':')[1],
-                        datos[i].split(',')[4].split(':')[1],
-                        datos[i].split(',')[7].split(':')[1]
-                    )
-                    personas.add(persona);
-                    mostarPersonas(view,personas);
-                }
             },
             { error ->
 
@@ -904,156 +734,6 @@ class ListarBajasFragment : Fragment() {
 
     }
 
-    fun busquedaEmpleados(view: View){
-
-        val JSON: MediaType =  MediaType.get("application/json; charset=utf-8")
-        val jsonObject= JSONObject();
-
-        jsonObject.put("busqueda",edtBuscarBAJ.text.toString());
-
-        val client = OkHttpClient()
-        val body: RequestBody = RequestBody.create(JSON,jsonObject.toString())
-
-        val request: okhttp3.Request = okhttp3.Request.Builder() //Create a request
-            .url(URL_BASE+"movil/empleados/buscar")
-            .post(body)
-            .header("Accept", "application/json")
-            .header("Content-Type", "application/json")
-            .build()
-
-        var llamada: Call = client.newCall(request)
-
-        try {
-
-            var response = llamada.execute()
-            var cuerpo = response.body()?.string().toString();
-            val empleados:MutableList<Empleado> = mutableListOf();
-
-            if(edtBuscarBAJ.text.toString().isNotEmpty()){
-
-                if (cuerpo.length > 2){
-
-                    var datos = cuerpo.toString().split(":{");
-
-                    for (i in 1..datos.count() - 1){
-
-
-
-                        var empleado = Empleado(datos[i].split(',')[26].split('"')[2].replace(':',' ').replace('}',' ').trim().toInt()
-                            ,datos[i].split(',')[14].split('[')[1].toInt()
-                            ,datos[i].split(',')[0].split(':')[1]
-                            ,datos[i].split(',')[1].split(':')[1]
-                            ,datos[i].split(',')[2].split(':')[1]
-                            ,datos[i].split(',')[3].split(':')[1]
-                            ,datos[i].split(',')[4].split(':')[1]
-                            ,datos[i].split(',')[6].split(':')[1]
-                            ,datos[i].split(',')[9].split(':')[1]
-                            ,datos[i].split(',')[5].split(':')[1]
-                            ,datos[i].split(',')[21].split(':')[1].toBoolean()
-                            ,datos[i].split(',')[22].split(':')[1].toBoolean()
-                            ,datos[i].split(',')[23].split(':')[1].toBoolean()
-                            ,datos[i].split(',')[24].split(':')[1].toBoolean()
-                            ,datos[i].split(',')[25].split(':')[1]
-                            ,datos[i].split(',')[10].split(':')[1],
-                            datos[i].split(',')[8].split(':')[1],
-                            datos[i].split(',')[7].split(':')[1]
-                            ,datos[i].split(',')[18],
-                            datos[i].split(',')[14].split(":[")[1]
-                        );
-                        empleados.add(empleado);
-                        mostarEmpleados(view,empleados);
-
-                    }
-
-                }else{
-
-                    Toast.makeText(this.context,"Error: No hay resultados", Toast.LENGTH_LONG).show()
-                    obtenerDatosVolleyEmpleados(view)
-                }
-
-
-            }else{
-
-                obtenerDatosVolleyEmpleados(view)
-            }
-
-
-        }catch (ex: Exception){
-
-            Toast.makeText(this.context,ex.message.toString(), Toast.LENGTH_LONG).show()
-        }
-
-    }
-
-    fun busquedaDelegaciones(view: View){
-
-        val JSON: MediaType =  MediaType.get("application/json; charset=utf-8")
-        val jsonObject= JSONObject();
-
-        jsonObject.put("busqueda",edtBuscarBAJ.text.toString());
-
-        val client = OkHttpClient()
-        val body: RequestBody = RequestBody.create(JSON,jsonObject.toString())
-
-        val request: okhttp3.Request = okhttp3.Request.Builder() //Create a request
-            .url(URL_BASE+"movil/delegaciones/buscar")
-            .post(body)
-            .header("Accept", "application/json")
-            .header("Content-Type", "application/json")
-            .build()
-
-        var llamada: Call = client.newCall(request)
-
-        try {
-
-            var response = llamada.execute()
-            var cuerpo = response.body()?.string().toString();
-            val delegaciones:MutableList<Delegacion> = mutableListOf();
-
-            if(edtBuscarBAJ.text.toString().isNotEmpty()){
-
-                if (cuerpo.length > 2){
-
-                    var datos = cuerpo.toString().split(":{");
-
-                    for (i in 1..datos.count() - 1){
-
-                        var delegacion = Delegacion(
-
-                            datos[i].split(',')[0].split(':')[1].toInt(),
-                            datos[i].split(',')[1].split(':')[1],
-                            datos[i].split(',')[2].split(':')[1],
-                            datos[i].split(',')[3].split(':')[1],
-                            datos[i].split(',')[4].split(':')[1],
-                            datos[i].split(',')[5].split(':')[1],
-                            datos[i].split(',')[6].split(':')[1],
-                            datos[i].split(',')[7].split(':')[1].split('}')[0]
-                        );
-                        delegaciones.add(delegacion);
-                    }
-
-                    mostarDelegaciones(view,delegaciones);
-
-                }else{
-
-                    Toast.makeText(this.context,"Error: No hay resultados", Toast.LENGTH_LONG).show()
-                    obtenerDatosVolleyDelegaciones(view)
-                }
-
-
-            }else{
-
-                obtenerDatosVolleyDelegaciones(view)
-            }
-
-
-        }catch (ex: Exception){
-
-            Toast.makeText(this.context,ex.message.toString(), Toast.LENGTH_LONG).show()
-        }
-
-    }
-
 
     fun busquedaAlbaranes(view: View){
 
@@ -1121,93 +801,6 @@ class ListarBajasFragment : Fragment() {
     }
 
 
-    fun busquedaClientes(view: View){
-
-        val JSON: MediaType =  MediaType.get("application/json; charset=utf-8")
-        val jsonObject= JSONObject();
-
-        jsonObject.put("busqueda",edtBuscarBAJ.text.toString());
-
-        val client = OkHttpClient()
-        val body: RequestBody = RequestBody.create(JSON,jsonObject.toString())
-
-        val request: okhttp3.Request = okhttp3.Request.Builder() //Create a request
-            .url(URL_BASE+"movil/clientes/buscar")
-            .post(body)
-            .header("Accept", "application/json")
-            .header("Content-Type", "application/json")
-            .build()
-
-        var llamada: Call = client.newCall(request)
-
-        try {
-
-            var response = llamada.execute()
-            var cuerpo = response.body()?.string().toString();
-            val personas:MutableList<Cliente> = mutableListOf();
-
-            if(edtBuscarBAJ.text.toString().isNotEmpty()){
-
-                if(cuerpo.length > 2){
-
-                    var datos = cuerpo.split(":{")
-
-
-                    for (i in 1..datos.count() -1) {
-
-                        var persona = Cliente(
-
-                            datos[i].split(',')[0].split(':')[1],
-                            datos[i].split(',')[1].split(':')[1],
-                            datos[i].split(',')[8].split(':')[1],
-                            datos[i].split(',')[2].split(':')[1],
-                            datos[i].split(',')[9].split(':')[1],
-                            datos[i].split(',')[6].split(':')[1],
-                            datos[i].split(',')[10].split(':')[1],
-                            datos[i].split(',')[11].split(':')[1].split('}')[0].toInt(),
-                            datos[i].split(',')[3].split(':')[1],
-                            datos[i].split(',')[5].split(':')[1],
-                            datos[i].split(',')[4].split(':')[1],
-                            datos[i].split(',')[7].split(':')[1]
-                        )
-                        personas.add(persona);
-                    }
-
-                    mostarPersonas(view,personas);
-
-                }
-                else{
-
-                    Toast.makeText(this.context,"Error: No hay resultados", Toast.LENGTH_LONG).show()
-
-                    obtenerDatosVolleyCliente(view)
-                }
-
-            }
-            else{
-
-                obtenerDatosVolleyCliente(view)
-            }
-
-
-        }catch (ex: Exception){
-
-            Toast.makeText(this.context,ex.message.toString(), Toast.LENGTH_LONG).show()
-
-        }
-
-    }
-
-
-
-
-    fun mostarDelegaciones(view: View,delegaciones:MutableList<Delegacion> ){
-
-        val adaptador = AdaptadorDelegacionMOD(view.context,delegaciones)
-
-        lvBajas.adapter = adaptador
-
-    }
 
     fun mostarProductos(view: View,productos:MutableList<Almacen> ){
 
@@ -1230,16 +823,10 @@ class ListarBajasFragment : Fragment() {
         lvBajas.adapter = adaptador
     }
 
-    fun mostarPersonas(view: View,personas:MutableList<Cliente> ){
-
-        val adaptador = AdaptadorClientesMOD(view.context,personas)
-
-        lvBajas.adapter = adaptador
-    }
 
     fun mostarAlbaranes(view: View,albaranes:MutableList<Albaran> ){
 
-        val adaptador = AdaptadorAlbaranesMOD(view.context,albaranes)
+        val adaptador = AdaptadorAlbaranesBAJ(view.context,albaranes)
 
         lvBajas.adapter = adaptador
     }
@@ -1250,13 +837,5 @@ class ListarBajasFragment : Fragment() {
 
         lvBajas.adapter = adaptador
     }
-
-    fun mostarEmpleados(view: View,empleados:MutableList<Empleado> ){
-
-        val adaptador = AdaptadorEmpleadosMOD(view.context,empleados)
-
-        lvBajas.adapter = adaptador
-    }
-
 
 }
