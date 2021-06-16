@@ -63,8 +63,7 @@ class ListarFragment : Fragment() {
                     (activity as AppCompatActivity?)!!.supportActionBar!!.title = "Listados Albaranes ";
                     obtenerDatosVolleyAlbaran(view);
                     tipo = 0;
-                    edtBuscar.hint = "Por Fecha"
-                    edtBuscar.inputType = InputType.TYPE_CLASS_DATETIME
+                    edtBuscar.hint = "Por Proveedor"
                 }
                 1->{
                     (activity as AppCompatActivity?)!!.supportActionBar!!.title = "Listados Almacén";
@@ -93,22 +92,21 @@ class ListarFragment : Fragment() {
                 5->{
                     (activity as AppCompatActivity?)!!.supportActionBar!!.title = "Listados Facturas";
                     obtenerDatosVolleyFactura(view);
-                    edtBuscar.hint = "Por Fecha"
-                    edtBuscar.inputType = InputType.TYPE_CLASS_DATETIME
+                    edtBuscar.hint = "Por Concepto"
+
                     tipo = 5;
                 }
                 6->{
                     (activity as AppCompatActivity?)!!.supportActionBar!!.title = "Listados Partes";
                     obtenerDatosVolleyPartes(view);
-                    edtBuscar.hint = "Por Fecha"
-                    edtBuscar.inputType = InputType.TYPE_CLASS_DATETIME
+                    edtBuscar.hint = "Por Apellidos Cliente"
+
                     tipo = 6;
                 }
                 7->{
                     (activity as AppCompatActivity?)!!.supportActionBar!!.title = "Listados Presupuestos";
                     obtenerDatosVolleyPresupuestos(view);
-                    edtBuscar.hint = "Por Fecha"
-                    edtBuscar.inputType = InputType.TYPE_CLASS_DATETIME
+                    edtBuscar.hint = "Por Apellidos Empleado"
                     tipo = 7;
                 }
             }
@@ -181,9 +179,9 @@ class ListarFragment : Fragment() {
                             datos[i].split(',')[2].split(':')[1],
                             datos[i].split(',')[3].split(':')[1],
                             datos[i].split(',')[4].split(':')[1],
-                            datos[1].split(',')[5].split(':')[1],
-                            datos[1].split(',')[6].split(':')[1],
-                            datos[1].split(',')[7].split(':')[1].split('}')[0]
+                            datos[i].split(',')[5].split(':')[1],
+                            datos[i].split(',')[6].split(':')[1],
+                            datos[i].split(',')[7].split(':')[1].split('}')[0]
                         );
                         delegaciones.add(delegacion);
                     }
@@ -383,7 +381,7 @@ class ListarFragment : Fragment() {
                                 datos[i].split(":[")[2].split(']')[1].split(',')[1].split(':')[1],
                                 datos[i].split(":[")[2].split(']')[1].split(',')[2].split(':')[1].toDouble(),
                                 datos[i].split(":[")[2].split(']')[1].split(',')[3].split(':')[1].toDouble(),
-                                datos[1].split(":[")[2].split(']')[1].split(',')[4].split(':')[1]
+                                datos[i].split(":[")[2].split(']')[1].split(',')[4].split(':')[1]
                         );
 
                         facturas.add(factura);
@@ -517,7 +515,7 @@ class ListarFragment : Fragment() {
 
                             var empleado = Empleado(
 
-                                    datos[1].split(":[")[2].split(']')[0].split(',')[2].toInt(),
+                                    datos[i].split(":[")[2].split(']')[0].split(',')[2].toInt(),
                                         0,
                                     datos[i].split(":[")[2].split(']')[0].split(',')[0],
                                     datos[i].split(":[")[2].split(']')[0].split(',')[1],
@@ -829,7 +827,7 @@ class ListarFragment : Fragment() {
                             datos[i].split(":[")[2].split(']')[1].split(',')[1].split(':')[1],
                             datos[i].split(":[")[2].split(']')[1].split(',')[2].split(':')[1].toDouble(),
                             datos[i].split(":[")[2].split(']')[1].split(',')[3].split(':')[1].toDouble(),
-                            datos[1].split(":[")[2].split(']')[1].split(',')[4].split(':')[1]
+                            datos[i].split(":[")[2].split(']')[1].split(',')[4].split(':')[1]
                         );
 
                         facturas.add(factura);
@@ -1044,9 +1042,9 @@ class ListarFragment : Fragment() {
                             datos[i].split(',')[2].split(':')[1],
                             datos[i].split(',')[3].split(':')[1],
                             datos[i].split(',')[4].split(':')[1],
-                            datos[1].split(',')[5].split(':')[1],
-                            datos[1].split(',')[6].split(':')[1],
-                            datos[1].split(',')[7].split(':')[1].split('}')[0]
+                            datos[i].split(',')[5].split(':')[1],
+                            datos[i].split(',')[6].split(':')[1],
+                            datos[i].split(',')[7].split(':')[1].split('}')[0]
                         );
                         delegaciones.add(delegacion);
                     }
