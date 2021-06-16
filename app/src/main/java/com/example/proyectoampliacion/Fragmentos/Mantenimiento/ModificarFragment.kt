@@ -1263,19 +1263,52 @@ class ModificarFragment : Fragment(), AdapterView.OnItemSelectedListener {
 
         botonLimpiar.setOnClickListener {
 
-
+            txtNombre.setText("")
+            txtApellidos.setText("")
+            txtDireccion.setText("")
+            txtCiudad.setText("")
+            txtProvincia.setText("")
+            txtEmail.setText("")
+            txtTelefono.setText("")
+            txtcPostal.setText("")
+            txtDni.setText("")
+            txtUsuario.setText("")
+            cbAdministrador.isChecked = false
+            cbGestor.isChecked = false
+            cbComercial.isChecked = false
+            cbInstalador.isChecked = false
         }
         val botonGuardar: Button = view?.findViewById(eventoBotonGuardar.cod)
 
         botonGuardar.setOnClickListener {
 
+            modificarEmpleado(
+                empleadoId,
+                txtNombre.text.toString(),
+                txtApellidos.text.toString(),
+                txtUsuario.text.toString(),
+                txtDireccion.text.toString(),
+                txtCiudad.text.toString(),
+                txtProvincia.text.toString(),
+                txtEmail.text.toString(),
+                txtTelefono.text.toString(),
+                txtcPostal.text.toString(),
+                txtDni.text.toString(),
+                txtNacimiento.text.toString(),
+                cbAdministrador.isChecked,
+                cbGestor.isChecked,
+                cbComercial.isChecked,
+                cbInstalador.isChecked,
+                empleadoId,
+                delegacionSeleccionada
+            );
 
         }
         val botonCancelar: Button = view?.findViewById(eventoBotonCancelar.cod)
 
         botonCancelar.setOnClickListener {
 
-
+            Navigation.findNavController(view).navigate(R.id.menuPrincipalFragment);
         }
     }
 
@@ -2150,6 +2183,77 @@ class ModificarFragment : Fragment(), AdapterView.OnItemSelectedListener {
 
     override fun onNothingSelected(parent: AdapterView<*>?) {
         TODO("Not yet implemented")
+    }
+
+    fun modificarEmpleado(id:Int
+                          ,nombre:String,
+                          apellidos:String,
+                          usuario:String,
+                          direccion:String,
+                          ciudad:String,
+                          provincia:String,
+                          email:String,
+                          telefono:String,
+                          cPostal:String,
+                          dni:String,
+                          nacimiento:String,
+                          admin:Boolean,
+                          gestor:Boolean,
+                          comercial:Boolean,
+                          instalador:Boolean,
+                          empleado:Int,
+                          delegacion: Int
+    ) {
+
+        var JSON:MediaType =  MediaType.get("application/json; charset=utf-8")
+
+        val jsonObject= JSONObject();
+
+        jsonObject.put("nombre",nombre);
+        jsonObject.put("usuario",usuario);
+        jsonObject.put("apellidos",apellidos);
+        jsonObject.put("direccion",direccion);
+        jsonObject.put("ciudad",ciudad);
+        jsonObject.put("provincia",provincia);
+        jsonObject.put("email",email);
+        jsonObject.put("telefono",telefono);
+        jsonObject.put("cPostal",cPostal);
+        jsonObject.put("dni",dni);
+        jsonObject.put("nacimiento",nacimiento);
+        jsonObject.put("admin",admin);
+        jsonObject.put("gestor",gestor);
+        jsonObject.put("comercial",comercial);
+        jsonObject.put("instalador",instalador);
+        jsonObject.put("empleado",empleado);
+        jsonObject.put("delegacion",delegacion);
+        jsonObject.put("id",id);
+
+
+        val client = OkHttpClient()
+
+        val body: RequestBody = RequestBody.create(JSON,jsonObject.toString())
+
+        val request: okhttp3.Request = okhttp3.Request.Builder() //Create a request
+            .url(URL_BASE+"movil/empleado/modificar")
+            .post(body) //Indicated as get request
+            .header("Accept", "application/json")
+            .header("Content-Type", "application/json;charset=utf-8")
+            .build()
+
+        var llamada: Call = client.newCall(request)
+
+        try {
+
+            var response = llamada.execute()
+
+            // val jsonArray = JSONObject(response.body()?.string())
+
+            Toast.makeText(this.context,response.body()?.string().toString(),Toast.LENGTH_SHORT).show()
+
+        }catch (e: IOException){
+
+            Toast.makeText(this.context,e.message.toString(),Toast.LENGTH_SHORT).show()
+        }
     }
 
 
