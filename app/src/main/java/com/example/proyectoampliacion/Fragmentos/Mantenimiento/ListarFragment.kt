@@ -2,6 +2,8 @@ package com.example.proyectoampliacion.Fragmentos.Mantenimiento
 
 import android.os.Bundle
 import android.os.StrictMode
+import android.renderscript.ScriptGroup
+import android.text.InputType
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -61,40 +63,52 @@ class ListarFragment : Fragment() {
                     (activity as AppCompatActivity?)!!.supportActionBar!!.title = "Listados Albaranes ";
                     obtenerDatosVolleyAlbaran(view);
                     tipo = 0;
+                    edtBuscar.hint = "Por Fecha"
+                    edtBuscar.inputType = InputType.TYPE_CLASS_DATETIME
                 }
                 1->{
                     (activity as AppCompatActivity?)!!.supportActionBar!!.title = "Listados Almacén";
                     obtenerDatosVolleyProductos(view);
                     tipo = 1;
+                    edtBuscar.hint = "Por Producto"
                 }
                 2->{
                     (activity as AppCompatActivity?)!!.supportActionBar!!.title = "Listados Clientes";
                     obtenerDatosVolleyCliente(view);
                     tipo = 2;
+                    edtBuscar.hint = "Por Apellidos"
                 }
                 3->{
                     (activity as AppCompatActivity?)!!.supportActionBar!!.title = "Listados Delegación";
                     obtenerDatosVolleyDelegaciones(view);
                     tipo = 3;
+                    edtBuscar.hint = "Por Nombre"
                 }
                 4->{
                     (activity as AppCompatActivity?)!!.supportActionBar!!.title = "Listados Empleados";
                     obtenerDatosVolleyEmpleados(view);
                     tipo = 4;
+                    edtBuscar.hint = "Por Apellidos"
                 }
                 5->{
                     (activity as AppCompatActivity?)!!.supportActionBar!!.title = "Listados Facturas";
                     obtenerDatosVolleyFactura(view);
+                    edtBuscar.hint = "Por Fecha"
+                    edtBuscar.inputType = InputType.TYPE_CLASS_DATETIME
                     tipo = 5;
                 }
                 6->{
                     (activity as AppCompatActivity?)!!.supportActionBar!!.title = "Listados Partes";
                     obtenerDatosVolleyPartes(view);
+                    edtBuscar.hint = "Por Fecha"
+                    edtBuscar.inputType = InputType.TYPE_CLASS_DATETIME
                     tipo = 6;
                 }
                 7->{
                     (activity as AppCompatActivity?)!!.supportActionBar!!.title = "Listados Presupuestos";
                     obtenerDatosVolleyPresupuestos(view);
+                    edtBuscar.hint = "Por Fecha"
+                    edtBuscar.inputType = InputType.TYPE_CLASS_DATETIME
                     tipo = 7;
                 }
             }
@@ -586,7 +600,7 @@ class ListarFragment : Fragment() {
                 if (cuerpo.length > 2){
 
                     var datos = cuerpo.toString().split(":{");
-                    Toast.makeText(this.context,cuerpo,Toast.LENGTH_LONG).show()
+
                     for (i in 1..datos.count() - 1){
 
 
