@@ -1508,6 +1508,8 @@ class ModificarFragment : Fragment(), AdapterView.OnItemSelectedListener {
         txtDni.setText(cliente[0].dni)
         txtNacimiento.setText(cliente[0].edad)
 
+        var idCliente = cliente[0].id
+
         if (cliente[0].estado.toString().equals("true")){
 
             cbEstado.isChecked = true
@@ -1536,6 +1538,20 @@ class ModificarFragment : Fragment(), AdapterView.OnItemSelectedListener {
 
         botonGuardar.setOnClickListener {
 
+            modificarCliente(
+                idCliente,
+                txtNombre.text.toString(),
+                txtApellidos.text.toString(),
+                txtDireccion.text.toString(),
+                txtCiudad.text.toString(),
+                txtProvincia.text.toString(),
+                txtEmail.text.toString(),
+                txtTelefono.text.toString(),
+                txtcPostal.text.toString(),
+                txtDni.text.toString(),
+                txtNacimiento.text.toString(),
+                cbEstado.isChecked
+                )
 
         }
         val botonCancelar: Button = view?.findViewById(eventoBotonCancelar.cod)
@@ -2186,6 +2202,66 @@ class ModificarFragment : Fragment(), AdapterView.OnItemSelectedListener {
     override fun onNothingSelected(parent: AdapterView<*>?) {
         TODO("Not yet implemented")
     }
+
+    fun modificarCliente(id:Int
+                          ,nombre:String,
+                          apellidos:String,
+                          direccion:String,
+                          ciudad:String,
+                          provincia:String,
+                          email:String,
+                          telefono:String,
+                          cPostal:String,
+                          dni:String,
+                          nacimiento:String,
+                          estado:Boolean
+    ) {
+
+        var JSON:MediaType =  MediaType.get("application/json; charset=utf-8")
+
+        val jsonObject= JSONObject();
+
+        jsonObject.put("nombre",nombre);
+        jsonObject.put("apellidos",apellidos);
+        jsonObject.put("direccion",direccion);
+        jsonObject.put("ciudad",ciudad);
+        jsonObject.put("provincia",provincia);
+        jsonObject.put("email",email);
+        jsonObject.put("telefono",telefono);
+        jsonObject.put("cPostal",cPostal);
+        jsonObject.put("dni",dni);
+        jsonObject.put("nacimiento",nacimiento);
+        jsonObject.put("estado",estado);
+        jsonObject.put("id",id);
+
+
+        val client = OkHttpClient()
+
+        val body: RequestBody = RequestBody.create(JSON,jsonObject.toString())
+
+        val request: okhttp3.Request = okhttp3.Request.Builder() //Create a request
+            .url(URL_BASE+"movil/cliente/modificar")
+            .post(body) //Indicated as get request
+            .header("Accept", "application/json")
+            .header("Content-Type", "application/json;charset=utf-8")
+            .build()
+
+        var llamada: Call = client.newCall(request)
+
+        try {
+
+            var response = llamada.execute()
+
+            // val jsonArray = JSONObject(response.body()?.string())
+
+            Toast.makeText(this.context,response.body()?.string().toString(),Toast.LENGTH_SHORT).show()
+
+        }catch (e: IOException){
+
+            Toast.makeText(this.context,e.message.toString(),Toast.LENGTH_SHORT).show()
+        }
+    }
+
 
     fun modificarEmpleado(id:Int
                           ,nombre:String,
