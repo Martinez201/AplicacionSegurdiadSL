@@ -110,7 +110,7 @@ class MenuOpcionesCategoriaFragment : Fragment() {
                     3->{
 
                         bundle.putInt("tipo",tipo);
-                        Navigation.findNavController(view).navigate(R.id.bajasFragment,bundle);
+                        Navigation.findNavController(view).navigate(R.id.listarBajasFragment,bundle);
 
                     }
                     4->{

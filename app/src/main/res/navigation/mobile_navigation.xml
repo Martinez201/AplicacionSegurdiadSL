@@ -119,4 +119,13 @@
             android:name="Tipo"
             app:argType="integer" />
     </fragment>
+    <fragment
+        android:id="@+id/listarBajasFragment"
+        android:name="com.example.proyectoampliacion.Fragmentos.SubConsultas.ListarBajasFragment"
+        android:label="fragment_listar_bajas"
+        tools:layout="@layout/fragment_listar_bajas" >
+        <argument
+            android:name="Tipo"
+            app:argType="integer" />
+    </fragment>
 </navigation>
