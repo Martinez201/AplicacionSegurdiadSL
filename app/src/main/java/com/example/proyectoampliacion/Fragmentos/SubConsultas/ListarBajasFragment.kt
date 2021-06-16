@@ -818,7 +818,7 @@ class ListarBajasFragment : Fragment() {
 
     fun mostarPartes(view: View,partes:MutableList<Parte> ){
 
-        val adaptador = AdaptadorPartesMOD(view.context,partes)
+        val adaptador = AdaptadorPartesBAJ(view.context,partes)
 
         lvBajas.adapter = adaptador
     }
@@ -833,7 +833,7 @@ class ListarBajasFragment : Fragment() {
 
     fun mostarFacturas(view: View,facturas:MutableList<Factura> ){
 
-        val adaptador = AdaptadorFacturasMOD(view.context,facturas)
+        val adaptador = AdaptadorFacturasBAJ(view.context,facturas)
 
         lvBajas.adapter = adaptador
     }
