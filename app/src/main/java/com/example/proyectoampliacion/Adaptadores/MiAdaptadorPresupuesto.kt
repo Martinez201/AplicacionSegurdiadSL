@@ -26,17 +26,17 @@ class MiAdaptadorPresupuesto(private val mContext: Context, private val listaPre
         layout.tvIntalacion.text = elementoActual.instalacion;
 
 
-        if (elementoActual.estado.equals("true")){
+        if (elementoActual.estado.toBoolean()){
 
             layout.btnEstadoPre.text = "ABIERTO";
             layout.btnEstadoPre.setTextColor(Color.WHITE);
-            layout.btnEstadoPre.setBackgroundColor(Color.GREEN);
+            layout.btnEstadoPre.setBackgroundColor(Color.RED);
 
         }else{
 
             layout.btnEstadoPre.text = "CERRADO";
             layout.btnEstadoPre.setTextColor(Color.WHITE);
-            layout.btnEstadoPre.setBackgroundColor(Color.YELLOW);
+            layout.btnEstadoPre.setBackgroundColor(Color.GREEN);
         }
 
 

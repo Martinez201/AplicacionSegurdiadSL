@@ -28,9 +28,9 @@ class AdaptadorPresupuestoMOD(private val mContext: Context, private val listaPr
         layout.tvIntalacionPREMOD.text = elementoActual.instalacion;
 
 
-        if (elementoActual.estado.equals("true")){
+        if (elementoActual.estado.toBoolean()){
 
-            layout.btnEstadoPREMOD.text = "ABIERTO";
+            layout.btnEstadoPREMOD.text = "EN TRAMITE";
             layout.btnEstadoPREMOD.setTextColor(Color.WHITE);
             layout.btnEstadoPREMOD.setBackgroundColor(Color.RED);
 
