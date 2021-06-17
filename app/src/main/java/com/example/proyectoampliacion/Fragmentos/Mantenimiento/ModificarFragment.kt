@@ -665,6 +665,7 @@ class ModificarFragment : Fragment(), AdapterView.OnItemSelectedListener {
             txtTelefono.setText("");
             txtcPostal.setText("");
 
+
         }
         val botonGuardar: Button = view?.findViewById(eventoBotonGuardar.cod)
 
@@ -1296,10 +1297,12 @@ class ModificarFragment : Fragment(), AdapterView.OnItemSelectedListener {
             txtCiudad.setText("")
             txtProvincia.setText("")
             txtEmail.setText("")
+            txtNacimiento.setText("")
             txtTelefono.setText("")
             txtcPostal.setText("")
             txtDni.setText("")
             txtUsuario.setText("")
+            slDelegacion.setText("")
             cbAdministrador.isChecked = false
             cbGestor.isChecked = false
             cbComercial.isChecked = false
@@ -2100,7 +2103,7 @@ class ModificarFragment : Fragment(), AdapterView.OnItemSelectedListener {
 
                 var datos = cuerpo.split(":{");
 
-                Toast.makeText(this.context, datos[1], Toast.LENGTH_LONG).show()
+
                 for (i in 1..datos.count() - 1){
 
                     var cliente = Cliente(
@@ -2261,9 +2264,14 @@ class ModificarFragment : Fragment(), AdapterView.OnItemSelectedListener {
 
             var response = llamada.execute()
 
-            // val jsonArray = JSONObject(response.body()?.string())
+            if (response.body()?.string().toString().contains("Succes")){
 
-            Toast.makeText(this.context,response.body()?.string().toString(),Toast.LENGTH_SHORT).show()
+                Toast.makeText(this.context,"Presupuesto modificado con éxito", Toast.LENGTH_SHORT).show()
+            }
+            else{
+
+                Toast.makeText(this.context,"Error: no se ha podido modificar el Presupuesto", Toast.LENGTH_SHORT).show()
+            }
 
         }catch (e: IOException){
 
@@ -2312,9 +2320,15 @@ class ModificarFragment : Fragment(), AdapterView.OnItemSelectedListener {
 
             var response = llamada.execute()
 
-            // val jsonArray = JSONObject(response.body()?.string())
+            if (response.body()?.string().toString().contains("Succes")){
 
-            Toast.makeText(this.context,response.body()?.string().toString(),Toast.LENGTH_SHORT).show()
+                Toast.makeText(this.context,"Presupuesto modificado con éxito", Toast.LENGTH_SHORT).show()
+            }
+            else{
+
+                Toast.makeText(this.context,"Error: no se ha podido modificar el Presupuesto", Toast.LENGTH_SHORT).show()
+            }
+
 
         }catch (e: IOException){
 
@@ -2372,9 +2386,15 @@ class ModificarFragment : Fragment(), AdapterView.OnItemSelectedListener {
 
             var response = llamada.execute()
 
-            // val jsonArray = JSONObject(response.body()?.string())
+            if (response.body()?.string().toString().contains("Succes")){
 
-            Toast.makeText(this.context,response.body()?.string().toString(),Toast.LENGTH_SHORT).show()
+                Toast.makeText(this.context,"Cliente modificado con éxito", Toast.LENGTH_SHORT).show()
+            }
+            else{
+
+                Toast.makeText(this.context,"Error: no se ha podido modificar el Cliente", Toast.LENGTH_SHORT).show()
+            }
+
 
         }catch (e: IOException){
 
@@ -2444,9 +2464,15 @@ class ModificarFragment : Fragment(), AdapterView.OnItemSelectedListener {
 
             var response = llamada.execute()
 
-            // val jsonArray = JSONObject(response.body()?.string())
+            if (response.body()?.string().toString().contains("Succes")){
 
-            Toast.makeText(this.context,response.body()?.string().toString(),Toast.LENGTH_SHORT).show()
+                Toast.makeText(this.context,"Empleado modificado con éxito", Toast.LENGTH_SHORT).show()
+            }
+            else{
+
+                Toast.makeText(this.context,"Error: no se ha podido modificar el Empleado", Toast.LENGTH_SHORT).show()
+            }
+
 
         }catch (e: IOException){
 
@@ -2485,9 +2511,15 @@ class ModificarFragment : Fragment(), AdapterView.OnItemSelectedListener {
 
             var response = llamada.execute()
 
-            // val jsonArray = JSONObject(response.body()?.string())
+            if (response.body()?.string().toString().contains("Succes")){
 
-            Toast.makeText(this.context,response.body()?.string().toString(),Toast.LENGTH_SHORT).show()
+                Toast.makeText(this.context,"Producto modificado con éxito", Toast.LENGTH_SHORT).show()
+            }
+            else{
+
+                Toast.makeText(this.context,"Error: no se ha podido modificar el Producto", Toast.LENGTH_SHORT).show()
+            }
+
 
         }catch (e: IOException){
 
@@ -2527,9 +2559,15 @@ class ModificarFragment : Fragment(), AdapterView.OnItemSelectedListener {
 
             var response = llamada.execute()
 
-            // val jsonArray = JSONObject(response.body()?.string())
+            if (response.body()?.string().toString().contains("Succes")){
 
-            Toast.makeText(this.context,response.body()?.string().toString(),Toast.LENGTH_SHORT).show()
+                Toast.makeText(this.context,"Factura modificada con éxito", Toast.LENGTH_SHORT).show()
+            }
+            else{
+
+                Toast.makeText(this.context,"Error: no se ha podido modificar la Factura", Toast.LENGTH_SHORT).show()
+            }
+
 
         }catch (e: IOException){
 
@@ -2565,9 +2603,15 @@ class ModificarFragment : Fragment(), AdapterView.OnItemSelectedListener {
 
             var response = llamada.execute()
 
-            // val jsonArray = JSONObject(response.body()?.string())
+            if (response.body()?.string().toString().contains("Succes")){
 
-            Toast.makeText(this.context,response.body()?.string().toString(),Toast.LENGTH_SHORT).show()
+                Toast.makeText(this.context,"Albarán creado con éxito", Toast.LENGTH_SHORT).show()
+            }
+            else{
+
+                Toast.makeText(this.context,"Error: no se ha podido crear el Albarán", Toast.LENGTH_SHORT).show()
+            }
+
 
         }catch (e: IOException){
 
@@ -2611,9 +2655,15 @@ class ModificarFragment : Fragment(), AdapterView.OnItemSelectedListener {
 
             var response = llamada.execute()
 
-            // val jsonArray = JSONObject(response.body()?.string())
+            if (response.body()?.string().toString().contains("Succes")){
 
-            Toast.makeText(this.context,response.body()?.string().toString(),Toast.LENGTH_SHORT).show()
+                Toast.makeText(this.context,"Parte modificado con éxito", Toast.LENGTH_SHORT).show()
+            }
+            else{
+
+                Toast.makeText(this.context,"Error: no se ha podido modificar el Parte", Toast.LENGTH_SHORT).show()
+            }
+
 
         }catch (e: IOException){
 

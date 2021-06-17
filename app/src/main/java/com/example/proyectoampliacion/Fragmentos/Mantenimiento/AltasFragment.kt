@@ -48,7 +48,7 @@ class AltasFragment : Fragment(), AdapterView.OnItemSelectedListener{
     var tipoParte:String = "";
     var estadoParte:String = "";
     var tipoProducto: String ="";
-    var estadoPrespuesto:String = "";
+    var estadoPrespuesto:Boolean =false;
 
     var estado:String = ""
 
@@ -1574,7 +1574,7 @@ class AltasFragment : Fragment(), AdapterView.OnItemSelectedListener{
     }
 
 
-    fun annadirPresupuesto(fecha:String,instalacion:String,estado:String,empleado:String?){
+    fun annadirPresupuesto(fecha:String,instalacion:String,estado:Boolean,empleado:String?){
 
         var JSON:MediaType =  MediaType.get("application/json; charset=utf-8")
 
@@ -1603,9 +1603,15 @@ class AltasFragment : Fragment(), AdapterView.OnItemSelectedListener{
 
             var response = llamada.execute()
 
-            // val jsonArray = JSONObject(response.body()?.string())
+            if (response.body()?.string().toString().contains("Succes")){
 
-            Toast.makeText(this.context,response.body()?.string().toString(),Toast.LENGTH_SHORT).show()
+                Toast.makeText(this.context,"Presupuesto creado con éxito", Toast.LENGTH_SHORT).show()
+            }
+            else{
+
+                Toast.makeText(this.context,"Error: no se ha podido crear el Presupuesto", Toast.LENGTH_SHORT).show()
+            }
+
 
         }catch (e: IOException){
 
@@ -1644,9 +1650,15 @@ class AltasFragment : Fragment(), AdapterView.OnItemSelectedListener{
 
             var response = llamada.execute()
 
-            // val jsonArray = JSONObject(response.body()?.string())
+            if (response.body()?.string().toString().contains("Succes")){
 
-            Toast.makeText(this.context,response.body()?.string().toString(),Toast.LENGTH_SHORT).show()
+                Toast.makeText(this.context,"Factura creada con éxito", Toast.LENGTH_SHORT).show()
+            }
+            else{
+
+                Toast.makeText(this.context,"Error: no se ha podido crear la Factura", Toast.LENGTH_SHORT).show()
+            }
+
 
         }catch (e: IOException){
 
@@ -1683,9 +1695,15 @@ class AltasFragment : Fragment(), AdapterView.OnItemSelectedListener{
 
             var response = llamada.execute()
 
-            // val jsonArray = JSONObject(response.body()?.string())
+            if (response.body()?.string().toString().contains("Succes")){
 
-            Toast.makeText(this.context,response.body()?.string().toString(),Toast.LENGTH_SHORT).show()
+                Toast.makeText(this.context,"Producto creado con éxito", Toast.LENGTH_SHORT).show()
+            }
+            else{
+
+                Toast.makeText(this.context,"Error: no se ha podido crear el Producto", Toast.LENGTH_SHORT).show()
+            }
+
 
         }catch (e: IOException){
 
@@ -1727,9 +1745,15 @@ class AltasFragment : Fragment(), AdapterView.OnItemSelectedListener{
 
             var response = llamada.execute()
 
-           // val jsonArray = JSONObject(response.body()?.string())
+            if (response.body()?.string().toString().contains("Succes")){
 
-            Toast.makeText(this.context,response.body()?.string().toString(),Toast.LENGTH_SHORT).show()
+                Toast.makeText(this.context,"Parte creado con éxito", Toast.LENGTH_SHORT).show()
+            }
+            else{
+
+                Toast.makeText(this.context,"Error: no se ha podido crear el Parte", Toast.LENGTH_SHORT).show()
+            }
+
 
         }catch (e: IOException){
 
@@ -1769,7 +1793,15 @@ class AltasFragment : Fragment(), AdapterView.OnItemSelectedListener{
 
             var response = llamada.execute()
 
-            val jsonArray = JSONObject(response.body()?.string())
+            if (response.body()?.string().toString().contains("Succes")){
+
+                Toast.makeText(this.context,"Delegación creada con éxito", Toast.LENGTH_SHORT).show()
+            }
+            else{
+
+                Toast.makeText(this.context,"Error: no se ha podido crear la Delegación", Toast.LENGTH_SHORT).show()
+            }
+
 
 
         }catch (e: IOException){
@@ -1870,9 +1902,15 @@ class AltasFragment : Fragment(), AdapterView.OnItemSelectedListener{
 
             var response = llamada.execute()
 
-            //val jsonArray = JSONObject()
+            if (response.body()?.string().toString().contains("Succes")){
 
-            Toast.makeText(this.context,response.body()?.string().toString(),Toast.LENGTH_LONG).show()
+                Toast.makeText(this.context,"Empleado creado con éxito", Toast.LENGTH_SHORT).show()
+            }
+            else{
+
+                Toast.makeText(this.context,"Error: no se ha podido crear el Empleado", Toast.LENGTH_SHORT).show()
+            }
+
 
         }catch (e: IOException){
 
@@ -1908,7 +1946,7 @@ class AltasFragment : Fragment(), AdapterView.OnItemSelectedListener{
             }
             "CERRADO"->{
                 estadoParte = "CERRADO"
-                estadoPrespuesto = "CERRADO"
+                estadoPrespuesto = true
             }
             "PRODUCTO"->{
 
@@ -1920,7 +1958,7 @@ class AltasFragment : Fragment(), AdapterView.OnItemSelectedListener{
             }
             "EN TRAMITE"->{
 
-                estadoPrespuesto = "EN TRAMITE"
+                estadoPrespuesto = false
             }
         }
     }

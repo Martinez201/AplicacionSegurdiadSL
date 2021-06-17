@@ -30,15 +30,15 @@ class AdaptadorPresupuestoMOD(private val mContext: Context, private val listaPr
 
         if (elementoActual.estado.toBoolean()){
 
-            layout.btnEstadoPREMOD.text = "EN TRAMITE";
-            layout.btnEstadoPREMOD.setTextColor(Color.WHITE);
-            layout.btnEstadoPREMOD.setBackgroundColor(Color.RED);
-
-        }else{
-
             layout.btnEstadoPREMOD.text = "CERRADO";
             layout.btnEstadoPREMOD.setTextColor(Color.WHITE);
             layout.btnEstadoPREMOD.setBackgroundColor(Color.GREEN);
+
+        }else{
+
+            layout.btnEstadoPREMOD.text = "EN TRAMITE";
+            layout.btnEstadoPREMOD.setTextColor(Color.WHITE);
+            layout.btnEstadoPREMOD.setBackgroundColor(Color.RED);
         }
 
         layout.btnEditarPREMOD.setOnClickListener(){

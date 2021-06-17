@@ -111,7 +111,7 @@ class AdaptadorEmpleadoBAJ   (private val mContext: Context, private val listaEm
 
             if (response.body()?.string().toString().contains("Succes")){
 
-                Toast.makeText(this.context,"Cliente Empleado con éxito", Toast.LENGTH_SHORT).show()
+                Toast.makeText(this.context,"Empleado con éxito", Toast.LENGTH_SHORT).show()
             }
             else{
 

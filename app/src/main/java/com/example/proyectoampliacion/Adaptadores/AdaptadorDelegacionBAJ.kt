@@ -2,6 +2,7 @@ package com.example.proyectoampliacion.Adaptadores
 
 import android.app.AlertDialog
 import android.content.Context
+import android.graphics.Color
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -37,9 +38,10 @@ class AdaptadorDelegacionBAJ(private val mContext: Context, private val listaDel
 
         layout.tvNombreDBAJ.text = elementoActual.nombre;
         layout.tvDireccionDBAJ.text = elementoActual.direccion;
-        layout.tvEmailDMOD.text = elementoActual.email;
+        layout.tvEmailDBAJ.text = elementoActual.email;
         layout.tvTelefonoDBAJ.text = elementoActual.telefono;
 
+        layout.btnBorraDBAJ.setBackgroundColor(Color.RED)
 
         layout.btnBorraDBAJ.setOnClickListener(){
 

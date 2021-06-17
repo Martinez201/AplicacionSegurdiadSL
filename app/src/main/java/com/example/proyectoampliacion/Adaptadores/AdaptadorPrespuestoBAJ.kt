@@ -45,15 +45,15 @@ class AdaptadorPrespuestoBAJ (private val mContext: Context, private val listaPr
 
         if (elementoActual.estado.equals("true")){
 
-            layout.btnEstadoPREBAJ.text = "ABIERTO";
-            layout.btnEstadoPREBAJ.setTextColor(Color.WHITE);
-            layout.btnEstadoPREBAJ.setBackgroundColor(Color.RED);
-
-        }else{
-
             layout.btnEstadoPREBAJ.text = "CERRADO";
             layout.btnEstadoPREBAJ.setTextColor(Color.WHITE);
             layout.btnEstadoPREBAJ.setBackgroundColor(Color.GREEN);
+
+        }else{
+
+            layout.btnEstadoPREBAJ.text = "EN TRAMITE";
+            layout.btnEstadoPREBAJ.setTextColor(Color.WHITE);
+            layout.btnEstadoPREBAJ.setBackgroundColor(Color.RED);
         }
 
         layout.btnEditarPREBAJ.setBackgroundColor(Color.RED)
