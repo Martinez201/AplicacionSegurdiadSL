@@ -41,6 +41,8 @@ class AdaptadorPresupuestoMOD(private val mContext: Context, private val listaPr
             layout.btnEstadoPREMOD.setBackgroundColor(Color.parseColor("#585f66"));
         }
 
+        layout.btnEditarPREMOD.setBackgroundColor(Color.parseColor("#343a40"))
+
         layout.btnEditarPREMOD.setOnClickListener(){
 
             var bundle = Bundle();

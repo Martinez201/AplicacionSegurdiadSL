@@ -2,6 +2,7 @@ package com.example.proyectoampliacion.Fragmentos.Mantenimiento
 
 import android.app.ActionBar
 import android.content.Intent
+import android.graphics.Color
 import android.os.Bundle
 import android.os.StrictMode
 import android.text.InputType
@@ -304,6 +305,10 @@ class AltasFragment : Fragment(), AdapterView.OnItemSelectedListener{
         btnLimpiar.text = "Limpiar";
 
 
+        btnCancelar.setBackgroundColor(Color.parseColor("#c67f16"))
+        btnGuardar.setBackgroundColor(Color.parseColor("#498f4e"))
+        btnLimpiar.setBackgroundColor(Color.parseColor("#AFF55B"))
+
         contenedorBotones.gravity = Gravity.CENTER;
         contenedorBotones.addView(btnGuardar);
         contenedorBotones.addView(btnCancelar);
@@ -411,6 +416,9 @@ class AltasFragment : Fragment(), AdapterView.OnItemSelectedListener{
         btnGuardar.text = "Guardar";
         btnLimpiar.text = "Limpiar";
 
+        btnCancelar.setBackgroundColor(Color.parseColor("#c67f16"))
+        btnGuardar.setBackgroundColor(Color.parseColor("#498f4e"))
+        btnLimpiar.setBackgroundColor(Color.parseColor("#AFF55B"))
 
         contenedorBotones.gravity = Gravity.CENTER;
         contenedorBotones.addView(btnGuardar);
@@ -533,6 +541,10 @@ class AltasFragment : Fragment(), AdapterView.OnItemSelectedListener{
         txtTelefono.hint = "Introduzca el Teléfono";
         txtcPostal.hint = "Introduzca el Codigo Postal";
         txtIdentificacion.hint = "Introduzca Identificación";
+
+        btnCancelar.setBackgroundColor(Color.parseColor("#c67f16"))
+        btnGuardar.setBackgroundColor(Color.parseColor("#498f4e"))
+        btnLimpiar.setBackgroundColor(Color.parseColor("#AFF55B"))
 
         txtCiudad.width = 800;
         txtCiudad.maxLines = 1;
@@ -678,6 +690,10 @@ class AltasFragment : Fragment(), AdapterView.OnItemSelectedListener{
         btnCancelar.text = eventoBotonCancelar.nombre;
         btnBuscar.text = eventoBotonBuscar.nombre
         btnBuscar.id =  eventoBotonBuscar.cod
+
+        btnCancelar.setBackgroundColor(Color.parseColor("#c67f16"))
+        btnGuardar.setBackgroundColor(Color.parseColor("#498f4e"))
+        btnLimpiar.setBackgroundColor(Color.parseColor("#AFF55B"))
 
         contenedorSpCliente.setLayoutParams(ActionBar.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
         contenedorSpCliente.orientation = LinearLayout.HORIZONTAL;
@@ -851,6 +867,10 @@ class AltasFragment : Fragment(), AdapterView.OnItemSelectedListener{
         btnCancelar.text = eventoBotonCancelar.nombre;
         btnBuscar.text = eventoBotonBuscar.nombre
         btnBuscar.id =  eventoBotonBuscar.cod
+
+        btnCancelar.setBackgroundColor(Color.parseColor("#c67f16"))
+        btnGuardar.setBackgroundColor(Color.parseColor("#498f4e"))
+        btnLimpiar.setBackgroundColor(Color.parseColor("#AFF55B"))
 
         contenedorSpCliente.setLayoutParams(ActionBar.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
         contenedorSpCliente.orientation = LinearLayout.HORIZONTAL;
@@ -1137,6 +1157,9 @@ class AltasFragment : Fragment(), AdapterView.OnItemSelectedListener{
         cbInstalador.text = "Instalador"
         cbComercial.text = "Comercial"
 
+        btnCancelar.setBackgroundColor(Color.parseColor("#c67f16"))
+        btnGuardar.setBackgroundColor(Color.parseColor("#498f4e"))
+        btnLimpiar.setBackgroundColor(Color.parseColor("#AFF55B"))
 
         contenedorBotones.gravity = Gravity.CENTER
         contenedorBotones.addView(btnGuardar);
@@ -1440,6 +1463,9 @@ class AltasFragment : Fragment(), AdapterView.OnItemSelectedListener{
         btnGuardar.text = "Guardar"
         btnLimpiar.text = "Limpiar"
 
+        btnCancelar.setBackgroundColor(Color.parseColor("#c67f16"))
+        btnGuardar.setBackgroundColor(Color.parseColor("#498f4e"))
+        btnLimpiar.setBackgroundColor(Color.parseColor("#AFF55B"))
 
         contenedorcPostal.setPadding(0,50,0,0);
         contenedorTelefono.setPadding(0,50,0,0);
