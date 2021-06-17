@@ -31,20 +31,14 @@
                     android:textColor="#FFFFFF"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"/>
-                <TextView
-                    android:layout_below="@+id/titulo"
-                    android:text="MENSAJES"
-                    android:textSize="12sp"
-                    android:textColor="#FFFFFF"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"/>
 
 
                 <ImageView
+                    android:layout_width="62dp"
+                    android:layout_height="62dp"
                     android:layout_alignParentRight="true"
                     android:src="@drawable/ic_round_play_button"
-                    android:layout_width="62dp"
-                    android:layout_height="62dp"/>
+                    tools:srcCompat="@drawable/pixlr_bg_result" />
 
             </RelativeLayout>
 

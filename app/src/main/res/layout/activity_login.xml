@@ -136,7 +136,8 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="100dp"
                     android:layout_marginBottom="50dp"
-                    android:text="Iniciar Sesión" />
+                    android:text="Iniciar Sesión"
+                    app:backgroundTint="@android:color/holo_red_light" />
 
                 <Space
                     android:layout_width="wrap_content"

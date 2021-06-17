@@ -15,8 +15,8 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/btnContratoPre"
-        app:layout_constraintVertical_bias="0.052" />
+        app:layout_constraintTop_toBottomOf="@+id/tvIntalacion"
+        app:layout_constraintVertical_bias="0.02" />
 
     <TextView
         android:id="@+id/tvEmpleadoPre"
@@ -60,14 +60,4 @@
         app:layout_constraintStart_toEndOf="@+id/tvFechaPre"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <Button
-        android:id="@+id/btnContratoPre"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="40dp"
-        android:text="Contrato"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.887"
-        app:layout_constraintStart_toEndOf="@+id/tvEmpleadoPre"
-        app:layout_constraintTop_toBottomOf="@+id/btnEstadoPre" />
 </androidx.constraintlayout.widget.ConstraintLayout>
