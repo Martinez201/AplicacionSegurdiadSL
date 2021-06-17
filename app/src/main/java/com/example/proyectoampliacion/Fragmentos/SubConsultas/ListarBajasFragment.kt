@@ -1207,7 +1207,7 @@ class ListarBajasFragment : Fragment() {
 
     fun mostarDelegaciones(view: View,delegaciones:MutableList<Delegacion> ){
 
-        val adaptador = MiAdaptadorDelegacion(view.context,delegaciones)
+        val adaptador = AdaptadorDelegacionBAJ(view.context,delegaciones)
 
         lvBajas.adapter = adaptador
 
@@ -1236,7 +1236,7 @@ class ListarBajasFragment : Fragment() {
 
     fun mostarPersonas(view: View,personas:MutableList<Cliente> ){
 
-        val adaptador = MiAdaptadorClientes(view.context,personas)
+        val adaptador = AdaptadorClienteBAJ(view.context,personas)
 
         lvBajas.adapter = adaptador
     }
@@ -1257,7 +1257,7 @@ class ListarBajasFragment : Fragment() {
 
     fun mostarEmpleados(view: View,empleados:MutableList<Empleado> ){
 
-        val adaptador = MiAdaptadorEmpleados(view.context,empleados)
+        val adaptador = AdaptadorEmpleadoBAJ(view.context,empleados)
 
         lvBajas.adapter = adaptador
     }
