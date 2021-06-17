@@ -34,14 +34,16 @@ class AdaptadorClientesMOD(private val mContext: Context, private val listaClien
 
             layout.btnEstado.text = "ALTA";
             layout.btnEstado.setTextColor(Color.WHITE);
-            layout.btnEstado.setBackgroundColor(Color.GREEN);
+            layout.btnEstado.setBackgroundColor(Color.parseColor("#28a745"));
 
         }else{
 
             layout.btnEstado.text = "BAJA";
             layout.btnEstado.setTextColor(Color.WHITE);
-            layout.btnEstado.setBackgroundColor(Color.RED);
+            layout.btnEstado.setBackgroundColor(Color.parseColor("#dc3545"));
         }
+
+        layout.btnEditar.setBackgroundColor(Color.parseColor("#343a40"));
 
         layout.btnEditar.setOnClickListener(){
 

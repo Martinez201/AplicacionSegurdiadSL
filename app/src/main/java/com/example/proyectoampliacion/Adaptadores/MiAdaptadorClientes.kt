@@ -29,13 +29,13 @@ open class MiAdaptadorClientes(private val mContext:Context,private val listaCli
 
             layout.btnEstado.text = "ALTA";
             layout.btnEstado.setTextColor(Color.WHITE);
-            layout.btnEstado.setBackgroundColor(Color.GREEN);
+            layout.btnEstado.setBackgroundColor(Color.parseColor("#28a745"));
 
         }else{
 
             layout.btnEstado.text = "BAJA";
             layout.btnEstado.setTextColor(Color.WHITE);
-            layout.btnEstado.setBackgroundColor(Color.RED);
+            layout.btnEstado.setBackgroundColor(Color.parseColor("#dc3545"));
         }
 
 

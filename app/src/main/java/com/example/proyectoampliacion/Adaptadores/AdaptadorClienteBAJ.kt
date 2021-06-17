@@ -46,15 +46,16 @@ class AdaptadorClienteBAJ (private val mContext: Context, private val listaClien
 
             layout.btnEstadoBAJCLI.text = "ALTA";
             layout.btnEstadoBAJCLI.setTextColor(Color.WHITE);
-            layout.btnEstadoBAJCLI.setBackgroundColor(Color.GREEN);
+            layout.btnEstadoBAJCLI.setBackgroundColor(Color.parseColor("#28a745"));
 
         }else{
 
             layout.btnEstadoBAJCLI.text = "BAJA";
             layout.btnEstadoBAJCLI.setTextColor(Color.WHITE);
-            layout.btnEstadoBAJCLI.setBackgroundColor(Color.RED);
+            layout.btnEstadoBAJCLI.setBackgroundColor(Color.parseColor("#dc3545"));
         }
 
+        layout.btnBorrarBAJCLI.setBackgroundColor(Color.parseColor("#343a40"));
         layout.btnBorrarBAJCLI.setOnClickListener(){
 
             elemento = elementoActual.id
