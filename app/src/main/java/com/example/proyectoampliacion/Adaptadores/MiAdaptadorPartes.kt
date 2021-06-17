@@ -35,13 +35,13 @@ class MiAdaptadorPartes(private val mContext: Context, private val listaPartes: 
 
             layout.btnEstadoP.text = "ABIERTO";
             layout.btnEstadoP.setTextColor(Color.WHITE);
-            layout.btnEstadoP.setBackgroundColor(Color.YELLOW);
+            layout.btnEstadoP.setBackgroundColor(Color.parseColor("#c67f16"));
 
         }else{
 
             layout.btnEstadoP.text = "CERRADO";
             layout.btnEstadoP.setTextColor(Color.WHITE);
-            layout.btnEstadoP.setBackgroundColor(Color.GREEN);
+            layout.btnEstadoP.setBackgroundColor(Color.parseColor("#28a745"));
         }
 
 

@@ -46,16 +46,16 @@ class AdaptadorPartesBAJ (private val mContext: Context, private val listaPartes
 
             layout.btnEstadoPARBAJ.text = "ABIERTO";
             layout.btnEstadoPARBAJ.setTextColor(Color.WHITE);
-            layout.btnEstadoPARBAJ.setBackgroundColor(Color.YELLOW);
+            layout.btnEstadoPARBAJ.setBackgroundColor(Color.parseColor("#c67f16"));
 
         }else{
 
             layout.btnEstadoPARBAJ.text = "CERRADO";
             layout.btnEstadoPARBAJ.setTextColor(Color.WHITE);
-            layout.btnEstadoPARBAJ.setBackgroundColor(Color.GREEN);
+            layout.btnEstadoPARBAJ.setBackgroundColor(Color.parseColor("#28a745"));
         }
 
-        layout.btnBorrarPARBAJ.setBackgroundColor(Color.RED)
+        layout.btnBorrarPARBAJ.setBackgroundColor(Color.parseColor("#f44336"))
 
         layout.btnBorrarPARBAJ.setOnClickListener(){
 
