@@ -40,7 +40,7 @@ class AdaptadorAlbaranesBAJ (private val mContext: Context, private val listaAlb
         layout.tvProveedorALBAJ.text = elementoActual.proveedor;
         layout.tvIdALBAJ.text = elementoActual.id.toString();
 
-        layout.btnBorrarAL.setBackgroundColor(Color.RED)
+        layout.btnBorrarAL.setBackgroundColor(Color.parseColor("#dc3545"))
 
         layout.btnBorrarAL.setOnClickListener(){
 

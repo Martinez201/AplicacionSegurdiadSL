@@ -13,6 +13,7 @@ import androidx.navigation.Navigation
 import com.example.proyectoampliacion.Classes_Auxiliares.Factura
 import com.example.proyectoampliacion.R
 import kotlinx.android.synthetic.main.vista_baj_factura.view.*
+import kotlinx.android.synthetic.main.vista_mod_empleado.view.*
 import kotlinx.android.synthetic.main.vista_mod_factura.view.*
 import okhttp3.Call
 import okhttp3.MediaType
@@ -42,7 +43,7 @@ class AdaptadorFacturasBAJ (private val mContext: Context, private val listaFact
         layout.tvEmisionFACBAJ.text = elementoActual.fecha
         layout.tvConceptoFACBAJ.text = elementoActual.concepto;
 
-        layout.btnEditarFACBAJ.setBackgroundColor(Color.RED)
+        layout.btnEditarFACBAJ.setBackgroundColor(Color.parseColor("#f44336"));
 
         layout.btnEditarFACBAJ.setOnClickListener() {
 

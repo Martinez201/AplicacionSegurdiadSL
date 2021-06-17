@@ -1,6 +1,7 @@
 package com.example.proyectoampliacion.Adaptadores
 
 import android.content.Context
+import android.graphics.Color
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -36,6 +37,8 @@ class AdaptadorEmpleadosMOD   (private val mContext: Context, private val listaE
 
 
         }
+
+        layout.btnEditarEMMOD.setBackgroundColor(Color.parseColor("#343a40"));
 
         layout.btnEditarEMMOD.setOnClickListener(){
 

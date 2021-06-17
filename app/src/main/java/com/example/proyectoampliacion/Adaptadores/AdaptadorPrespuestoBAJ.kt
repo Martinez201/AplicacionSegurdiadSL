@@ -47,16 +47,16 @@ class AdaptadorPrespuestoBAJ (private val mContext: Context, private val listaPr
 
             layout.btnEstadoPREBAJ.text = "CERRADO";
             layout.btnEstadoPREBAJ.setTextColor(Color.WHITE);
-            layout.btnEstadoPREBAJ.setBackgroundColor(Color.GREEN);
+            layout.btnEstadoPREBAJ.setBackgroundColor(Color.parseColor("#2a2a2e"));
 
         }else{
 
             layout.btnEstadoPREBAJ.text = "EN TRAMITE";
             layout.btnEstadoPREBAJ.setTextColor(Color.WHITE);
-            layout.btnEstadoPREBAJ.setBackgroundColor(Color.RED);
+            layout.btnEstadoPREBAJ.setBackgroundColor(Color.parseColor("#585f66"));
         }
 
-        layout.btnEditarPREBAJ.setBackgroundColor(Color.RED)
+        layout.btnEditarPREBAJ.setBackgroundColor(Color.parseColor("#f44336"))
 
         layout.btnEditarPREBAJ.setOnClickListener(){
 

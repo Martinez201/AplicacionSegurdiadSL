@@ -28,8 +28,8 @@ class AdaptadorAlbaranesMOD(private val mContext: Context, private val listaAlba
         layout.tvProveedorALMOD.text = elementoActual.proveedor;
         layout.tvIdALMOD.text = elementoActual.id.toString();
 
-        layout.btnEditarALMOD.setBackgroundColor(Color.GREEN)
-        layout.btnContenidoALMOD.setBackgroundColor(Color.BLUE)
+        layout.btnEditarALMOD.setBackgroundColor(Color.parseColor("#343a40"))
+        layout.btnContenidoALMOD.setBackgroundColor(Color.parseColor("#00599f"))
 
         layout.btnEditarALMOD.setOnClickListener(){
 

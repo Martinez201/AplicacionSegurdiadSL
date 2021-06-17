@@ -1,6 +1,7 @@
 package com.example.proyectoampliacion.Adaptadores
 
 import android.content.Context
+import android.graphics.Color
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -11,6 +12,7 @@ import com.example.proyectoampliacion.Classes_Auxiliares.Delegacion
 import com.example.proyectoampliacion.R
 import kotlinx.android.synthetic.main.vista_delegacion.view.*
 import kotlinx.android.synthetic.main.vista_mod_delegacion.view.*
+import kotlinx.android.synthetic.main.vista_mod_partes.view.*
 
 class AdaptadorDelegacionMOD(private val mContext: Context, private val listaDelegaciones: List<Delegacion>):
     ArrayAdapter<Delegacion>(mContext,0,listaDelegaciones) {
@@ -28,6 +30,7 @@ class AdaptadorDelegacionMOD(private val mContext: Context, private val listaDel
         layout.tvEmailDMOD.text = elementoActual.email;
         layout.tvTelefonoDMOD.text = elementoActual.telefono;
 
+        layout.btnEditarDMOD.setBackgroundColor(Color.parseColor("#343a40"));
 
         layout.btnEditarDMOD.setOnClickListener(){
 

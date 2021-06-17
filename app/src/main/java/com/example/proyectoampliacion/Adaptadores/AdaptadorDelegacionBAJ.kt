@@ -41,7 +41,7 @@ class AdaptadorDelegacionBAJ(private val mContext: Context, private val listaDel
         layout.tvEmailDBAJ.text = elementoActual.email;
         layout.tvTelefonoDBAJ.text = elementoActual.telefono;
 
-        layout.btnBorraDBAJ.setBackgroundColor(Color.RED)
+        layout.btnBorraDBAJ.setBackgroundColor(Color.parseColor("#f44336"))
 
         layout.btnBorraDBAJ.setOnClickListener(){
 

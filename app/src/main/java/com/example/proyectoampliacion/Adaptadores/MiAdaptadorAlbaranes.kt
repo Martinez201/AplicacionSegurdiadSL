@@ -25,6 +25,8 @@ class MiAdaptadorAlbaranes(private val mContext: Context, private val listaAlbar
         layout.tvProveedor.text = elementoActual.proveedor;
         layout.tvId.text = elementoActual.id.toString();
 
+        layout.btnContenido.setBackgroundColor(Color.parseColor("#00599f"))
+
         return layout;
     }
 }

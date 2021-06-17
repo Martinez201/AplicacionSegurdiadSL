@@ -30,13 +30,13 @@ class MiAdaptadorPresupuesto(private val mContext: Context, private val listaPre
 
             layout.btnEstadoPre.text = "CERRADO";
             layout.btnEstadoPre.setTextColor(Color.WHITE);
-            layout.btnEstadoPre.setBackgroundColor(Color.GREEN);
+            layout.btnEstadoPre.setBackgroundColor(Color.parseColor("#2a2a2e"));
 
         }else{
 
             layout.btnEstadoPre.text = "EN TRAMITE";
             layout.btnEstadoPre.setTextColor(Color.WHITE);
-            layout.btnEstadoPre.setBackgroundColor(Color.RED);
+            layout.btnEstadoPre.setBackgroundColor(Color.parseColor("#585f66"));
         }
 
 

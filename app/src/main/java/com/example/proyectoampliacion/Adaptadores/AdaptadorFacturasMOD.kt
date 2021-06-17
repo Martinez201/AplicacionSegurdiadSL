@@ -1,6 +1,7 @@
 package com.example.proyectoampliacion.Adaptadores
 
 import android.content.Context
+import android.graphics.Color
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -26,6 +27,8 @@ class AdaptadorFacturasMOD (private val mContext: Context, private val listaFact
         layout.tvEmpleadoFACMOD.text = elementoActual.empleado.toString();
         layout.tvEmisionFACMOD.text = elementoActual.fecha
         layout.tvConceptoFACMOD.text = elementoActual.concepto;
+
+        layout.btnEditarFACMOD.setBackgroundColor(Color.parseColor("#343a40"));
 
         layout.btnEditarFACMOD.setOnClickListener(){
 

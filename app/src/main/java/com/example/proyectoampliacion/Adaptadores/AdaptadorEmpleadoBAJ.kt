@@ -2,6 +2,7 @@ package com.example.proyectoampliacion.Adaptadores
 
 import android.app.AlertDialog
 import android.content.Context
+import android.graphics.Color
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -49,6 +50,7 @@ class AdaptadorEmpleadoBAJ   (private val mContext: Context, private val listaEm
 
 
         }
+        layout.btnBorrarEMBAJ.setBackgroundColor(Color.parseColor("#f44336"));
 
         layout.btnBorrarEMBAJ.setOnClickListener(){
 

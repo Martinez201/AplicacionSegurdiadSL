@@ -32,13 +32,13 @@ class AdaptadorPresupuestoMOD(private val mContext: Context, private val listaPr
 
             layout.btnEstadoPREMOD.text = "CERRADO";
             layout.btnEstadoPREMOD.setTextColor(Color.WHITE);
-            layout.btnEstadoPREMOD.setBackgroundColor(Color.GREEN);
+            layout.btnEstadoPREMOD.setBackgroundColor(Color.parseColor("#2a2a2e"));
 
         }else{
 
             layout.btnEstadoPREMOD.text = "EN TRAMITE";
             layout.btnEstadoPREMOD.setTextColor(Color.WHITE);
-            layout.btnEstadoPREMOD.setBackgroundColor(Color.RED);
+            layout.btnEstadoPREMOD.setBackgroundColor(Color.parseColor("#585f66"));
         }
 
         layout.btnEditarPREMOD.setOnClickListener(){
